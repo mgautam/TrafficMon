@@ -16,25 +16,22 @@ class car
   //variables
   int id;
   int road;
-  int intention;
-
-  int inst_speed;
-  int length;
+  int turn;
 
 };
 
-car::car(int road, int intention, int length)
-{
-  this->road = road;
-  this->intention = intention;
-  this->length = length;
-}
+// car::car(int road, int intention, int length)
+// {
+//   this->road = road;
+//   this->intention = intention;
+//   this->length = length;
+// }
 
-void car::enter_road(int new_road, int new_intention)
-{
-  this->road = new_road;
-  this->intention = new_intention;
-}
+// void car::enter_road(int new_road, int new_intention)
+// {
+//   this->road = new_road;
+//   this->turn = turn;
+// }
 
 
 
