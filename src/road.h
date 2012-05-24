@@ -9,10 +9,15 @@ class road
 {
  public:
   //constructor
-  road(int int_1_id, int int_2_id);
+  road(int id, int x, int y)
 
  protected:
   //variables
+  int id;
+
+  int x;
+  int y;
+
   int initial_node;
   int final_node;
 
