@@ -9,7 +9,7 @@ class intersection
 {
  public:
   //constructor
-  intersection(int x, int y)
+  intersection(int x, int y);
 
  protected:
   //variables
