@@ -20,7 +20,7 @@ class road
 
   void write_state(FILE* output)
   {
-    printf("%d %d\n", this->init->id, this->final->id);
+    fprintf(output, "%d %d %d %d\n", this->init->x, this->init->y, this->final->x, this->final->y);
   }
 
  protected:
