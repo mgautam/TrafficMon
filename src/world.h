@@ -62,8 +62,6 @@ class world
       }
   }
 
-
-
  protected:
   //variables
   int intc;
