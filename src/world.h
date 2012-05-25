@@ -8,6 +8,9 @@
 
 #include <iostream>
 
+#define WINDOW_WIDTH 768
+#define WINDOW_HEIGHT 1024
+
 
 class world
 {
@@ -62,6 +65,28 @@ class world
       }
   }
 
+  void viewWorld (void) {
+    worldX = 0;
+    worldY = 0;
+    for (int i = 0; i < this->intc; i++) {
+      if (worldX < this->intersections[i]->x)
+	worldX = this->intersections[i]->x;
+      if (worldY < this->intersections[i]->y)
+	worldY = this->intersections[i]->y;
+    }
+
+    float scale = ((float)WINDOW_WIDTH/(float)worldX)>(float)WINDOW_HEIGHT/(float)worldY))?(float)WINDOW_WIDTH/(float)worldX):(float)WINDOW_HEIGHT/(float)worldY);
+
+    for (int i = 0; i < this->intc; i++)
+      this->intersections[i]->viewIntersection (scale);
+
+    for (int i = 0; i < this->roadc; i++)
+      this->roads[i]->viewRoad (scale);
+
+    for (int i = 0; i < this->carc; i++)
+      this->cars[i]->viewCar (scale);
+  }
+
 
 
  protected:
@@ -76,7 +101,8 @@ class world
   road** roads;
   car** cars;
 
-
+  int worldX;
+  int worldY;
 };
 
 #endif
