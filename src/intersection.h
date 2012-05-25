@@ -3,6 +3,7 @@
 
 #define MAX_DEGREE 4
 
+#include <stdio.h>
 #include <iostream>
 using namespace std;
 

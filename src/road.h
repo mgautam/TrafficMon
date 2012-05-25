@@ -4,6 +4,7 @@
 
 //#include "car.h"
 #include "intersection.h"
+#include <stdio.h>
 #include <iostream>
 using namespace std;
 

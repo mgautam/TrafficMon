@@ -1,5 +1,13 @@
 #include "common.h"
 #include "world.h"
+#include "visualize.h"
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
 
 int main(int argc, char* argv[])
 {
@@ -34,16 +42,25 @@ int main(int argc, char* argv[])
 
 
 
-
-
   world* simulation = new world(5, intersections, 8, roads, 1, cars);
   simulation->write_state(stdout);
-  
+
+  glutInit (&argc, argv);
+  glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+  glutInitWindowSize (900,900);
+
+  glutCreateWindow ("World View");
+  glEnable (GL_DEPTH_TEST);
+  //  glutDisplayFunc (simulation->viewWorld);
+  glutKeyboardFunc (handleKeyPress);
+  glutReshapeFunc (handleResize);
+
   while (true)
     {
       simulation->incr_timestamp();
-      simulation->write_state(stdout, false);
-
+      simulation->write_state(stdout, false);    
+      
+      simulation->viewWorld ();
     }
 
 }

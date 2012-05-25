@@ -73,6 +73,12 @@ class world
   }
 
   void viewWorld (void) {
+
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glMatrixMode (GL_MODELVIEW);
+    glLoadIdentity ();
+
     worldX = 0;
     worldY = 0;
     for (int i = 0; i < this->intc; i++) {
@@ -94,6 +100,8 @@ class world
 
     for (int i = 0; i < this->carc; i++)
       this->cars[i]->viewCar (scale);
+
+    glutSwapBuffers ();
   }
 
 

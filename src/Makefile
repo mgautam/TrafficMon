@@ -1,6 +1,6 @@
 CC=g++
-CFLAGS= -I/opt/local/include -I.. -g3 -O0 -Wall -c
-LDFLAGS=
+CFLAGS= -I/opt/local/include -I.. -lglut -lGL -lGLU -g3 -O0 -Wall
+LDFLAGS= -lglut -lGL -lGLU
 
 OUTPUTDIR=../bin
 SOURCES =$(wildcard *.cpp)
@@ -14,7 +14,7 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(LDFLAGS) -o $(OUTPUTDIR)/$@ $(OBJECTS)
 
 .cpp.o:
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) -c  $< -o $@
 
 .PHONY: $(SUBDIRS)
 $(SUBDIRS):
