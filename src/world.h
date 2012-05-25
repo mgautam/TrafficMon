@@ -9,7 +9,11 @@
 #include <iostream>
 using namespace std;
 
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 
 #define WINDOW_WIDTH 768
 #define WINDOW_HEIGHT 1024
@@ -78,7 +82,9 @@ class world
 	worldY = this->intersections[i]->y;
     }
 
-    float scale = ((float)WINDOW_WIDTH/(float)worldX)>(float)WINDOW_HEIGHT/(float)worldY))?(float)WINDOW_WIDTH/(float)worldX):(float)WINDOW_HEIGHT/(float)worldY);
+    float scale = ((float)WINDOW_WIDTH/(float)worldX)>((float)WINDOW_HEIGHT/(float)worldY)?
+    ((float)WINDOW_WIDTH)/((float)worldX)
+    :((float)WINDOW_HEIGHT)/((float)worldY);
 
     for (int i = 0; i < this->intc; i++)
       this->intersections[i]->viewIntersection (scale);

@@ -6,7 +6,11 @@
 #include <iostream>
 using namespace std;
 
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 
 class road;
 class intersection
@@ -27,10 +31,10 @@ class intersection
   void viewIntersection (float scale) {
     glColor3f (1.0f, 0.0f, 0.0f);
     glBegin (GL_QUADS);
-    glVertex3f (((float) this->x - 0.5) / scale, (((float)this->y - 0.5)/ scale, 0.0f);
-    glVertex3f (((float) this->x + 0.5) / scale, (((float)this->y + 0.5)/ scale, 0.0f);
-    glVertex3f (((float) this->x + 0.5) / scale, (((float)this->y - 0.5)/ scale, 0.0f);
-    glVertex3f (((float) this->x - 0.5) / scale, (((float)this->y + 0.5)/ scale, 0.0f);
+    glVertex3f (((float) this->x - 0.5) / scale, ((float)this->y - 0.5)/ scale, 0.0f);
+    glVertex3f (((float) this->x + 0.5) / scale, ((float)this->y + 0.5)/ scale, 0.0f);
+    glVertex3f (((float) this->x + 0.5) / scale, ((float)this->y - 0.5)/ scale, 0.0f);
+    glVertex3f (((float) this->x - 0.5) / scale, ((float)this->y + 0.5)/ scale, 0.0f);
     glEnd ();
   }
   //variables
