@@ -28,6 +28,13 @@ int main(int argc, char* argv[])
   road* roads[8] = {r12, r13, r14, r15, r21, r31, r41, r51};
 
   engine* controller = new engine(5, intersections, 8, roads);
+  
+  while (true)
+    {
+      controller->incr_timestamp();
+      
 
+
+    }
 
 }
