@@ -4,6 +4,9 @@
 #define MAX_DEGREE 4
 
 #include <iostream>
+using namespace std;
+
+#include <GL/glut.h>
 
 class road;
 class intersection
