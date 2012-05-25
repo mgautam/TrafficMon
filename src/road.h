@@ -5,6 +5,9 @@
 //#include "car.h"
 #include "intersection.h"
 #include <iostream>
+using namespace std;
+
+#include <GL/glut.h>
 
 class car;
 

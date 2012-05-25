@@ -6,6 +6,9 @@
 #include "intersection.h"
 #include "road.h"
 #include <iostream>
+using namespace std;
+
+#include <GL/glut.h>
 
 class car
 {
@@ -39,6 +42,9 @@ class car
     curr_road->cars[position-1] = this;
   }
 
+  void viewCar (float scale) {
+    //curr_road->init->x - curr_road->final->x
+  }
 
 
   //variables
