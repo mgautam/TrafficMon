@@ -37,11 +37,12 @@ int main(int argc, char* argv[])
 
 
   world* simulation = new world(5, intersections, 8, roads, 1, cars);
+  simulation->write_state(stdout);
   
-  // while (true)
+  while (true)
     {
       simulation->incr_timestamp();
-      simulation->write_state(stdout);
+      simulation->write_state(stdout, false);
 
     }
 
