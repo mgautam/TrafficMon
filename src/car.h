@@ -3,6 +3,7 @@
 
 
 
+#include "common.h"
 #include "intersection.h"
 #include "road.h"
 #include <iostream>
@@ -26,23 +27,40 @@ class car
 
   bool can_move()
   {
-    if (!curr_road->cars[position-1])
-      return true;
-    if (curr_road->cars[position-1]->can_move())
-      return true;
+    if (position == 0)
+      {
+	if (turn == LEFT || turn == AHEAD)
+	  return this->curr_road->lights_1;
+	else // turn == RIGHT
+	  return this->curr_road->lights_2;
+      }
+
+    else
+      {
+	return (curr_road->cars[position-1]->can_move());
+      }
   }
 
   void move()
   {
-    this->position--;
-    curr_road->cars[position] = 0;
-    curr_road->cars[position-1] = this;
+    if (can_move())
+      {
+	this->wait = 0;
+	this->position--;
+	curr_road->cars[position] = 0;
+	curr_road->cars[position-1] = this;
+      }
+    else
+      {
+	this->wait++;
+      }
   }
 
 
 
   //variables
   int turn;
+  int wait;
   int position;
   int displacement_x;
   int displacement_y;
