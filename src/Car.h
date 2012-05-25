@@ -18,7 +18,6 @@ class car
   void write_state(FILE* output)
   {
     fprintf(output, "%d %d\n", curr_road->init->x + displacement_x, curr_road->init->y + displacement_y);
-
   }
 
 

@@ -2,11 +2,11 @@ CC=g++
 CFLAGS= -I/opt/local/include -I.. -g3 -O0 -Wall -c
 LDFLAGS=
 
-OUTPUTDIR=/Users/seany/Development/trafficman/bin
+OUTPUTDIR=/Users/seany/Development/TrafficMon/bin
 SOURCES =$(wildcard *.cpp)
 HEADERS =$(wildcard *.h)
 OBJECTS =$(SOURCES:.cpp=.o)
-TARGET= trafficman
+TARGET= TrafficMon
 
 all: clean $(TARGET)
 
