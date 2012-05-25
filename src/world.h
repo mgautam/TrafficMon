@@ -35,24 +35,31 @@ class world
 
   void write_state(FILE* output)
   {
-    fprintf(output, "%d\n", intc);
-    for (int i = 0; i < this->intc; i++)
+    write_state(output, true);
+  }
+
+  void write_state(FILE* output, bool fixtures)
+  {
+    if (fixtures)
       {
-	this->intersections[i]->write_state(output);
+	fprintf(output, "%d\n", intc);
+	for (int i = 0; i < this->intc; i++)
+	  {
+	    this->intersections[i]->write_state(output);
+	  }
+
+	fprintf(output, "%d\n", roadc);
+	for (int i = 0; i < this->roadc; i++)
+	  {
+	    this->roads[i]->write_state(output);
+	  }
       }
 
-    fprintf(output, "%d\n", roadc);
-    for (int i = 0; i < this->roadc; i++)
-      {
-	this->roads[i]->write_state(output);
-      }
-   
     fprintf(output, "%d\n", carc);
     for (int i = 0; i < this->carc; i++)
       {
 	this->cars[i]->write_state(output);
       }
-
   }
 
 
