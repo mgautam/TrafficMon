@@ -3,10 +3,8 @@
 
 #define MAX_DEGREE 4
 
-#include "common.h"
+#include "road.h"
 #include <iostream>
-
-class road;
 
 class intersection
 {
@@ -17,6 +15,12 @@ class intersection
     this->x = x;
     this->y = y;
   }
+
+  void write_state(FILE* output)
+  {
+    
+  }
+
 
  protected:
   //variables

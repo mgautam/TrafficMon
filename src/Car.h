@@ -2,7 +2,8 @@
 #define CAR_H 1
 
 
-#include "common.h"
+#include "road.h"
+#include "intersection.h"
 #include <iostream>
 
 class car
@@ -13,6 +14,13 @@ class car
   {
     this->init_road = init_road;
   }
+
+  void write_state(FILE* output)
+  {
+  }
+
+
+
   void enter_road(int new_road, int new_intention);
 
  protected:

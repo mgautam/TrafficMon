@@ -1,5 +1,5 @@
 #include "common.h"
-
+#include "world.h"
 
 int main(int argc, char* argv[])
 {
@@ -30,17 +30,17 @@ int main(int argc, char* argv[])
 
   car* c1 = new car(r21); // car enters from init end point of r21.
   
+  car* cars[] = {c1};
 
 
 
 
 
-
-  engine* controller = new engine(5, intersections, 8, roads);
+  world* simulation = new world(5, intersections, 8, roads, 1, cars);
   
   while (true)
     {
-      controller->incr_timestamp();
+      simulation->incr_timestamp();
       
 
 

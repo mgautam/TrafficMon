@@ -17,6 +17,12 @@ class road
     this->final = final;
   }
 
+  void write_state(FILE* output)
+  {
+  }
+
+
+
  protected:
   //variables
   int id;
