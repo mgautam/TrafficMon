@@ -19,12 +19,11 @@ class intersection
 
   void write_state(FILE* output)
   {
-    
+    fprintf(output, "%d %d %d\n", id, x, y);
   }
 
   //variables
   int id;
-
   int x;
   int y;
   
