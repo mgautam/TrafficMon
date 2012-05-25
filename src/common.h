@@ -7,6 +7,7 @@
 
 #include "intersection.h"
 #include "road.h"
+#include "car.h"
 #include "engine.h"
 
 

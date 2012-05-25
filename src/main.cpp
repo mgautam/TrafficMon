@@ -27,6 +27,15 @@ int main(int argc, char* argv[])
 
   road* roads[8] = {r12, r13, r14, r15, r21, r31, r41, r51};
 
+
+  car* c1 = new car(r21); // car enters from init end point of r21.
+  
+
+
+
+
+
+
   engine* controller = new engine(5, intersections, 8, roads);
   
   while (true)

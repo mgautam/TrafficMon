@@ -9,14 +9,17 @@ class car
 {
  public:
   //constructor
-  car(int road, int intention, int length = 1);
+  car(road* init_road)
+  {
+    this->init_road = init_road;
+  }
   void enter_road(int new_road, int new_intention);
 
  protected:
   //variables
   int id;
-  int road;
   int turn;
+  road* init_road;
 
 };
 
