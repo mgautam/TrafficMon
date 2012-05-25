@@ -3,8 +3,9 @@
 
 #define MAX_DEGREE 4
 
-#include "road.h"
 #include <iostream>
+
+class road;
 
 class intersection
 {
@@ -21,8 +22,6 @@ class intersection
     
   }
 
-
- protected:
   //variables
   int id;
 

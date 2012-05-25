@@ -2,10 +2,8 @@
 #define ROAD_H 1
 
 
-#include "common.h"
+#include "intersection.h"
 #include <iostream>
-
-class intersection;
 
 class road
 {
@@ -15,13 +13,12 @@ class road
   {
     this->init = init;
     this->final = final;
-  }
+  };
 
   void write_state(FILE* output)
   {
+    printf("%d %d\n", this->init->id, this->final->id);
   }
-
-
 
  protected:
   //variables
