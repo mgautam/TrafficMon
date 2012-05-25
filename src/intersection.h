@@ -6,7 +6,6 @@
 #include <iostream>
 
 class road;
-
 class intersection
 {
  public:
