@@ -2,7 +2,7 @@ CC=g++
 CFLAGS= -I/opt/local/include -I.. -g3 -O0 -Wall -c
 LDFLAGS=
 
-OUTPUTDIR=/Users/seany/Development/TrafficMon/bin
+OUTPUTDIR=../bin
 SOURCES =$(wildcard *.cpp)
 HEADERS =$(wildcard *.h)
 OBJECTS =$(SOURCES:.cpp=.o)
