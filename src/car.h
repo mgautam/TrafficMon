@@ -24,11 +24,22 @@ class car
     fprintf(output, "%d %d\n", curr_road->init->x + displacement_x, curr_road->init->y + displacement_y);
   }
 
-  void try_move()
+  bool can_move()
   {
-    if (curr_road->car_can_move_to(position-1))
-      position--;
+    if (!curr_road->cars[position-1])
+      return true;
+    if (curr_road->cars[position-1]->can_move())
+      return true;
   }
+
+  void move()
+  {
+    this->position--;
+    curr_road->cars[position] = 0;
+    curr_road->cars[position-1] = this;
+  }
+
+
 
   //variables
   int turn;
