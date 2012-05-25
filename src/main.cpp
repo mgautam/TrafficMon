@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
   intersection* i4 = new intersection(-4,0);
   intersection* i5 = new intersection(0,-4);
 
-  intersection* intersection[5]  = {i1, i2, i3, i4, i5};
+  intersection* intersections[5]  = {i1, i2, i3, i4, i5};
 
 
   //away from the central intersection
@@ -27,6 +27,7 @@ int main(int argc, char* argv[])
 
   road* roads[8] = {r12, r13, r14, r15, r21, r31, r41, r51};
 
+  engine* controller = new engine(5, intersections, 8, roads);
 
 
 }
