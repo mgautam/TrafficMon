@@ -12,23 +12,26 @@ class car
   //constructor
   car(road* init_road)
   {
-    this->init_road = init_road;
+    this->curr_road = init_road;
   }
 
   void write_state(FILE* output)
   {
+    fprintf(output, "%d %d\n", curr_road->init->x + displacement_x, curr_road->init->y + displacement_y);
+
   }
 
 
 
   void enter_road(int new_road, int new_intention);
 
- protected:
   //variables
-  int id;
   int turn;
-  road* init_road;
-
+  int position;
+  int displacement_x;
+  int displacement_y;
+  road* curr_road;
+  
 };
 
 // car::car(int road, int intention, int length)

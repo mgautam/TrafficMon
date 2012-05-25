@@ -23,7 +23,6 @@ class road
     fprintf(output, "%d %d %d %d\n", this->init->x, this->init->y, this->final->x, this->final->y);
   }
 
- protected:
   //variables
   int id;
 
