@@ -27,6 +27,9 @@ class intersection
   int x;
   int y;
   
+  int in_count;
+  int out_count;
+
   road* in[MAX_DEGREE];
   road* out[MAX_DEGREE];
 

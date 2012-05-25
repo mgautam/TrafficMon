@@ -13,6 +13,9 @@ class road
   {
     this->init = init;
     this->final = final;
+
+    init->out[init->in_count] = this;
+    final->in[final->out_count] = this;
   };
 
   void write_state(FILE* output)
