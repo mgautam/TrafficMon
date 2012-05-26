@@ -45,8 +45,8 @@ int main(int argc, char* argv[])
   car* cars[] = {c1,c2,c3,c4};
 
 
-  world* simulation = new world(5, intersections, 8, roads, 2, cars);
-  //simulation->write_state(stdout);
+  world* simulation = new world(5, intersections, 8, roads, , cars);
+				//1;;5Qsimulation->write_state(stdout);
 
   glutInit (&argc, argv);
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

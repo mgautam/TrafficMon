@@ -42,7 +42,7 @@ class road
     if (this->init->x == this->final->x && this->init->y != this->final->y)
       compass = (this->init->y < this->final->y) ? NORTH : SOUTH;
     else if (this->init->x != this->final->x && this->init->y == this->final->y)
-      compass = (this->init->x > this->final->x) ? EAST : WEST;
+      compass = (this->init->x < this->final->x) ? EAST : WEST;
     else {
       printf ("Error in Road Endpoints! They are invalid\n");
       exit (-1);
@@ -71,10 +71,10 @@ class road
       break;
 
       case EAST:
-	glVertex2f (((float)this->init->x - 0.5)*scale,((float)this->init->y + 0.5)*scale);
-	glVertex2f (((float)this->final->x + 0.5)*scale,((float)this->init->y + 0.5)*scale);
-	glVertex2f (((float)this->final->x + 0.5)*scale,((float)this->init->y + lenBWlanes)*scale);
-	glVertex2f (((float)this->init->x - 0.5)*scale,((float)this->init->y + lenBWlanes)*scale);
+	glVertex2f (((float)this->init->x + 0.5)*scale,((float)this->init->y + 0.5)*scale);
+	glVertex2f (((float)this->final->x - 0.5)*scale,((float)this->init->y + 0.5)*scale);
+	glVertex2f (((float)this->final->x - 0.5)*scale,((float)this->init->y + lenBWlanes)*scale);
+	glVertex2f (((float)this->init->x + 0.5)*scale,((float)this->init->y + lenBWlanes)*scale);
       break;
 
       case SOUTH:
@@ -85,10 +85,10 @@ class road
       break;
 
       case WEST:
-	glVertex2f (((float)this->init->x + 0.5)*scale,((float)this->init->y - lenBWlanes)*scale);
-	glVertex2f (((float)this->final->x - 0.5)*scale,((float)this->init->y - lenBWlanes)*scale);
-	glVertex2f (((float)this->final->x - 0.5)*scale,((float)this->init->y - 0.5)*scale);
-	glVertex2f (((float)this->init->x + 0.5)*scale,((float)this->init->y - 0.5)*scale);
+	glVertex2f (((float)this->init->x - 0.5)*scale,((float)this->init->y - lenBWlanes)*scale);
+	glVertex2f (((float)this->final->x + 0.5)*scale,((float)this->init->y - lenBWlanes)*scale);
+	glVertex2f (((float)this->final->x + 0.5)*scale,((float)this->init->y - 0.5)*scale);
+	glVertex2f (((float)this->init->x - 0.5)*scale,((float)this->init->y - 0.5)*scale);
       break;
 
       default:
