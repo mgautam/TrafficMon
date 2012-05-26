@@ -38,9 +38,11 @@ int main(int argc, char* argv[])
 
 
   car* c1 = new car(r21); // car enters from init end point of r21.
-  
-  car* cars[] = {c1};
+  car* c2 = new car(r12);
+  car* c3 = new car(r41);
+  car* c4 = new car(r14);
 
+  car* cars[] = {c1,c2,c3,c4};
 
 
   world* simulation = new world(5, intersections, 8, roads, 1, cars);
@@ -51,7 +53,7 @@ int main(int argc, char* argv[])
   glutInitWindowSize (WINDOW_WIDTH,WINDOW_HEIGHT);
 
   glutCreateWindow ("World View");
-  glEnable (GL_DEPTH_TEST);
+  glDisable (GL_DEPTH_TEST);
   //  glutDisplayFunc (simulation->viewWorld);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);

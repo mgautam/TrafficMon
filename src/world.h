@@ -56,8 +56,6 @@ class world
     this->scale = (maxWorldX - minWorldX) > (maxWorldY - minWorldY)?
       1.5/((float)(maxWorldX - minWorldX))  :  1.5/((float)(maxWorldY - minWorldY));
 
-    printf ("%d,%d %d,%d %f %f\n",minWorldX,minWorldY,maxWorldX, maxWorldY, scale,1.0/8.0);
-
   }
   
   void incr_timestamp()

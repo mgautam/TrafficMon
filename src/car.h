@@ -65,41 +65,45 @@ class car
   }
 
   void viewCar (float scale) {
+
+    this->position--;
+
     glColor3f (0.0f, 1.0f, 0.0f);
     glBegin (GL_QUADS);
 
-    float roadOffset = (float)this->position;//(float)curr_road->length;
-    fprintf (stdout, "%d/%d %f %f %f\n",this->position, curr_road->length, roadOffset,((float)curr_road->final->x - roadOffset + 0.5)*scale  , ((float)curr_road->final->y - 0.5)*scale);
+    float roadOffset = ((float)this->position - 1)/(float)curr_road->length; // I'm not sure why I subtract 1 here
+    float carScaledLen = 0.25;//1.0/(float)curr_road->length;
 	
+    float lenBWlanes = 0.05;
 
     switch (curr_road->compass) {
       
       case NORTH:
-	glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + this->position - 0.5)*scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + this->position + 0.5)*scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y + this->position + 0.5)*scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y + this->position - 0.5)*scale, 0.0f);
+	glVertex2f (((float)curr_road->final->x - lenBWlanes)*scale, ((float)curr_road->final->y - (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x - lenBWlanes)*scale, ((float)curr_road->final->y - (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y - (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y - (roadOffset + carScaledLen))*scale);
 	break;
     
       case EAST:
-	glVertex2f (((float)curr_road->final->x - roadOffset - 0.5)*scale ,((float)curr_road->final->y + 0.5)*scale);
-	glVertex2f (((float)curr_road->final->x + roadOffset + 0.5)*scale ,((float)curr_road->final->y + 0.5)*scale);
-	glVertex2f (((float)curr_road->final->x + roadOffset + 0.5)*scale ,((float)curr_road->final->y - 0.5)*scale);
-	glVertex2f (((float)curr_road->final->x - roadOffset - 0.5)*scale ,((float)curr_road->final->y - 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x + (roadOffset + carScaledLen))*scale ,((float)curr_road->final->y + lenBWlanes)*scale);
+	glVertex2f (((float)curr_road->final->x + (roadOffset - carScaledLen))*scale ,((float)curr_road->final->y + lenBWlanes)*scale);
+	glVertex2f (((float)curr_road->final->x + (roadOffset - carScaledLen))*scale ,((float)curr_road->final->y + 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x + (roadOffset + carScaledLen))*scale ,((float)curr_road->final->y + 0.5)*scale);
 	break;
 
       case SOUTH:
-	glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y - this->position - 0.5)*scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y - this->position + 0.5)*scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y - this->position + 0.5)*scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y - this->position - 0.5)*scale, 0.0f);
+	glVertex2f (((float)curr_road->final->x + lenBWlanes)*scale, ((float)curr_road->final->y + (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x + lenBWlanes)*scale, ((float)curr_road->final->y + (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + (roadOffset + carScaledLen))*scale);
 	break;
 
       case WEST:
-	glVertex2f (((float)curr_road->final->x + roadOffset - 0.5)*scale ,((float)curr_road->final->y + 0.5)*scale);
-	glVertex2f (((float)curr_road->final->x - roadOffset + 0.5)*scale ,((float)curr_road->final->y + 0.5)*scale);
-	glVertex2f (((float)curr_road->final->x - roadOffset + 0.5)*scale ,((float)curr_road->final->y - 0.5)*scale);
-	glVertex2f (((float)curr_road->final->x + roadOffset - 0.5)*scale ,((float)curr_road->final->y - 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x - (roadOffset + carScaledLen))*scale ,((float)curr_road->final->y - lenBWlanes)*scale);
+	glVertex2f (((float)curr_road->final->x - (roadOffset - carScaledLen))*scale ,((float)curr_road->final->y - lenBWlanes)*scale);
+	glVertex2f (((float)curr_road->final->x - (roadOffset - carScaledLen))*scale ,((float)curr_road->final->y - 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x - (roadOffset + carScaledLen))*scale ,((float)curr_road->final->y - 0.5)*scale);
 	break;
     
       default:
