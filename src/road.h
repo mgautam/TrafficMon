@@ -30,8 +30,8 @@ class road
     this->cars = cars;
 
 
-    init->out[init->in_count] = this;
-    final->in[final->out_count] = this;
+    init->out[init->in_count++] = this;
+    final->in[final->out_count++] = this;
   };
 
   void write_state(FILE* output)

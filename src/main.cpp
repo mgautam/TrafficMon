@@ -55,12 +55,12 @@ int main(int argc, char* argv[])
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 
-  while (true)
-    {
+  // while (true)
+  // {
       simulation->incr_timestamp();
       simulation->write_state(stdout, false);    
       
       simulation->viewWorld ();
-    }
+      // }
 
 }
