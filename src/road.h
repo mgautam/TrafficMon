@@ -14,6 +14,11 @@ using namespace std;
 #include <GL/glut.h>
 #endif
 
+#define NORTH 0
+#define EAST 1
+#define SOUTH 2
+#define WEST 3
+
 class car;
 
 class road
@@ -32,7 +37,16 @@ class road
 
     init->out[init->in_count] = this;
     final->in[final->out_count] = this;
-  };
+
+    if (this->init->x == this->final->x && this->init->y != this->final->y)
+      compass = (this->init->y < this->final->y) ? SOUTH : NORTH;
+    else if (this->init->x != this->final->x && this->init->y == this->final->y)
+      compass = (this->init->x < this->final->x) ? EAST : WEST;
+    else {
+      printf ("Error in Road Endpoints! They are invalid\n");
+      exit (-1);
+    }
+  }
 
   void write_state(FILE* output)
   {
@@ -42,34 +56,30 @@ class road
 
   void viewRoad (float scale) {
 
-    if (this->init->x == this->final->x && this->init->y != this->final->y) {
-
-      bool directionY = (this->init->y < this->final->y);
-
+    if (compass == NORTH || compass == SOUTH) {
       float Yoffset;
-      if (directionY) Yoffset = 0.5;
+      if (compass == SOUTH) Yoffset = 0.5;
       else Yoffset = -0.5;
 
       glColor3f (0.0f, 0.0f, 1.0f);
       glBegin (GL_QUADS);
-      glVertex3f (((float)this->init->x + 0.5)/scale, ((float)this->init->y + Yoffset)/scale, 0.0f);
-      glVertex3f (((float)this->init->x + 0.5)/scale, ((float)this->final->y - Yoffset)/scale, 0.0f);
-      glVertex3f (((float)this->init->x - 0.5)/scale, ((float)this->final->y - Yoffset)/scale, 0.0f);
-      glVertex3f (((float)this->init->x - 0.5)/scale, ((float)this->init->y + Yoffset)/scale, 0.0f);
+      glVertex3f (((float)this->init->x + 0.5)*scale, ((float)this->init->y + Yoffset)*scale, 0.0f);
+      glVertex3f (((float)this->init->x + 0.5)*scale, ((float)this->final->y - Yoffset)*scale, 0.0f);
+      glVertex3f (((float)this->init->x - 0.5)*scale, ((float)this->final->y - Yoffset)*scale, 0.0f);
+      glVertex3f (((float)this->init->x - 0.5)*scale, ((float)this->init->y + Yoffset)*scale, 0.0f);
       glEnd ();
     }
-    else if (this->init->x != this->final->x && this->init->y == this->final->y) {
-        bool directionX = (this->init->x < this->final->x);
+    else if (compass == EAST || compass == WEST) {
 	float Xoffset;
-	if (directionX) Xoffset = 0.5;
+	if (compass == EAST) Xoffset = 0.5;
 	else Xoffset = -0.5;
 	
 	glColor3f (0.0f, 0.0f, 1.0f);
 	glBegin (GL_QUADS);
-	glVertex3f (((float)this->init->x + Xoffset)/scale,((float)this->init->y + 0.5)/scale, 0.0f);
-	glVertex3f (((float)this->final->x - Xoffset)/scale,((float)this->init->y + 0.5)/scale, 0.0f);
-	glVertex3f (((float)this->final->x - Xoffset)/scale,((float)this->init->y - 0.5)/scale, 0.0f);
-	glVertex3f (((float)this->init->x + Xoffset)/scale,((float)this->init->y - 0.5)/scale, 0.0f);
+	glVertex3f (((float)this->init->x + Xoffset)*scale,((float)this->init->y + 0.5)*scale, 0.0f);
+	glVertex3f (((float)this->final->x - Xoffset)*scale,((float)this->init->y + 0.5)*scale, 0.0f);
+	glVertex3f (((float)this->final->x - Xoffset)*scale,((float)this->init->y - 0.5)*scale, 0.0f);
+	glVertex3f (((float)this->init->x + Xoffset)*scale,((float)this->init->y - 0.5)*scale, 0.0f);
 	glEnd ();
     }
     else {
@@ -100,6 +110,8 @@ class road
 
   int lights_1;
   int lights_2;
+
+  int compass; // The direction this road points.
 };
 
 #endif

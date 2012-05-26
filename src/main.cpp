@@ -43,11 +43,11 @@ int main(int argc, char* argv[])
 
 
   world* simulation = new world(5, intersections, 8, roads, 1, cars);
-  simulation->write_state(stdout);
+  //simulation->write_state(stdout);
 
   glutInit (&argc, argv);
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-  glutInitWindowSize (900,900);
+  glutInitWindowSize (WINDOW_WIDTH,WINDOW_HEIGHT);
 
   glutCreateWindow ("World View");
   glEnable (GL_DEPTH_TEST);
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
   while (true)
     {
       simulation->incr_timestamp();
-      simulation->write_state(stdout, false);    
+      //simulation->write_state(stdout, false);    
       
       simulation->viewWorld ();
     }

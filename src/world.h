@@ -15,8 +15,8 @@ using namespace std;
 #include <GL/glut.h>
 #endif
 
-#define WINDOW_WIDTH 768
-#define WINDOW_HEIGHT 1024
+#define WINDOW_WIDTH 500
+#define WINDOW_HEIGHT 500
 
 
 class world
@@ -35,6 +35,19 @@ class world
     this->cars = cars;
 
     this->timestamp = 0;
+
+    // Calculating world scale to map to our windowed perception of the world
+    maxWorldX = 0;
+    maxWorldY = 0;
+    for (int i = 0; i < this->intc; i++) {
+      if (maxWorldX < this->intersections[i]->x)
+	maxWorldX = this->intersections[i]->x;
+      if (maxWorldY < this->intersections[i]->y)
+	maxWorldY = this->intersections[i]->y;
+    }
+
+    this->scale = ((float)WINDOW_WIDTH/(float)maxWorldX)>((float)WINDOW_HEIGHT/(float)maxWorldY)?
+      1.0/((float)maxWorldX)  :  1.0/((float)maxWorldY);
 
   }
   
@@ -79,27 +92,14 @@ class world
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity ();
 
-    worldX = 0;
-    worldY = 0;
-    for (int i = 0; i < this->intc; i++) {
-      if (worldX < this->intersections[i]->x)
-	worldX = this->intersections[i]->x;
-      if (worldY < this->intersections[i]->y)
-	worldY = this->intersections[i]->y;
-    }
-
-    float scale = ((float)WINDOW_WIDTH/(float)worldX)>((float)WINDOW_HEIGHT/(float)worldY)?
-    ((float)WINDOW_WIDTH)/((float)worldX)
-    :((float)WINDOW_HEIGHT)/((float)worldY);
-
     for (int i = 0; i < this->intc; i++)
-      this->intersections[i]->viewIntersection (scale);
+      this->intersections[i]->viewIntersection (this->scale);
 
     for (int i = 0; i < this->roadc; i++)
-      this->roads[i]->viewRoad (scale);
+      this->roads[i]->viewRoad (this->scale);
 
     for (int i = 0; i < this->carc; i++)
-      this->cars[i]->viewCar (scale);
+      this->cars[i]->viewCar (this->scale);
 
     glutSwapBuffers ();
   }
@@ -118,8 +118,10 @@ class world
   road** roads;
   car** cars;
 
-  int worldX;
-  int worldY;
+  // The largest co-ordinate of any intersection present in the world
+  int maxWorldX;
+  int maxWorldY;
+  float scale;
 };
 
 #endif

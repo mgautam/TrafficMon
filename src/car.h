@@ -65,34 +65,31 @@ class car
   }
 
   void viewCar (float scale) {
-    if (curr_road->init->x == curr_road->final->x && curr_road->init->y != curr_road->final->y) {
-
-      bool directionY = (curr_road->init->y < curr_road->final->y);
-
+    if (curr_road->compass == NORTH || curr_road->compass == SOUTH) {
+      
       float Yoffset;
-      if (directionY) Yoffset = 0.5;
-      else Yoffset = -0.5;
+      if (curr_road->compass == SOUTH) Yoffset = -this->position;
+      else Yoffset = this->position;
 
       glColor3f (0.0f, 0.0f, 1.0f);
       glBegin (GL_QUADS);
-      glVertex3f (((float)curr_road->init->x + 0.5)/scale, ((float)curr_road->init->y + Yoffset)/scale, 0.0f);
-      glVertex3f (((float)curr_road->init->x + 0.5)/scale, ((float)curr_road->final->y - Yoffset)/scale, 0.0f);
-      glVertex3f (((float)curr_road->init->x - 0.5)/scale, ((float)curr_road->final->y - Yoffset)/scale, 0.0f);
-      glVertex3f (((float)curr_road->init->x - 0.5)/scale, ((float)curr_road->init->y + Yoffset)/scale, 0.0f);
+      glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + Yoffset - 0.5)*scale, 0.0f);
+      glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + Yoffset + 0.5)*scale, 0.0f);
+      glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y + Yoffset + 0.5)*scale, 0.0f);
+      glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y + Yoffset - 0.5)*scale, 0.0f);
       glEnd ();
     }
-    else if (curr_road->init->x != curr_road->final->x && curr_road->init->y == curr_road->final->y) {
-        bool directionX = (curr_road->init->x < curr_road->final->x);
+    else if (curr_road->compass == EAST || curr_road->compass == WEST) {
 	float Xoffset;
-	if (directionX) Xoffset = 0.5;
-	else Xoffset = -0.5;
+	if (curr_road->compass == EAST) Xoffset = -this->position;
+	else Xoffset = this->position;
 	
 	glColor3f (0.0f, 0.0f, 1.0f);
 	glBegin (GL_QUADS);
-	glVertex3f (((float)curr_road->init->x + Xoffset)/scale,((float)curr_road->init->y + 0.5)/scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x - Xoffset)/scale,((float)curr_road->init->y + 0.5)/scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x - Xoffset)/scale,((float)curr_road->init->y - 0.5)/scale, 0.0f);
-	glVertex3f (((float)curr_road->init->x + Xoffset)/scale,((float)curr_road->init->y - 0.5)/scale, 0.0f);
+	glVertex3f (((float)curr_road->final->x + Xoffset - 0.5)*scale,((float)curr_road->final->y + 0.5)*scale, 0.0f);
+	glVertex3f (((float)curr_road->final->x - Xoffset + 0.5)*scale,((float)curr_road->final->y + 0.5)*scale, 0.0f);
+	glVertex3f (((float)curr_road->final->x - Xoffset + 0.5)*scale,((float)curr_road->final->y - 0.5)*scale, 0.0f);
+	glVertex3f (((float)curr_road->final->x + Xoffset - 0.5)*scale,((float)curr_road->final->y - 0.5)*scale, 0.0f);
 	glEnd ();
     }
     else {
