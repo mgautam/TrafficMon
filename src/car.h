@@ -65,38 +65,48 @@ class car
   }
 
   void viewCar (float scale) {
-    if (curr_road->compass == NORTH || curr_road->compass == SOUTH) {
-      
-      float Yoffset;
-      if (curr_road->compass == SOUTH) Yoffset = -this->position;
-      else Yoffset = this->position;
+    glColor3f (0.0f, 1.0f, 0.0f);
+    glBegin (GL_QUADS);
 
-      glColor3f (0.0f, 0.0f, 1.0f);
-      glBegin (GL_QUADS);
-      glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + Yoffset - 0.5)*scale, 0.0f);
-      glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + Yoffset + 0.5)*scale, 0.0f);
-      glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y + Yoffset + 0.5)*scale, 0.0f);
-      glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y + Yoffset - 0.5)*scale, 0.0f);
-      glEnd ();
-    }
-    else if (curr_road->compass == EAST || curr_road->compass == WEST) {
-	float Xoffset;
-	if (curr_road->compass == EAST) Xoffset = -this->position;
-	else Xoffset = this->position;
+    float roadOffset = (float)this->position;//(float)curr_road->length;
+    fprintf (stdout, "%d/%d %f %f %f\n",this->position, curr_road->length, roadOffset,((float)curr_road->final->x - roadOffset + 0.5)*scale  , ((float)curr_road->final->y - 0.5)*scale);
 	
-	glColor3f (0.0f, 0.0f, 1.0f);
-	glBegin (GL_QUADS);
-	glVertex3f (((float)curr_road->final->x + Xoffset - 0.5)*scale,((float)curr_road->final->y + 0.5)*scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x - Xoffset + 0.5)*scale,((float)curr_road->final->y + 0.5)*scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x - Xoffset + 0.5)*scale,((float)curr_road->final->y - 0.5)*scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x + Xoffset - 0.5)*scale,((float)curr_road->final->y - 0.5)*scale, 0.0f);
-	glEnd ();
-    }
-    else {
-      printf ("Error in Road Endpoints! They are invalid\n");
-      exit (-1);
-    }
 
+    switch (curr_road->compass) {
+      
+      case NORTH:
+	glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + this->position - 0.5)*scale, 0.0f);
+	glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + this->position + 0.5)*scale, 0.0f);
+	glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y + this->position + 0.5)*scale, 0.0f);
+	glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y + this->position - 0.5)*scale, 0.0f);
+	break;
+    
+      case EAST:
+	glVertex2f (((float)curr_road->final->x - roadOffset - 0.5)*scale ,((float)curr_road->final->y + 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x + roadOffset + 0.5)*scale ,((float)curr_road->final->y + 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x + roadOffset + 0.5)*scale ,((float)curr_road->final->y - 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x - roadOffset - 0.5)*scale ,((float)curr_road->final->y - 0.5)*scale);
+	break;
+
+      case SOUTH:
+	glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y - this->position - 0.5)*scale, 0.0f);
+	glVertex3f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y - this->position + 0.5)*scale, 0.0f);
+	glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y - this->position + 0.5)*scale, 0.0f);
+	glVertex3f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y - this->position - 0.5)*scale, 0.0f);
+	break;
+
+      case WEST:
+	glVertex2f (((float)curr_road->final->x + roadOffset - 0.5)*scale ,((float)curr_road->final->y + 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x - roadOffset + 0.5)*scale ,((float)curr_road->final->y + 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x - roadOffset + 0.5)*scale ,((float)curr_road->final->y - 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x + roadOffset - 0.5)*scale ,((float)curr_road->final->y - 0.5)*scale);
+	break;
+    
+      default:
+	printf ("Error in Road Endpoints! They are invalid\n");
+	exit (-1);
+    }
+    glEnd ();
   }
 
 

@@ -53,8 +53,10 @@ class world
 	minWorldY = this->intersections[i]->y;
     }
 
-    this->scale = (maxWorldX - minWorldX) < (maxWorldY - minWorldY)?
-      1.0/((float)(maxWorldX - minWorldX))  :  1.0/((float)(maxWorldY - minWorldY));
+    this->scale = (maxWorldX - minWorldX) > (maxWorldY - minWorldY)?
+      1.5/((float)(maxWorldX - minWorldX))  :  1.5/((float)(maxWorldY - minWorldY));
+
+    printf ("%d,%d %d,%d %f %f\n",minWorldX,minWorldY,maxWorldX, maxWorldY, scale,1.0/8.0);
 
   }
   

@@ -8,6 +8,7 @@
 #include <GL/glut.h>
 #endif
 
+#include <stdio.h>
 
 int main(int argc, char* argv[])
 {
@@ -55,13 +56,14 @@ int main(int argc, char* argv[])
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 
+
   while (true) {
-    //usleep (1000);
-    //simulation->incr_timestamp();
-    //simulation->write_state(stdout, false);    
-      
-      
+
+    simulation->incr_timestamp();
     simulation->viewWorld ();
+    
+    //simulation->write_state(stdout, false);    
+    sleep (1);    
   }
       
 

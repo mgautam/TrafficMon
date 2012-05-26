@@ -30,6 +30,7 @@ class road
     this->init = init;
     this->final = final;
     this->length = (final->x - init->x) + (final->y - init->y) - 1; //manhattan 
+    if (this->length < 0) this->length *= -1;
 
     car* cars[length];
     this->cars = cars;
@@ -39,7 +40,7 @@ class road
     final->in[final->out_count] = this;
 
     if (this->init->x == this->final->x && this->init->y != this->final->y)
-      compass = (this->init->y < this->final->y) ? SOUTH : NORTH;
+      compass = (this->init->y < this->final->y) ? NORTH : SOUTH;
     else if (this->init->x != this->final->x && this->init->y == this->final->y)
       compass = (this->init->x < this->final->x) ? EAST : WEST;
     else {
@@ -55,37 +56,47 @@ class road
 
 
   void viewRoad (float scale) {
+    glColor3f (0.0f, 0.0f, 1.0f);
+    glBegin (GL_QUADS);
 
-    if (compass == NORTH || compass == SOUTH) {
-      float Yoffset;
-      if (compass == SOUTH) Yoffset = 0.5;
-      else Yoffset = -0.5;
+    float lenBWlanes = 0.05;
 
-      glColor3f (0.0f, 0.0f, 1.0f);
-      glBegin (GL_QUADS);
-      glVertex3f (((float)this->init->x + 0.5)*scale, ((float)this->init->y + Yoffset)*scale, 0.0f);
-      glVertex3f (((float)this->init->x + 0.5)*scale, ((float)this->final->y - Yoffset)*scale, 0.0f);
-      glVertex3f (((float)this->init->x - 0.5)*scale, ((float)this->final->y - Yoffset)*scale, 0.0f);
-      glVertex3f (((float)this->init->x - 0.5)*scale, ((float)this->init->y + Yoffset)*scale, 0.0f);
-      glEnd ();
-    }
-    else if (compass == EAST || compass == WEST) {
-	float Xoffset;
-	if (compass == EAST) Xoffset = 0.5;
-	else Xoffset = -0.5;
-	
-	glColor3f (0.0f, 0.0f, 1.0f);
-	glBegin (GL_QUADS);
-	glVertex3f (((float)this->init->x + Xoffset)*scale,((float)this->init->y + 0.5)*scale, 0.0f);
-	glVertex3f (((float)this->final->x - Xoffset)*scale,((float)this->init->y + 0.5)*scale, 0.0f);
-	glVertex3f (((float)this->final->x - Xoffset)*scale,((float)this->init->y - 0.5)*scale, 0.0f);
-	glVertex3f (((float)this->init->x + Xoffset)*scale,((float)this->init->y - 0.5)*scale, 0.0f);
-	glEnd ();
-    }
-    else {
+    switch (compass) {
+
+      case NORTH:
+	glVertex2f (((float)this->init->x - lenBWlanes)*scale, ((float)this->init->y - 0.5)*scale);
+	glVertex2f (((float)this->init->x - lenBWlanes)*scale, ((float)this->final->y + 0.5)*scale);
+	glVertex2f (((float)this->init->x - 0.5)*scale, ((float)this->final->y + 0.5)*scale);
+	glVertex2f (((float)this->init->x - 0.5)*scale, ((float)this->init->y - 0.5)*scale);
+      break;
+
+      case EAST:
+	glVertex2f (((float)this->init->x + 0.5)*scale,((float)this->init->y + 0.5)*scale);
+	glVertex2f (((float)this->final->x - 0.5)*scale,((float)this->init->y + 0.5)*scale);
+	glVertex2f (((float)this->final->x - 0.5)*scale,((float)this->init->y + lenBWlanes)*scale);
+	glVertex2f (((float)this->init->x + 0.5)*scale,((float)this->init->y + lenBWlanes)*scale);
+      break;
+
+      case SOUTH:
+	glVertex2f (((float)this->init->x + 0.5)*scale, ((float)this->init->y + 0.5)*scale);
+	glVertex2f (((float)this->init->x + 0.5)*scale, ((float)this->final->y - 0.5)*scale);
+	glVertex2f (((float)this->init->x + lenBWlanes)*scale, ((float)this->final->y - 0.5)*scale);
+	glVertex2f (((float)this->init->x + lenBWlanes)*scale, ((float)this->init->y + 0.5)*scale);
+      break;
+
+      case WEST:
+	glVertex2f (((float)this->init->x - 0.5)*scale,((float)this->init->y - lenBWlanes)*scale);
+	glVertex2f (((float)this->final->x + 0.5)*scale,((float)this->init->y - lenBWlanes)*scale);
+	glVertex2f (((float)this->final->x + 0.5)*scale,((float)this->init->y - 0.5)*scale);
+	glVertex2f (((float)this->init->x - 0.5)*scale,((float)this->init->y - 0.5)*scale);
+      break;
+
+      default:
       printf ("Error in Road Endpoints! They are invalid\n");
       exit (-1);
     }
+
+    glEnd ();
   }
 
 
@@ -111,7 +122,7 @@ class road
   int lights_1;
   int lights_2;
 
-  int compass; // The direction this road points.
+  int compass; // The direction this road points in World View
 };
 
 #endif
