@@ -37,17 +37,24 @@ class world
     this->timestamp = 0;
 
     // Calculating world scale to map to our windowed perception of the world
+    minWorldX = 0;
+    minWorldY = 0;
     maxWorldX = 0;
     maxWorldY = 0;
     for (int i = 0; i < this->intc; i++) {
       if (maxWorldX < this->intersections[i]->x)
 	maxWorldX = this->intersections[i]->x;
+      else
+	minWorldX = this->intersections[i]->x;
+
       if (maxWorldY < this->intersections[i]->y)
 	maxWorldY = this->intersections[i]->y;
+      else
+	minWorldY = this->intersections[i]->y;
     }
 
-    this->scale = ((float)WINDOW_WIDTH/(float)maxWorldX)>((float)WINDOW_HEIGHT/(float)maxWorldY)?
-      1.0/((float)maxWorldX)  :  1.0/((float)maxWorldY);
+    this->scale = (maxWorldX - minWorldX) < (maxWorldY - minWorldY)?
+      1.0/((float)(maxWorldX - minWorldX))  :  1.0/((float)(maxWorldY - minWorldY));
 
   }
   
@@ -118,9 +125,9 @@ class world
   road** roads;
   car** cars;
 
-  // The largest co-ordinate of any intersection present in the world
-  int maxWorldX;
-  int maxWorldY;
+  // The smallest & largest co-ordinate of any intersection present in the world
+  int minWorldX, maxWorldX;
+  int minWorldY, maxWorldY;
   float scale;
 };
 
