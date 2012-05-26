@@ -107,8 +107,10 @@ class car
   int turn;
   int wait;
   int position;
+
   int displacement_x;
   int displacement_y;
+
   road* curr_road;
 
   void enter_road(int new_road, int new_intention);

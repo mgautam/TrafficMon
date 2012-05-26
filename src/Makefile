@@ -11,7 +11,7 @@ TARGET= TrafficMon
 all: clean $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(LDFLAGS) -o $(OUTPUTDIR)/$@ $(OBJECTS)
+	$(CC) -o $(OUTPUTDIR)/$@ $(OBJECTS) $(LDFLAGS)
 
 .cpp.o:
 	$(CC) $(CFLAGS) -c  $< -o $@
