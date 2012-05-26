@@ -8,6 +8,7 @@
 #include <GL/glut.h>
 #endif
 
+#include <stdio.h>
 
 int main(int argc, char* argv[])
 {
@@ -37,30 +38,33 @@ int main(int argc, char* argv[])
 
 
   car* c1 = new car(r21); // car enters from init end point of r21.
-  
-  car* cars[] = {c1};
+  car* c2 = new car(r12);
+  car* c3 = new car(r41);
+  car* c4 = new car(r14);
 
+  car* cars[] = {c1,c2,c3,c4};
 
 
   world* simulation = new world(5, intersections, 8, roads, 1, cars);
-  simulation->write_state(stdout);
+  //simulation->write_state(stdout);
 
   glutInit (&argc, argv);
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-  glutInitWindowSize (900,900);
+  glutInitWindowSize (WINDOW_WIDTH,WINDOW_HEIGHT);
 
   glutCreateWindow ("World View");
-  glEnable (GL_DEPTH_TEST);
+  glDisable (GL_DEPTH_TEST);
   //  glutDisplayFunc (simulation->viewWorld);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 
-  // while (true)
-  // {
-      simulation->incr_timestamp();
-      simulation->write_state(stdout, false);    
-      
-      simulation->viewWorld ();
-      // }
+  while (true) {
+
+    simulation->incr_timestamp();
+    simulation->viewWorld ();
+    
+    //simulation->write_state(stdout, false);    
+    sleep (1);    
+  }
 
 }

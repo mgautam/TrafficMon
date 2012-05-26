@@ -65,41 +65,52 @@ class car
   }
 
   void viewCar (float scale) {
-    if (curr_road->init->x == curr_road->final->x && curr_road->init->y != curr_road->final->y) {
 
-      bool directionY = (curr_road->init->y < curr_road->final->y);
+    this->position--;
 
-      float Yoffset;
-      if (directionY) Yoffset = 0.5;
-      else Yoffset = -0.5;
+    glColor3f (0.0f, 1.0f, 0.0f);
+    glBegin (GL_QUADS);
 
-      glColor3f (0.0f, 0.0f, 1.0f);
-      glBegin (GL_QUADS);
-      glVertex3f (((float)curr_road->init->x + 0.5)/scale, ((float)curr_road->init->y + Yoffset)/scale, 0.0f);
-      glVertex3f (((float)curr_road->init->x + 0.5)/scale, ((float)curr_road->final->y - Yoffset)/scale, 0.0f);
-      glVertex3f (((float)curr_road->init->x - 0.5)/scale, ((float)curr_road->final->y - Yoffset)/scale, 0.0f);
-      glVertex3f (((float)curr_road->init->x - 0.5)/scale, ((float)curr_road->init->y + Yoffset)/scale, 0.0f);
-      glEnd ();
-    }
-    else if (curr_road->init->x != curr_road->final->x && curr_road->init->y == curr_road->final->y) {
-        bool directionX = (curr_road->init->x < curr_road->final->x);
-	float Xoffset;
-	if (directionX) Xoffset = 0.5;
-	else Xoffset = -0.5;
+    float roadOffset = ((float)this->position - 1)/(float)curr_road->length; // I'm not sure why I subtract 1 here
+    float carScaledLen = 0.25;//1.0/(float)curr_road->length;
 	
-	glColor3f (0.0f, 0.0f, 1.0f);
-	glBegin (GL_QUADS);
-	glVertex3f (((float)curr_road->init->x + Xoffset)/scale,((float)curr_road->init->y + 0.5)/scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x - Xoffset)/scale,((float)curr_road->init->y + 0.5)/scale, 0.0f);
-	glVertex3f (((float)curr_road->final->x - Xoffset)/scale,((float)curr_road->init->y - 0.5)/scale, 0.0f);
-	glVertex3f (((float)curr_road->init->x + Xoffset)/scale,((float)curr_road->init->y - 0.5)/scale, 0.0f);
-	glEnd ();
-    }
-    else {
-      printf ("Error in Road Endpoints! They are invalid\n");
-      exit (-1);
-    }
+    float lenBWlanes = 0.05;
 
+    switch (curr_road->compass) {
+      
+      case NORTH:
+	glVertex2f (((float)curr_road->final->x - lenBWlanes)*scale, ((float)curr_road->final->y - (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x - lenBWlanes)*scale, ((float)curr_road->final->y - (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y - (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y - (roadOffset + carScaledLen))*scale);
+	break;
+    
+      case EAST:
+	glVertex2f (((float)curr_road->final->x + (roadOffset + carScaledLen))*scale ,((float)curr_road->final->y + lenBWlanes)*scale);
+	glVertex2f (((float)curr_road->final->x + (roadOffset - carScaledLen))*scale ,((float)curr_road->final->y + lenBWlanes)*scale);
+	glVertex2f (((float)curr_road->final->x + (roadOffset - carScaledLen))*scale ,((float)curr_road->final->y + 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x + (roadOffset + carScaledLen))*scale ,((float)curr_road->final->y + 0.5)*scale);
+	break;
+
+      case SOUTH:
+	glVertex2f (((float)curr_road->final->x + lenBWlanes)*scale, ((float)curr_road->final->y + (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x + lenBWlanes)*scale, ((float)curr_road->final->y + (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + (roadOffset + carScaledLen))*scale);
+	glVertex2f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + (roadOffset + carScaledLen))*scale);
+	break;
+
+      case WEST:
+	glVertex2f (((float)curr_road->final->x - (roadOffset + carScaledLen))*scale ,((float)curr_road->final->y - lenBWlanes)*scale);
+	glVertex2f (((float)curr_road->final->x - (roadOffset - carScaledLen))*scale ,((float)curr_road->final->y - lenBWlanes)*scale);
+	glVertex2f (((float)curr_road->final->x - (roadOffset - carScaledLen))*scale ,((float)curr_road->final->y - 0.5)*scale);
+	glVertex2f (((float)curr_road->final->x - (roadOffset + carScaledLen))*scale ,((float)curr_road->final->y - 0.5)*scale);
+	break;
+    
+      default:
+	printf ("Error in Road Endpoints! They are invalid\n");
+	exit (-1);
+    }
+    glEnd ();
   }
 
 
