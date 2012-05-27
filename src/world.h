@@ -93,7 +93,11 @@ class world
   }
 
   void updateWorld(void) {
-    
+
+    for (int i = 0; i < this->carc; i++)
+      {
+	this->cars[i]->move();
+      }
 
   }
 
