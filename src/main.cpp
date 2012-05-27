@@ -75,10 +75,10 @@ int main(int argc, char* argv[])
   roads[7] = r51;
 
 
-  car* c1 = new car(r12); // car enters from init end point of r21.
-  car* c2 = new car(r13);
-  car* c3 = new car(r14);
-  car* c4 = new car(r15);
+  car* c1 = new car(r21); // car enters from init end point of r21.
+  car* c2 = new car(r31);
+  car* c3 = new car(r41);
+  car* c4 = new car(r51);
 
   car* cars[] = {c1,c2,c3,c4};
 
