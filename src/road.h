@@ -6,6 +6,7 @@
 #include "intersection.h"
 #include <stdio.h>
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 #ifdef __APPLE__
