@@ -53,17 +53,20 @@ class car
 
   void move()
   {
-    if (can_move())
-      {
-	this->wait = 0;
-	this->position--;
-	curr_road->cars[position] = 0;
-	curr_road->cars[position-1] = this;
-      }
-    else
-      {
-	this->wait++;
-      }
+    // if (can_move())
+    //   {
+    // 	this->wait = 0;
+    // 	this->position--;
+    // 	curr_road->cars[position] = 0;
+    // 	curr_road->cars[position-1] = this;
+    //   }
+    // else
+    //   {
+    // 	this->wait++;
+    //   }
+
+    this->position--;
+
   }
 
   void viewCar (float scale) {
