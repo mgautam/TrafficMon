@@ -1,6 +1,7 @@
 CC=g++
-CFLAGS= -I/opt/local/include -I.. -lglut -lGL -lGLU -g3 -O0 -Wall
+CFLAGS= -I/opt/local/include -I.. -g3 -O0 -Wall
 LDFLAGS= -lglut -lGL -lGLU
+LDFLAGS =-framework GLUT -framework OpenGL
 
 OUTPUTDIR=../bin
 SOURCES =$(wildcard *.cpp)

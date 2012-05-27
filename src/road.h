@@ -37,8 +37,8 @@ class road
     this->cars = cars;
 
 
-    init->out[init->in_count] = this;
-    final->in[final->out_count] = this;
+    init->out[init->in_count++] = this;
+    final->in[final->out_count++] = this;
 
     if (this->init->x == this->final->x && this->init->y != this->final->y)
       compass = (this->init->y < this->final->y) ? NORTH : SOUTH;

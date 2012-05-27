@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
+
+
 #include "visualize.h"
 
 void handleKeyPress  (unsigned char key, int x, int y) {
