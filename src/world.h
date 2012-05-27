@@ -99,7 +99,6 @@ class world
 	this->cars[i]->move();
 	this->cars[i]->make_turn();
       }
-
   }
 
 

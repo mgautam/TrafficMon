@@ -67,7 +67,8 @@ class car
 
   void move()
   {
-    assert(position);
+    if (!position)
+      return;
 
     if (!can_move())
       {
@@ -82,7 +83,8 @@ class car
 
   void make_turn()
   {
-    assert(!position);
+    if (position)
+      return;
 
     if (!can_move())
       {
