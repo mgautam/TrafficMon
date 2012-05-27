@@ -1,5 +1,5 @@
 src/*.o
-bin/TrafficMon
+bin/*
 .DS_Store
 */\#*#
 */*~
