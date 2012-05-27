@@ -14,13 +14,6 @@ using namespace std;
 #include <GL/glut.h>
 #endif
 
-#define NORTH 0
-#define EAST 1
-#define SOUTH 2
-#define WEST 3
-
-
-
 class car;
 
 class road
@@ -150,7 +143,7 @@ class road
       lights[i][i] = true; // Debugging purpose only
       for (int j = 0; j < 3; j++) {
 	
-	glColor3f (1.0f*(float)(j<=2),1.0f*(float)(j>=1),0.0f);
+	glColor3f (1.0f*(float)(j<=AMBER),1.0f*(float)(j>=AMBER),0.0f);
 	//glColor3i (255,0,0);
 
 	if (lights[i][j]) glBegin (GL_QUADS);

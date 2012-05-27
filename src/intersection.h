@@ -34,14 +34,45 @@ class intersection
   }
 
   void viewIntersection (float scale) {
+    float halfIntersectionLen = 0.5;
+
     glColor3f (1.0f, 0.0f, 0.0f);
     glBegin (GL_QUADS);
-    glVertex2f (((float) this->x - 0.5) * scale, ((float)this->y + 0.5)* scale);
-    glVertex2f (((float) this->x + 0.5) * scale, ((float)this->y + 0.5)* scale);
-    glVertex2f (((float) this->x + 0.5) * scale, ((float)this->y - 0.5)* scale);
-    glVertex2f (((float) this->x - 0.5) * scale, ((float)this->y - 0.5)* scale);
+    glVertex2f (((float) this->x - halfIntersectionLen) * scale, ((float)this->y + halfIntersectionLen)* scale);
+    glVertex2f (((float) this->x + halfIntersectionLen) * scale, ((float)this->y + halfIntersectionLen)* scale);
+    glVertex2f (((float) this->x + halfIntersectionLen) * scale, ((float)this->y - halfIntersectionLen)* scale);
+    glVertex2f (((float) this->x - halfIntersectionLen) * scale, ((float)this->y - halfIntersectionLen)* scale);
     glEnd ();
   }
+
+  void TrafficController (int PatternID) {
+    for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++)
+      for (int lightSet = 0; lightSet < 2; lightSet++)
+	for (int lightType = 0; lightType < 3; lightType++)
+	  this->in[roadIndex]->lights[lightSet][lightType] = FALSE;
+
+    switch (PatternID) {
+    case NORTHSOUTH_AHEADLEFT:
+      this->in[NORTH]->lights[0][GREEN] = true;
+      this->in[SOUTH]->lights[0][GREEN] = true;
+      break;
+
+    case EASTWEST_AHEADLEFT:
+      this->in[EAST]->lights[0][GREEN] = true;
+      this->in[WEST]->lights[0][GREEN] = true;
+      break;
+
+    case NORTHSOUTH_RIGHT:
+      this->in[NORTH]->lights[1][GREEN] = true;
+      this->in[SOUTH]->lights[1][GREEN] = true;
+
+    case EASTWEST_RIGHT:
+      this->in[EAST]->lights[1][GREEN] = true;
+      this->in[WEST]->lights[1][GREEN] = true;
+      break;
+    }
+  }
+
   //variables
   int id;
   int x;

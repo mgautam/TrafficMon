@@ -9,4 +9,14 @@
 #define AMBER 1
 #define GREEN 2
 
+#define NORTH 0
+#define EAST 1
+#define SOUTH 2
+#define WEST 3
+
+#define NORTHSOUTH_AHEADLEFT 0
+#define EASTWEST_AHEADLEFT 1
+#define NORTHSOUTH_RIGHT 2
+#define EASTWEST_RIGHT 3
+
 #endif
