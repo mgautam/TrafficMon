@@ -22,6 +22,10 @@ class intersection
   {
     this->x = x;
     this->y = y;
+
+    this->in_count = 0;
+    this->out_count = 0;
+
   }
 
   void write_state(FILE* output)
