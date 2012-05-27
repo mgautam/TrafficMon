@@ -10,6 +10,15 @@
 
 #include <stdio.h>
 
+
+static world* simulation;
+
+void display(void)
+{
+  simulation->viewWorld();
+}
+
+
 int main(int argc, char* argv[])
 {
   //TODO: we need a way of instantiating these by reading a file
@@ -45,7 +54,7 @@ int main(int argc, char* argv[])
   car* cars[] = {c1,c2,c3,c4};
 
 
-  world* simulation = new world(5, intersections, 8, roads, 1, cars);
+  simulation = new world(5, intersections, 8, roads, 1, cars);
   //simulation->write_state(stdout);
 
   glutInit (&argc, argv);
@@ -54,17 +63,19 @@ int main(int argc, char* argv[])
 
   glutCreateWindow ("World View");
   glDisable (GL_DEPTH_TEST);
-  //  glutDisplayFunc (simulation->viewWorld);
+  glutDisplayFunc (display);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 
-  while (true) {
+  // while (true) {
 
-    simulation->incr_timestamp();
-    simulation->viewWorld ();
+  //   simulation->incr_timestamp();
+  //   simulation->viewWorld ();
     
-    //simulation->write_state(stdout, false);    
-    sleep (1);    
-  }
+  //   //simulation->write_state(stdout, false);    
+  //   sleep (1);    
+  // }
 
+  glutMainLoop();
 }
+
