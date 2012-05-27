@@ -29,6 +29,8 @@ class road
     this->length -= 1;
 
     car* cars[length];
+    memset(cars, 0, length);
+
     this->cars = cars;
 
     if (this->final->x - this->init->x < 0)

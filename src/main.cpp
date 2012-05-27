@@ -16,6 +16,8 @@ static world* simulation;
 void display(void)
 {
   printf("called from display\n");
+
+  simulation->write_state(stdout,false);
   simulation->updateWorld();
   simulation->viewWorld();
 }
