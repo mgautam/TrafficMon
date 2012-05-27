@@ -15,12 +15,14 @@ static world* simulation;
 
 void display(void)
 {
+  printf("called from display\n");
   simulation->updateWorld();
   simulation->viewWorld();
 }
 
 static void timerCallback (int value)
 {
+  printf("called from timer\n");
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
   display();
