@@ -66,8 +66,6 @@ class car
 
   void viewCar (float scale) {
 
-    this->position--;
-
     glColor3f (0.0f, 1.0f, 0.0f);
     glBegin (GL_QUADS);
 

@@ -15,9 +15,18 @@ static world* simulation;
 
 void display(void)
 {
+  simulation->updateWorld();
   simulation->viewWorld();
 }
 
+static void timerCallback (int value)
+{
+   /* Do timer processing */
+   /* maybe glutPostRedisplay(), if necessary */
+  display();
+   /* call back again after elapsedUSecs have passed */
+  glutTimerFunc (2000, timerCallback, 0);
+}
 
 int main(int argc, char* argv[])
 {
@@ -76,6 +85,9 @@ int main(int argc, char* argv[])
   //   sleep (1);    
   // }
 
-  glutMainLoop();
-}
+  glutTimerFunc (10, timerCallback, 0);
 
+  glutMainLoop();
+
+  return 0;
+}
