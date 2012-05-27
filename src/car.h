@@ -49,9 +49,9 @@ class car
     if (position == 0)
       {
 	if (turn == LEFT || turn == AHEAD)
-	  return this->curr_road->lights_1;
+	  return this->curr_road->lights[0];
 	else // turn == RIGHT
-	  return this->curr_road->lights_2;
+	  return this->curr_road->lights[1];
       }
 
     else

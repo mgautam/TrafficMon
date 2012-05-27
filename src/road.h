@@ -60,36 +60,38 @@ class road
     glColor3f (0.0f, 0.0f, 1.0f);
     glBegin (GL_QUADS);
 
-    float lenBWlanes = 0.05;
+    float lenBWlights = 0.05;
+    float roadSideOffset = 0.5;
+    float intersectionOffset = 0.5;
 
     switch (compass) {
 
       case NORTH:
-	glVertex2f (((float)this->init->x - lenBWlanes)*scale, ((float)this->init->y + 0.5)*scale);
-	glVertex2f (((float)this->init->x - lenBWlanes)*scale, ((float)this->final->y - 0.5)*scale);
-	glVertex2f (((float)this->init->x - 0.5)*scale, ((float)this->final->y - 0.5)*scale);
-	glVertex2f (((float)this->init->x - 0.5)*scale, ((float)this->init->y + 0.5)*scale);
+	glVertex2f (((float)this->init->x - lenBWlights)*scale, ((float)this->init->y + intersectionOffset)*scale);
+	glVertex2f (((float)this->init->x - lenBWlights)*scale, ((float)this->final->y - intersectionOffset)*scale);
+	glVertex2f (((float)this->init->x - roadSideOffset)*scale, ((float)this->final->y - intersectionOffset)*scale);
+	glVertex2f (((float)this->init->x - roadSideOffset)*scale, ((float)this->init->y + intersectionOffset)*scale);
       break;
 
       case EAST:
-	glVertex2f (((float)this->init->x + 0.5)*scale,((float)this->init->y + 0.5)*scale);
-	glVertex2f (((float)this->final->x - 0.5)*scale,((float)this->init->y + 0.5)*scale);
-	glVertex2f (((float)this->final->x - 0.5)*scale,((float)this->init->y + lenBWlanes)*scale);
-	glVertex2f (((float)this->init->x + 0.5)*scale,((float)this->init->y + lenBWlanes)*scale);
+	glVertex2f (((float)this->init->x + intersectionOffset)*scale,((float)this->init->y + roadSideOffset)*scale);
+	glVertex2f (((float)this->final->x - intersectionOffset)*scale,((float)this->init->y + roadSideOffset)*scale);
+	glVertex2f (((float)this->final->x - intersectionOffset)*scale,((float)this->init->y + lenBWlights)*scale);
+	glVertex2f (((float)this->init->x + intersectionOffset)*scale,((float)this->init->y + lenBWlights)*scale);
       break;
 
       case SOUTH:
-	glVertex2f (((float)this->init->x + 0.5)*scale, ((float)this->init->y - 0.5)*scale);
-	glVertex2f (((float)this->init->x + 0.5)*scale, ((float)this->final->y + 0.5)*scale);
-	glVertex2f (((float)this->init->x + lenBWlanes)*scale, ((float)this->final->y + 0.5)*scale);
-	glVertex2f (((float)this->init->x + lenBWlanes)*scale, ((float)this->init->y - 0.5)*scale);
+	glVertex2f (((float)this->init->x + roadSideOffset)*scale, ((float)this->init->y - intersectionOffset)*scale);
+	glVertex2f (((float)this->init->x + roadSideOffset)*scale, ((float)this->final->y + intersectionOffset)*scale);
+	glVertex2f (((float)this->init->x + lenBWlights)*scale, ((float)this->final->y + intersectionOffset)*scale);
+	glVertex2f (((float)this->init->x + lenBWlights)*scale, ((float)this->init->y - intersectionOffset)*scale);
       break;
 
       case WEST:
-	glVertex2f (((float)this->init->x - 0.5)*scale,((float)this->init->y - lenBWlanes)*scale);
-	glVertex2f (((float)this->final->x + 0.5)*scale,((float)this->init->y - lenBWlanes)*scale);
-	glVertex2f (((float)this->final->x + 0.5)*scale,((float)this->init->y - 0.5)*scale);
-	glVertex2f (((float)this->init->x - 0.5)*scale,((float)this->init->y - 0.5)*scale);
+	glVertex2f (((float)this->init->x - intersectionOffset)*scale,((float)this->init->y - lenBWlights)*scale);
+	glVertex2f (((float)this->final->x + intersectionOffset)*scale,((float)this->init->y - lenBWlights)*scale);
+	glVertex2f (((float)this->final->x + intersectionOffset)*scale,((float)this->init->y - roadSideOffset)*scale);
+	glVertex2f (((float)this->init->x - intersectionOffset)*scale,((float)this->init->y - roadSideOffset)*scale);
       break;
 
       default:
@@ -98,6 +100,76 @@ class road
     }
 
     glEnd ();
+  }
+
+  void viewLights (float scale) {
+    float lenBWlights = 0.05;
+    float roadSideOffset = 0.5;
+    float intersectionOffset = 0.5;
+    float LightSize = 0.5;
+
+
+    for ( int i = 0; i <=1; i++) {
+    lights[i] = i;
+    if (lights[i] == 0) glColor3f (1.0f, 0.0f, 0.0f);
+    else if (lights[i] == 1) glColor3f (1.0f, 1.0f, 0.0f);
+    else glColor3f (0.0f, 1.0f, 0.0f);
+
+    glBegin (GL_QUADS);
+
+    switch (compass) {
+
+      case NORTH:
+	glVertex2f (((float)this->init->x - roadSideOffset)*scale, 
+		    ((float)this->final->y - (intersectionOffset + (lights[i]+1)*LightSize))*scale);
+	glVertex2f (((float)this->init->x - roadSideOffset)*scale, 
+		    ((float)this->final->y - (intersectionOffset + lights[i] * LightSize))*scale);
+	glVertex2f (((float)this->init->x - (2*(i+1)*roadSideOffset - lenBWlights))*scale, 
+		    ((float)this->final->y - (intersectionOffset + lights[i] * LightSize))*scale);
+	glVertex2f (((float)this->init->x - (2*(i+1)*roadSideOffset - lenBWlights))*scale, 
+		    ((float)this->final->y - (intersectionOffset + (lights[i]+1)*LightSize))*scale);
+      break;
+
+      case EAST:
+	glVertex2f (((float)this->final->x - (intersectionOffset + (lights[i]+1)*LightSize))*scale,
+		    ((float)this->init->y + roadSideOffset)*scale);
+	glVertex2f (((float)this->final->x - (intersectionOffset + lights[i] * LightSize))*scale,
+		    ((float)this->init->y + roadSideOffset)*scale);
+	glVertex2f (((float)this->final->x - (intersectionOffset + lights[i] * LightSize))*scale,
+		    ((float)this->init->y + (2*(i+1)*roadSideOffset - lenBWlights))*scale);
+	glVertex2f (((float)this->final->x - (intersectionOffset + (lights[i]+1) * LightSize))*scale,
+		    ((float)this->init->y + (2*(i+1)*roadSideOffset - lenBWlights))*scale);
+      break;
+
+      case SOUTH:
+	glVertex2f (((float)this->init->x + roadSideOffset)*scale, 
+		    ((float)this->final->y + (intersectionOffset + (lights[i]+1)*LightSize))*scale);
+	glVertex2f (((float)this->init->x + roadSideOffset)*scale, 
+		    ((float)this->final->y + (intersectionOffset + lights[i] * LightSize))*scale);
+	glVertex2f (((float)this->init->x + (2*(i+1)*roadSideOffset - lenBWlights))*scale, 
+		    ((float)this->final->y + (intersectionOffset + lights[i] * LightSize))*scale);
+	glVertex2f (((float)this->init->x + (2*(i+1)*roadSideOffset - lenBWlights))*scale, 
+		    ((float)this->final->y + (intersectionOffset + (lights[i]+1)*LightSize))*scale);
+      break;
+
+      case WEST:
+	glVertex2f (((float)this->final->x + (intersectionOffset + (lights[i]+1)*LightSize))*scale,
+		    ((float)this->init->y - roadSideOffset)*scale);
+	glVertex2f (((float)this->final->x + (intersectionOffset + lights[i] * LightSize))*scale,
+		    ((float)this->init->y - roadSideOffset)*scale);
+	glVertex2f (((float)this->final->x + (intersectionOffset + lights[i] * LightSize))*scale,
+		    ((float)this->init->y - (2*(i+1)*roadSideOffset - lenBWlights))*scale);
+	glVertex2f (((float)this->final->x + (intersectionOffset + (lights[i]+1) * LightSize))*scale,
+		    ((float)this->init->y - (2*(i+1)*roadSideOffset - lenBWlights))*scale);
+      break;
+
+      default:
+      printf ("Error in Road Endpoints! They are invalid\n");
+      exit (-1);
+    }
+
+    glEnd ();
+    }
   }
 
 
@@ -120,8 +192,7 @@ class road
   intersection* init;
   intersection* final;
 
-  int lights_1;
-  int lights_2;
+  int lights[2];
 
   int compass; // The direction this road points in World View
 };

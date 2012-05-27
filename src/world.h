@@ -112,8 +112,10 @@ class world
     for (int i = 0; i < this->intc; i++)
       this->intersections[i]->viewIntersection (this->scale);
 
-    for (int i = 0; i < this->roadc; i++)
+    for (int i = 0; i < this->roadc; i++) {
       this->roads[i]->viewRoad (this->scale);
+      this->roads[i]->viewLights (this->scale);
+    }
 
     for (int i = 0; i < this->carc; i++)
       this->cars[i]->viewCar (this->scale);

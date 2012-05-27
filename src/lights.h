@@ -1,5 +1,5 @@
-#ifndef ROAD_H
-#define ROAD_H 1
+#ifndef LIGHTS_H
+#define LIGHTS_H 1
 
 
 #include "common.h"
@@ -10,6 +10,8 @@ class lights
  public:
   //constructor
   road(int int_1_id, int int_2_id);
+
+  
 
  protected:
   //variables
