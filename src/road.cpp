@@ -15,25 +15,25 @@ road::road(intersection* init, intersection* final)
 
     if (this->final->x - this->init->x < 0)
       {
-	this->compass = EAST;
+	this->compass = WEST;
 	init->out[WEST] = this;// out to the west
 	final->in[EAST] = this;// in from the east
       }
     else if (this->final->x - this->init->x > 0)
       {
-	this->compass = WEST;
+	this->compass = EAST;
 	init->out[EAST] = this;
 	final->in[WEST] = this;
       }
     else if (this->final->y - this->init->y < 0)
       {
-	this->compass = NORTH;
+	this->compass = SOUTH;
 	init->out[SOUTH] = this;
 	final->in[NORTH] = this;
       }
     else if (this->final->y - this->init->y > 0)
       {
-	this->compass = SOUTH;
+	this->compass = NORTH;
 	init->out[NORTH] = this;
 	final->in[SOUTH] = this;
       }
