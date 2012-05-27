@@ -15,9 +15,18 @@ static world* simulation;
 
 void display(void)
 {
+  simulation->updateWorld();
   simulation->viewWorld();
 }
 
+static void timerCallback (int value)
+{
+   /* Do timer processing */
+   /* maybe glutPostRedisplay(), if necessary */
+  display();
+   /* call back again after elapsedUSecs have passed */
+  glutTimerFunc (2000, timerCallback, 0);
+}
 
 int main(int argc, char* argv[])
 {
@@ -68,15 +77,18 @@ int main(int argc, char* argv[])
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 
-   while (true) {
+  //  while (true) {
 
-     simulation->incr_timestamp();
-     simulation->viewWorld ();
+  //    simulation->incr_timestamp();
+  //    simulation->viewWorld ();
     
-    //simulation->write_state(stdout, false);    
-    sleep (3);
-  }
+  //   //simulation->write_state(stdout, false);    
+  //   sleep (3);
+  // }
+
+  glutTimerFunc (10, timerCallback, 0);
 
   glutMainLoop();
-}
 
+  return 0;
+}

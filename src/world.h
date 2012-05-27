@@ -92,6 +92,16 @@ class world
       }
   }
 
+  void updateWorld(void) {
+
+    for (int i = 0; i < this->carc; i++)
+      {
+	this->cars[i]->move();
+      }
+
+  }
+
+
   void viewWorld (void) {
 
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
