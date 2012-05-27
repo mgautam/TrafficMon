@@ -29,8 +29,9 @@ class road
   {
     this->init = init;
     this->final = final;
-    this->length = (final->x - init->x) + (final->y - init->y) - 1; //manhattan 
+    this->length = (final->x - init->x) + (final->y - init->y); //manhattan 
     if (this->length < 0) this->length *= -1;
+    this->length -= 1;
 
     car* cars[length];
     this->cars = cars;
