@@ -16,6 +16,10 @@ using namespace std;
 #include <GL/glut.h>
 #endif
 
+typedef struct {
+  int r,g,b;
+} COLOR;
+
 class car
 {
  public:
@@ -26,6 +30,10 @@ class car
   {
     this->curr_road = init_road;
     this->position = init_road->length;
+    this->color.r = 256*rand()/RAND_MAX;
+    this->color.g = 256*rand()/RAND_MAX;
+    this->color.b = 256*rand()/RAND_MAX;
+    
   }
 
   void write_state(FILE* output)
@@ -76,7 +84,7 @@ class car
 
     float lenBWlanes = 0.05;
 
-    glColor3f (0.0f,0.25*(curr_road->compass+1), 0.0f);//(0.0f, 1.0f, 0.0f);
+    glColor3d (color.r,color.g,color.b);
     glBegin (GL_QUADS);
 
     switch (curr_road->compass) {
@@ -126,6 +134,7 @@ class car
 
   int displacement_x;
   int displacement_y;
+  COLOR color;
 
   road* curr_road;
 
