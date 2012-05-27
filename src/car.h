@@ -67,6 +67,8 @@ class car
 
   void move()
   {
+    assert(position);
+
     if (!can_move())
       {
 	wait++;
@@ -78,7 +80,7 @@ class car
       }
   }
 
-  void take_turn()
+  void make_turn()
   {
     assert(!position);
 

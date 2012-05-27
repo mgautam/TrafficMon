@@ -97,6 +97,7 @@ class world
     for (int i = 0; i < this->carc; i++)
       {
 	this->cars[i]->move();
+	this->cars[i]->make_turn();
       }
 
   }
