@@ -43,7 +43,13 @@ int main(int argc, char* argv[])
   intersection* i4 = new intersection(0,-6);
   intersection* i5 = new intersection(-6,0);
 
-  intersection* intersections[5]  = {i1, i2, i3, i4, i5};
+  intersection** intersections = new intersection*[5];
+  intersections[0] = i1;
+  intersections[1] = i2;
+  intersections[2] = i3;
+  intersections[3] = i4;
+  intersections[4] = i5;
+
 
 
   //away from the central intersection
@@ -58,7 +64,15 @@ int main(int argc, char* argv[])
   road* r41 = new road(i4, i1);
   road* r51 = new road(i5, i1);
 
-  road* roads[8] = {r12, r13, r14, r15, r21, r31, r41, r51};
+  road** roads = new road*[8];
+  roads[0] = r12;
+  roads[1] = r13;
+  roads[2] = r14;
+  roads[3] = r15;
+  roads[4] = r21;
+  roads[5] = r31;
+  roads[6] = r41;
+  roads[7] = r51;
 
 
   car* c1 = new car(r12); // car enters from init end point of r21.

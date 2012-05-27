@@ -3,6 +3,8 @@
 
 #define MAX_DEGREE 4
 
+#include "common.h"
+#include "road.h"
 #include <stdio.h>
 #include <iostream>
 using namespace std;
@@ -13,7 +15,7 @@ using namespace std;
 #include <GL/glut.h>
 #endif
 
-class road;
+//class road;
 class intersection
 {
  public:
@@ -48,8 +50,8 @@ class intersection
   void TrafficController (int PatternID) {
     for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++)
       for (int lightSet = 0; lightSet < 2; lightSet++)
-	for (int lightType = 0; lightType < 3; lightType++)
-	  this->in[roadIndex]->lights[lightSet][lightType] = FALSE;
+  	for (int lightType = 0; lightType < 3; lightType++)
+  	  this->in[roadIndex]->lights[lightSet][lightType] = false;
 
     switch (PatternID) {
     case NORTHSOUTH_AHEADLEFT:

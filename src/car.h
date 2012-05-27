@@ -30,7 +30,8 @@ class car
   car(road* init_road)
   {
     this->curr_road = init_road;
-    this->position = init_road->length;
+    this->position = init_road->length-1;
+    init_road->cars[position] = this;
     this->color.r = ((float)rand()/(float)RAND_MAX);
     this->color.g = ((float)rand()/(float)RAND_MAX);
     this->color.b = ((float)rand()/(float)RAND_MAX);
@@ -77,7 +78,8 @@ class car
     else
       {
 	wait = 0;
-	position--;
+	curr_road->cars[position] = 0;
+	curr_road->cars[--position] = this;
       }
   }
 
@@ -96,16 +98,19 @@ class car
 
 	if (turn == LEFT)
 	  {
+	    curr_road->cars[position] = 0;
 	    road* next_road = this->curr_road->get_left();
 	    next_road->cars[next_road->length-1] = this;
 	  }
 	else if (turn == RIGHT)
 	  {
+	    curr_road->cars[position] = 0;
 	    road* next_road = this->curr_road->get_right();
 	    next_road->cars[next_road->length-1] = this;
 	  }
 	else if (turn == AHEAD)
 	  {
+	    curr_road->cars[position] = 0;
 	    road* next_road = this->curr_road->get_ahead();
 	    next_road->cars[next_road->length-1] = this;
 	  }

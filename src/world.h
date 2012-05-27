@@ -93,12 +93,16 @@ class world
   }
 
   void updateWorld(void) {
-
     incr_timestamp();
-    for (int i = 0; i < this->carc; i++)
+    for (int r = 0; r < this->roadc; r++)
       {
-	this->cars[i]->move();
-	this->cars[i]->make_turn();
+	road* curr_road = this->roads[r];
+	curr_road->cars[0]->make_turn();
+
+	for (int c = 1; c < curr_road->length; c++)
+	  {
+	    curr_road->cars[c]->move();
+	  }
       }
   }
 
