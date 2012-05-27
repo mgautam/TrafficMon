@@ -85,7 +85,7 @@ class world
 	  }
       }
 
-    fprintf(output, "%d\n", carc);
+    fprintf(output, "t: %lld\n", timestamp);
     for (int i = 0; i < this->carc; i++)
       {
 	this->cars[i]->write_state(output);
@@ -94,6 +94,7 @@ class world
 
   void updateWorld(void) {
 
+    incr_timestamp();
     for (int i = 0; i < this->carc; i++)
       {
 	this->cars[i]->move();

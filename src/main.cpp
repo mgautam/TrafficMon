@@ -17,9 +17,10 @@ void display(void)
 {
   printf("called from display\n");
 
-  simulation->write_state(stdout,false);
   simulation->updateWorld();
   simulation->viewWorld();
+  simulation->write_state(stdout,false);
+
 }
 
 static void timerCallback (int value)
@@ -90,6 +91,7 @@ int main(int argc, char* argv[])
   //   sleep (3);
   // }
 
+  simulation->write_state(stdout,false);
   glutTimerFunc (10, timerCallback, 0);
 
   glutMainLoop();

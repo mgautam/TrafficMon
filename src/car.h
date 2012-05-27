@@ -39,9 +39,9 @@ class car
   void write_state(FILE* output)
   {
     fprintf (output, "Position:%d\n",this->position);
-    fprintf(output, "%d %d\n", curr_road->init->x + displacement_x, curr_road->init->y + displacement_y);
+    // fprintf(output, "%d %d\n", curr_road->init->x + displacement_x, curr_road->init->y + displacement_y);
     fprintf (output, "Compass: %d\n",this->curr_road->compass);
-    fprintf (output,"%f %f %f", color.r, color.g, color.b);
+    // fprintf (output,"%f %f %f", color.r, color.g, color.b);
 
   }
 
