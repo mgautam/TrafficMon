@@ -15,6 +15,7 @@ static world* simulation;
 
 void display(void)
 {
+  //simulation->write_state(stdout, false);    
   simulation->updateWorld();
   simulation->viewWorld();
 }
@@ -82,7 +83,7 @@ int main(int argc, char* argv[])
   //    simulation->incr_timestamp();
   //    simulation->viewWorld ();
     
-  //   //simulation->write_state(stdout, false);    
+  //   //
   //   sleep (3);
   // }
 

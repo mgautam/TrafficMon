@@ -17,7 +17,7 @@ using namespace std;
 #endif
 
 typedef struct {
-  int r,g,b;
+  float r,g,b;
 } COLOR;
 
 class car
@@ -30,10 +30,9 @@ class car
   {
     this->curr_road = init_road;
     this->position = init_road->length;
-    this->color.r = 256*rand()/RAND_MAX;
-    this->color.g = 256*rand()/RAND_MAX;
-    this->color.b = 256*rand()/RAND_MAX;
-    
+    this->color.r = ((float)rand()/(float)RAND_MAX);
+    this->color.g = ((float)rand()/(float)RAND_MAX);
+    this->color.b = ((float)rand()/(float)RAND_MAX);
   }
 
   void write_state(FILE* output)
@@ -41,6 +40,8 @@ class car
     fprintf (output, "Position:%d\n",this->position);
     fprintf(output, "%d %d\n", curr_road->init->x + displacement_x, curr_road->init->y + displacement_y);
     fprintf (output, "Compass: %d\n",this->curr_road->compass);
+    fprintf (output,"%f %f %f", color.r, color.g, color.b);
+
   }
 
   bool can_move()
@@ -87,7 +88,7 @@ class car
 
     float lenBWlanes = 0.05;
 
-    glColor3d (color.r,color.g,color.b);
+    glColor3f (color.r,color.g,color.b);
     glBegin (GL_QUADS);
 
     switch (curr_road->compass) {
@@ -125,8 +126,6 @@ class car
 	exit (-1);
     }
     glEnd ();
-
-    //this->position--;
   }
 
 
