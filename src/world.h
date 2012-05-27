@@ -97,11 +97,14 @@ class world
     for (int r = 0; r < this->roadc; r++)
       {
 	road* curr_road = this->roads[r];
-	curr_road->cars[0]->make_turn();
+
+	if (curr_road->cars[0])
+	  curr_road->cars[0]->make_turn();
 
 	for (int c = 1; c < curr_road->length; c++)
 	  {
-	    curr_road->cars[c]->move();
+	    if (curr_road->cars[c])
+	      curr_road->cars[c]->move();
 	  }
       }
   }
@@ -120,10 +123,11 @@ class world
     for (int i = 0; i < this->roadc; i++) {
       this->roads[i]->viewRoad (this->scale);
       this->roads[i]->viewLights (this->scale);
+      this->roads[i]->viewCars (this->scale);
     }
 
-    for (int i = 0; i < this->carc; i++)
-      this->cars[i]->viewCar (this->scale);
+    // for (int i = 0; i < this->carc; i++)
+    //   this->cars[i]->viewCar (this->scale);
 
     glutSwapBuffers ();
   }

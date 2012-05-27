@@ -100,19 +100,32 @@ class car
 	  {
 	    curr_road->cars[position] = 0;
 	    road* next_road = this->curr_road->get_left();
-	    next_road->cars[next_road->length-1] = this;
+
+	    if (next_road)
+	      next_road->cars[next_road->length-1] = this;
+	    else
+	      delete this;
+
 	  }
 	else if (turn == RIGHT)
 	  {
 	    curr_road->cars[position] = 0;
 	    road* next_road = this->curr_road->get_right();
-	    next_road->cars[next_road->length-1] = this;
+	    
+	    if (next_road)
+	      next_road->cars[next_road->length-1] = this;
+	    else
+	      delete this;
 	  }
 	else if (turn == AHEAD)
 	  {
 	    curr_road->cars[position] = 0;
 	    road* next_road = this->curr_road->get_ahead();
-	    next_road->cars[next_road->length-1] = this;
+	    
+	    if (next_road)
+	      next_road->cars[next_road->length-1] = this;
+	    else
+	      delete this;
 	  }
       }
   }

@@ -1,5 +1,6 @@
 #include "road.h"
 #include "intersection.h"
+#include "car.h"
 
 road::road(intersection* init, intersection* final)
   {
@@ -9,10 +10,8 @@ road::road(intersection* init, intersection* final)
     if (this->length < 0) this->length *= -1;
     this->length -= 1;
 
-    car* cars[length];
-    memset(cars, 0, length*sizeof(car*));
-
-    this->cars = cars;
+    this->cars = new car*[length];
+    memset(this->cars, 0, length*sizeof(car*));
 
     if (this->final->x - this->init->x < 0)
       {
@@ -114,6 +113,14 @@ void road::viewRoad (float scale) {
 
     glEnd ();
   }
+
+void road::viewCars (float scale) {
+  for (int i = 0; i < length; i++)
+    {
+      if (cars[i])
+	cars[i]->viewCar(scale);
+    }
+}
 
 void road::viewLights (float scale) {
     float lenBWlights = 0.05;
