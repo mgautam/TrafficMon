@@ -19,6 +19,8 @@ using namespace std;
 #define SOUTH 2
 #define WEST 3
 
+
+
 class car;
 
 class road
@@ -36,18 +38,53 @@ class road
     car* cars[length];
     this->cars = cars;
 
+    if (this->final->x - this->init->x < 0)
+      {
+	this->compass = EAST;
+	init->out[WEST] = this;// out to the west
+	final->in[EAST] = this;// in from the east
+      }
+    else if (this->final->x - this->init->x > 0)
+      {
+	this->compass = WEST;
+	init->out[EAST] = this;
+	final->in[WEST] = this;
+      }
+    else if (this->final->y - this->init->y < 0)
+      {
+	this->compass = NORTH;
+	init->out[SOUTH] = this;
+	final->in[NORTH] = this;
+      }
+    else if (this->final->y - this->init->y > 0)
+      {
+	this->compass = SOUTH;
+	init->out[NORTH] = this;
+	final->in[SOUTH] = this;
+      }
+    else
+      {
+	printf ("Error in Road Endpoints! They are invalid\n");
+	exit (-1);
+      }
 
-    init->out[init->in_count++] = this;
-    final->in[final->out_count++] = this;
+    init->in_count++;
+    final->out_count++;
+  }
 
-    if (this->init->x == this->final->x && this->init->y != this->final->y)
-      compass = (this->init->y < this->final->y) ? NORTH : SOUTH;
-    else if (this->init->x != this->final->x && this->init->y == this->final->y)
-      compass = (this->init->x < this->final->x) ? EAST : WEST;
-    else {
-      printf ("Error in Road Endpoints! They are invalid\n");
-      exit (-1);
-    }
+  road* get_left()
+  {
+    return final->out[(compass+3)%4];
+  }
+
+  road* get_right()
+  {
+    return final->out[(compass+1)%4];
+
+  }
+  road* get_ahead()
+  {
+    return final->out[(compass+2)%4];
   }
 
   void write_state(FILE* output)
@@ -186,7 +223,6 @@ class road
   int x;
   int y;
   int length;
-
   car** cars;
 
   intersection* init;

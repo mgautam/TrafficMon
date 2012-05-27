@@ -8,6 +8,7 @@
 #include "road.h"
 #include <stdio.h>
 #include <iostream>
+#include <cassert>
 using namespace std;
 
 #ifdef __APPLE__
@@ -53,27 +54,57 @@ class car
 	else // turn == RIGHT
 	  return this->curr_road->lights[1];
       }
-
+    else if (position < 20)
+      {
+	return !curr_road->cars[position-1] ||
+	  curr_road->cars[position-1]->can_move();
+      }
     else
       {
-	return (curr_road->cars[position-1]->can_move());
+	return true;
       }
   }
 
   void move()
   {
-    if (position == 0)
+    if (!can_move())
       {
-
-      }
-
-    else if (position < 20)
-      {
-	
+	wait++;
       }
     else
       {
+	wait = 0;
 	position--;
+      }
+  }
+
+  void take_turn()
+  {
+    assert(!position);
+
+    if (!can_move())
+      {
+	wait++;
+      }
+    else
+      {
+	wait = 0;
+
+	if (turn == LEFT)
+	  {
+	    road* next_road = this->curr_road->get_left();
+	    next_road->cars[next_road->length-1] = this;
+	  }
+	else if (turn == RIGHT)
+	  {
+	    road* next_road = this->curr_road->get_right();
+	    next_road->cars[next_road->length-1] = this;
+	  }
+	else if (turn == AHEAD)
+	  {
+	    road* next_road = this->curr_road->get_ahead();
+	    next_road->cars[next_road->length-1] = this;
+	  }
       }
   }
 
