@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
   //    simulation->incr_timestamp();
   //    simulation->viewWorld ();
     
-  //   //simulation->write_state(stdout, false);    
+  //   //
   //   sleep (3);
   // }
 
