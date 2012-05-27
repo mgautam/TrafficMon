@@ -86,9 +86,15 @@ class world
       }
 
     fprintf(output, "t: %lld\n", timestamp);
-    for (int i = 0; i < this->carc; i++)
+    for (int i = 0; i < this->roadc; i++)
       {
-	this->cars[i]->write_state(output);
+	for (int j = 0; j < this->roads[i]->length; j++)
+	  {
+	    if (this->roads[i]->cars[j])
+	      {
+		this->roads[i]->cars[j]->write_state(output);
+	      }
+	  }
       }
   }
 
