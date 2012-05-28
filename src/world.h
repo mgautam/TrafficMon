@@ -17,7 +17,6 @@ class world
   void viewWorld (void);
 
 
- protected:
   //variables
   int intc;
   int roadc;

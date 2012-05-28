@@ -103,10 +103,12 @@ car::car (road* init_road)
 	  curr_road->cars[position] = 0;
 	  this->position = next_road->length-1;
 	  next_road->cars[this->position] = this;
+	  this->curr_road = next_road;
 	}
 	else {
 	  curr_road->cars[position] = 0;
 	  this->position = -1;
+	  this->curr_road = 0;
 	}
       }
   }
