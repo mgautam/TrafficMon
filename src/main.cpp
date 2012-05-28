@@ -84,7 +84,7 @@ int main (int argc, char* argv[])
   // car* c4 = new car(r51);
   // car* c5 = new car(r62);
 
-  simulation = new world(5, intersections, 8, roads);
+  simulation = new world(6, intersections, 10, roads);
   //simulation->write_state(stdout);
 
   glutInit (&argc, argv);

@@ -87,6 +87,11 @@ static int x;
 // For Debugging Purposes only
 
   void world::updateWorld(void) {
+    // For Debugging Purposes only
+     for (int i = 0; i < this->intc; i++)
+       this->intersections[i]->controlLights (x++%4);//EASTWEST_RIGHT);
+    // For Debugging Purposes only
+
     incr_timestamp();
     for (int r = 0; r < this->roadc; r++)
       {
@@ -101,11 +106,6 @@ static int x;
 	      curr_road->cars[c]->move();
 	  }
       }
-
-    // For Debugging Purposes only
-     for (int i = 0; i < this->intc; i++)
-       this->intersections[i]->controlLights (x++%4);//EASTWEST_RIGHT);
-    // For Debugging Purposes only
   }
 
 

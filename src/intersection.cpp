@@ -50,7 +50,9 @@ using namespace std;
       if (this->in[direction]) {
 	this->in[direction]->lights[LEFT] = RED;
 	this->in[direction]->lights[RIGHT] = RED;
+	printf ("In Direction:%d Control Lights: %2d %2d\n", direction, this->x, this->y);
       }
+
 
       switch (PatternID) {
       case NORTHSOUTH_AHEADLEFT:

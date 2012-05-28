@@ -15,7 +15,6 @@ using namespace std;
 #include <GL/glut.h>
 #endif
 
-//class road;
 class intersection
 {
  public:
