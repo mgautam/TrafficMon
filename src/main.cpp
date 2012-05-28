@@ -38,7 +38,7 @@ int main (int argc, char* argv[])
 {
   factory::create_world(&simulation);
 
-  //simulation->write_state(stdout);
+  simulation->write_state(stdout);
   ppainter = new painter(simulation, display, timerCallback, argc, argv);
   ppainter->draw();
   ppainter->animate();

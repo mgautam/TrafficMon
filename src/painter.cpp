@@ -12,9 +12,9 @@ char** painter::argv = NULL;
 void (*painter::display) (void) = NULL;
 void (*painter::timerCallback) (int) = NULL;
 
-painter::painter(world* simulation, void (*display) (void), void (*timerCallback) (int), int argc, char** argv) {
+painter::painter(world* _simulation, void (*_display) (void), void (*_timerCallback) (int), int argc, char** argv) {
 
-  this->simulation = simulation;
+  this->simulation = _simulation;
  
   glutInit (&argc, argv);
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -22,17 +22,20 @@ painter::painter(world* simulation, void (*display) (void), void (*timerCallback
 
   glutCreateWindow ("World View");
   glDisable (GL_DEPTH_TEST);
+
+  this->display = _display;
   glutDisplayFunc (display);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
+
+  this->timerCallback = _timerCallback;
+  
+  // Start the transitions
   glutTimerFunc (SIMULATION_INTERVAL, timerCallback, 0);
 }
 
 void painter::animate()
-{
-  // Start the transitions
-  glutTimerFunc (SIMULATION_INTERVAL, timerCallback, 0);
-
+{ 
   glutMainLoop();
 }
 
