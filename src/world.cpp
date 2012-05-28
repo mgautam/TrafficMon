@@ -11,16 +11,13 @@ using namespace std;
 #include "world.h"
 
   //constructor
- world::world(int intc, intersection** intersections, int roadc, road** roads, int carc, car** cars)
+ world::world(int intc, intersection** intersections, int roadc, road** roads)
   {
     this->intc = intc;
     this->roadc = roadc;
-    this->carc = carc;
 
     this->intersections = intersections;
     this->roads = roads;
-
-    this->cars = cars;
 
     this->timestamp = 0;
 
