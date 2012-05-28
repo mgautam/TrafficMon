@@ -22,4 +22,7 @@
 #define NORTHSOUTH_RIGHT 2
 #define EASTWEST_RIGHT 3
 
+#define SIMULATION_INTERVAL 2000
+
+
 #endif

@@ -1,6 +1,7 @@
 #include "common.h"
 #include "world.h"
 #include "visualize.h"
+#include "painter.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -10,14 +11,15 @@
 
 #include <stdio.h>
 
-#define SIMULATION_INTERVAL 2000
 
 static world* simulation;
+static painter* ppainter;
+
 
 void display(void)
 {
   simulation->updateWorld();
-  simulation->viewWorld();
+  ppainter->draw();
   simulation->write_state(stdout,true);
 }
 
@@ -89,27 +91,14 @@ int main (int argc, char* argv[])
 
   simulation = new world(5, intersections, 8, roads, 1, cars);
   //simulation->write_state(stdout);
-
-  glutInit (&argc, argv);
-  glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-  glutInitWindowSize (WINDOW_WIDTH,WINDOW_HEIGHT);
-
-  glutCreateWindow ("World View");
-  glDisable (GL_DEPTH_TEST);
-  glutDisplayFunc (display);
-  glutKeyboardFunc (handleKeyPress);
-  glutReshapeFunc (handleResize);
+  ppainter = new painter(simulation, display, timerCallback, argc, argv);
+  // ppainter->display = display;
+  // ppainter->timerCallback = timerCallback;
+  // ppainter->argc = argc;
+  // ppainter->argv = argv;
 
   // Display the initial state of the world
-  simulation->viewWorld ();
-  simulation->write_state(stdout,true);
-  printf ("Press RET to continue... \n");
-
-  getchar ();
-  // Start the transitions
-  glutTimerFunc (SIMULATION_INTERVAL, timerCallback, 0);
-
-  glutMainLoop();
-
+  ppainter->draw();
+  ppainter->animate();
   return 0;
 }

@@ -9,11 +9,28 @@
 #include "world.h"
 
 class painter {
-  void draw (world* sim, float scale);
+
+
+
+public:
+  static void (*display) (void);
+  static void (*timerCallback) (int);
+  static int argc;
+  static char** argv;
+
+  painter(world* sim);
+  painter(world* simulation, void (*display) (void), void (*timerCallback) (int), int argc, char** argv);
+
+  void draw ();
   void draw (car* curr_car, float scale);
   void draw (intersection* curr_intersection, float scale);
   void draw (road* curr_road, float scale);
   void drawLights (road* curr_road, float scale);
+
+
+  void animate();
+
+  world* simulation;
 };
 
 #endif
