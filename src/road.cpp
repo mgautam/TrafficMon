@@ -82,7 +82,8 @@ void road::write_state(FILE* output)
 	if (lights[i][j])
 	  fprintf (output, "LightSet:%d Light:%d\t",i,j);
 
-    fprintf(output, "Road Coordinates: %d %d %d %d\n", this->init->x, this->init->y, this->final->x, this->final->y);
+    fprintf(output, "Road Coordinates: %d %d %d %d", this->init->x, this->init->y, this->final->x, this->final->y);
+    fprintf (output,"\n");
   }
 
 
