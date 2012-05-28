@@ -79,12 +79,16 @@ int main (int argc, char* argv[])
 
 
   car* c1 = new car(r21); // car enters from init end point of r21.
-  // car* c2 = new car(r31);
-  // car* c3 = new car(r41);
-  // car* c4 = new car(r51);
-  // car* c5 = new car(r62);
+  car* c2 = new car(r31);
+  car* c3 = new car(r41);
+  car* c4 = new car(r51);
+  car* c5 = new car(r62);
 
-  simulation = new world(6, intersections, 10, roads);
+  car* cars[] = {c1,c2,c3,c4,c5};
+
+
+  simulation = new world(6, intersections, 10, roads, 4, cars);
+
   //simulation->write_state(stdout);
 
   glutInit (&argc, argv);

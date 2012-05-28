@@ -11,13 +11,16 @@ using namespace std;
 #include "world.h"
 
   //constructor
- world::world(int intc, intersection** intersections, int roadc, road** roads)
+ world::world(int intc, intersection** intersections, int roadc, road** roads, int carc, car** cars)
   {
     this->intc = intc;
     this->roadc = roadc;
+    this->carc = carc;
 
     this->intersections = intersections;
     this->roads = roads;
+
+    this->cars = cars;
 
     this->timestamp = 0;
 
@@ -93,17 +96,17 @@ static int x;
     // For Debugging Purposes only
 
     incr_timestamp();
-    for (int r = 0; r < this->roadc; r++)
+    for (int c = 0; c < this->carc; c++)
       {
-	road* curr_road = this->roads[r];
-
-	if (curr_road->cars[0])
-	  curr_road->cars[0]->make_turn();
-
-	for (int c = 1; c < curr_road->length; c++)
+	car* curr_car = this->cars[c];
+	if (curr_car->position == 0)
 	  {
-	    if (curr_road->cars[c])
-	      curr_road->cars[c]->move();
+	    curr_car->make_turn();
+	  }
+
+	else if (curr_car->position > 0)
+	  {
+	    curr_car->move();
 	  }
       }
   }

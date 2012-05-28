@@ -100,13 +100,14 @@ car::car (road* init_road)
 	    next_road = this->curr_road->get_ahead();
 
 	if (next_road) {
+	  curr_road->cars[position] = 0;
 	  this->position = next_road->length-1;
 	  next_road->cars[this->position] = this;
 	}
 	else {
-	  delete this;
+	  curr_road->cars[position] = 0;
+	  this->position = -1;
 	}
-
       }
   }
 

@@ -9,7 +9,7 @@
 class world
 {
  public:
-  world(int intc, intersection** intersections, int roadc, road** roads);
+  world(int intc, intersection** intersections, int roadc, road** roads, int carc, car** cars);
   void incr_timestamp();
   void write_state(FILE* output);
   void write_state(FILE* output, bool fixtures);
@@ -21,6 +21,7 @@ class world
   //variables
   int intc;
   int roadc;
+  int carc;
 
   long long timestamp;
 
