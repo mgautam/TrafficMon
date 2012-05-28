@@ -32,17 +32,18 @@ using namespace std;
     for (int i = 0; i < this->intc; i++) {
       if (maxWorldX < this->intersections[i]->x)
 	maxWorldX = this->intersections[i]->x;
-      else
+      if (minWorldX > this->intersections[i]->x)
 	minWorldX = this->intersections[i]->x;
 
       if (maxWorldY < this->intersections[i]->y)
 	maxWorldY = this->intersections[i]->y;
-      else
+      if (minWorldY > this->intersections[i]->y)
 	minWorldY = this->intersections[i]->y;
     }
 
     this->scale = (maxWorldX - minWorldX) > (maxWorldY - minWorldY)?
       1.5/((float)(maxWorldX - minWorldX))  :  1.5/((float)(maxWorldY - minWorldY));
+    printf ("minX = %d, minY = %d \t maxX = %d, maxY = %d", minWorldX, minWorldY, maxWorldX, maxWorldY);
 
   }
   

@@ -79,8 +79,8 @@ void road::write_state(FILE* output)
   {
     fprintf(output, "Coordinates: %2d %2d %2d %2d   ", this->init->x, this->init->y, this->final->x, this->final->y);
 
-    fprintf (output, "LightSet:LEFT Light:%d ",lights[LEFT]);
-    fprintf (output, "LightSet:RIGHT Light:%d ",lights[RIGHT]);
+    fprintf (output, "LEFT Light:%d ",lights[LEFT]);
+    fprintf (output, "RIGHT Light:%d ",lights[RIGHT]);
 
     fprintf (output,"\n");
   }
