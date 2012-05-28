@@ -90,19 +90,33 @@ static int x;
 
   void world::updateWorld(void) {
     incr_timestamp();
-    for (int r = 0; r < this->roadc; r++)
+    for (int c = 0; c < this->carc; c++)
       {
-	road* curr_road = this->roads[r];
-
-	if (curr_road->cars[0])
-	  curr_road->cars[0]->make_turn();
-
-	for (int c = 1; c < curr_road->length; c++)
+	car* curr_car = this->cars[c];
+	if (curr_car->position == 0)
 	  {
-	    if (curr_road->cars[c])
-	      curr_road->cars[c]->move();
+	    curr_car->make_turn();
+	  }
+
+	else if (curr_car->position > 0)
+	  {
+	    curr_car->move();
 	  }
       }
+
+    // for (int r = 0; r < this->roadc; r++)
+    //   {
+    // 	road* curr_road = this->roads[r];
+
+    // 	if (curr_road->cars[0])
+    // 	  curr_road->cars[0]->make_turn();
+
+    // 	for (int c = 1; c < curr_road->length; c++)
+    // 	  {
+    // 	    if (curr_road->cars[c])
+    // 	      curr_road->cars[c]->move();
+    // 	  }
+    //   }
 
     // For Debugging Purposes only
      for (int i = 0; i < this->intc; i++)
