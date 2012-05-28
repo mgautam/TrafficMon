@@ -15,73 +15,61 @@ using namespace std;
 
 
 
-  //constructor
- intersection::intersection(int x, int y)
-  {
-    this->x = x;
-    this->y = y;
+//constructor
+intersection::intersection(int x, int y)
+{
+  this->x = x;
+  this->y = y;
 
-    this->in_count = 0;
-    this->out_count = 0;
+  this->in_count = 0;
+  this->out_count = 0;
 
-    memset (this->in, 0, MAX_DEGREE*sizeof(road*));
-    memset (this->out, 0, MAX_DEGREE*sizeof(road*));//not necessary
+  memset (this->in, 0, MAX_DEGREE*sizeof(road*));
+  memset (this->out, 0, MAX_DEGREE*sizeof(road*));//not necessary
+}
+
+void intersection::controlLights (int PatternID) {
+  for (int direction = 0; direction < 4; direction++)
+    if (this->in[direction]) {
+      this->in[direction]->lights[LEFT] = RED;
+      this->in[direction]->lights[RIGHT] = RED;
+    }
+
+  switch (PatternID) {
+  case NORTHSOUTH_AHEADLEFT:
+    if (this->in[NORTH]) 
+      this->in[NORTH]->lights[LEFT] = GREEN;
+    if (this->in[SOUTH]) 
+      this->in[SOUTH]->lights[LEFT] = GREEN;
+    break;
+
+  case EASTWEST_AHEADLEFT:
+    if (this->in[EAST]) 
+      this->in[EAST]->lights[LEFT] = GREEN;
+    if (this->in[WEST]) 
+      this->in[WEST]->lights[LEFT] = GREEN;
+    break;
+
+  case NORTHSOUTH_RIGHT:
+    if (this->in[NORTH]) 
+      this->in[NORTH]->lights[RIGHT] = GREEN;
+    if (this->in[SOUTH]) 
+      this->in[SOUTH]->lights[RIGHT] = GREEN;
+    break;
+
+  case EASTWEST_RIGHT:
+    if (this->in[EAST]) 
+      this->in[EAST]->lights[RIGHT] = GREEN;
+    if (this->in[WEST]) 
+      this->in[WEST]->lights[RIGHT] = GREEN;
+    break;
   }
-
-  void intersection::write_state(FILE* output)
-  {
-    fprintf(output, "Coordinates:%2d %2d\n", x, y);
-  }
-
-  void intersection::viewIntersection (float scale) {
-    float halfIntersectionLen = 0.5;
-
-    glColor3f (1.0f, 0.0f, 0.0f);
-    glBegin (GL_QUADS);
-    glVertex2f (((float) this->x - halfIntersectionLen) * scale, ((float)this->y + halfIntersectionLen)* scale);
-    glVertex2f (((float) this->x + halfIntersectionLen) * scale, ((float)this->y + halfIntersectionLen)* scale);
-    glVertex2f (((float) this->x + halfIntersectionLen) * scale, ((float)this->y - halfIntersectionLen)* scale);
-    glVertex2f (((float) this->x - halfIntersectionLen) * scale, ((float)this->y - halfIntersectionLen)* scale);
-    glEnd ();
-  }
-
-  void intersection::controlLights (int PatternID) {
-    for (int direction = 0; direction < 4; direction++)
-      if (this->in[direction]) {
-	this->in[direction]->lights[LEFT] = RED;
-	this->in[direction]->lights[RIGHT] = RED;
-	printf ("In Direction:%d Control Lights: %2d %2d\n", direction, this->x, this->y);
-      }
-
-
-      switch (PatternID) {
-      case NORTHSOUTH_AHEADLEFT:
-      if (this->in[NORTH]) 
-	this->in[NORTH]->lights[LEFT] = GREEN;
-      if (this->in[SOUTH]) 
-	this->in[SOUTH]->lights[LEFT] = GREEN;
-      break;
-
-      case EASTWEST_AHEADLEFT:
-      if (this->in[EAST]) 
-	this->in[EAST]->lights[LEFT] = GREEN;
-      if (this->in[WEST]) 
-	this->in[WEST]->lights[LEFT] = GREEN;
-      break;
-
-      case NORTHSOUTH_RIGHT:
-      if (this->in[NORTH]) 
-	this->in[NORTH]->lights[RIGHT] = GREEN;
-      if (this->in[SOUTH]) 
-	this->in[SOUTH]->lights[RIGHT] = GREEN;
-      break;
-
-      case EASTWEST_RIGHT:
-      if (this->in[EAST]) 
-	this->in[EAST]->lights[RIGHT] = GREEN;
-      if (this->in[WEST]) 
-	this->in[WEST]->lights[RIGHT] = GREEN;
-      break;
-      }
     
-  }
+}
+
+
+void intersection::write_state(FILE* output)
+{
+  fprintf(output, "Coordinates:%2d %2d\n", x, y);
+}
+

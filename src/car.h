@@ -21,8 +21,6 @@ class car
   bool can_move();
   void move();
   void make_turn();
-  void viewCar (float scale);
-
 
   //variables
   int turn;

@@ -20,7 +20,6 @@ class intersection
  public:
   intersection(int x, int y);
   void write_state(FILE* output);
-  void viewIntersection (float scale);
   void controlLights (int PatternID);
 
 

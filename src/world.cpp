@@ -126,24 +126,3 @@ static int x;//=0
   }
 
 
-  void world::viewWorld (void) {
-
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glMatrixMode (GL_MODELVIEW);
-    glLoadIdentity ();
-
-    for (int i = 0; i < this->intc; i++)
-      this->intersections[i]->viewIntersection (this->scale);
-
-    for (int i = 0; i < this->roadc; i++) {
-      this->roads[i]->viewRoad (this->scale);
-      this->roads[i]->viewLights (this->scale);
-      this->roads[i]->viewCars (this->scale);
-    }
-
-    // for (int i = 0; i < this->carc; i++)
-    //   this->cars[i]->viewCar (this->scale);
-
-    glutSwapBuffers ();
-  }

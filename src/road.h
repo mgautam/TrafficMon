@@ -19,9 +19,6 @@ class road
   road* get_right();
   road* get_ahead();
   void write_state(FILE* output);
-  void viewRoad (float scale);
-  void viewLights (float scale);
-  void viewCars ( float scale);
   bool car_can_move_to(int new_pos);
 
   //variables
