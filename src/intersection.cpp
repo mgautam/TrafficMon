@@ -23,12 +23,11 @@ using namespace std;
 
     this->in_count = 0;
     this->out_count = 0;
-
   }
 
   void intersection::write_state(FILE* output)
   {
-    fprintf(output, "Coordinates:%d %d\n", x, y);
+    fprintf(output, "Coordinates:%2d %2d\n", x, y);
   }
 
   void intersection::viewIntersection (float scale) {
@@ -44,92 +43,40 @@ using namespace std;
   }
 
   void intersection::controlLights (int PatternID) {
-    for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++)
-      //for (int lightType = 0; lightType < 3; lightType++) {
-      if (this->in[roadIndex]) {
-	memset (this->in[roadIndex]->lights[LEFT],false,3*sizeof(bool));
-	memset (this->in[roadIndex]->lights[RIGHT],false,3*sizeof(bool));
-        
-        //this->in[roadIndex]->lights[LEFT][lightType] = false;
-	//this->in[roadIndex]->lights[RIGHT][lightType] = false;
+    for (int direction = 0; direction < 4; direction++)
+      if (this->in[direction]) {
+	this->in[direction]->lights[LEFT] = RED;
+	this->in[direction]->lights[RIGHT] = RED;
       }
-     //}
 
-    switch (PatternID) {
-    case NORTHSOUTH_AHEADLEFT:
-      if (this->in[NORTH]) {
-	this->in[NORTH]->lights[LEFT][GREEN] = true;
-	this->in[NORTH]->lights[RIGHT][RED] = true;
-      }
-      if (this->in[SOUTH]) {
-	this->in[SOUTH]->lights[LEFT][GREEN] = true;
-	this->in[SOUTH]->lights[RIGHT][RED] = true;
-      }
-      if (this->in[EAST]) {
-	this->in[EAST]->lights[LEFT][RED] = true;
-	this->in[EAST]->lights[RIGHT][RED] = true;
-      }
-      if (this->in[WEST]) {
-	this->in[WEST]->lights[LEFT][RED] = true;
-	this->in[WEST]->lights[RIGHT][RED] = true;
-      }
+      switch (PatternID) {
+      case NORTHSOUTH_AHEADLEFT:
+      if (this->in[NORTH]) 
+	this->in[NORTH]->lights[LEFT] = GREEN;
+      if (this->in[SOUTH]) 
+	this->in[SOUTH]->lights[LEFT] = GREEN;
       break;
 
-    case EASTWEST_AHEADLEFT:
-      if (this->in[EAST]) {
-	this->in[EAST]->lights[LEFT][GREEN] = true;
-	this->in[EAST]->lights[RIGHT][RED] = true;
-      }
-      if (this->in[WEST]) {
-	this->in[WEST]->lights[LEFT][GREEN] = true;
-	this->in[WEST]->lights[RIGHT][RED] = true;
-      }
-      if (this->in[NORTH]) {
-	this->in[NORTH]->lights[LEFT][RED] = true;
-	this->in[NORTH]->lights[RIGHT][RED] = true;
-      }
-      if (this->in[SOUTH]) {
-	this->in[SOUTH]->lights[LEFT][RED] = true;
-	this->in[SOUTH]->lights[RIGHT][RED] = true;
-      }
+      case EASTWEST_AHEADLEFT:
+      if (this->in[EAST]) 
+	this->in[EAST]->lights[LEFT] = GREEN;
+      if (this->in[WEST]) 
+	this->in[WEST]->lights[LEFT] = GREEN;
       break;
 
-    case NORTHSOUTH_RIGHT:
-      if (this->in[NORTH]) {
-	this->in[NORTH]->lights[LEFT][RED] = true;
-	this->in[NORTH]->lights[RIGHT][GREEN] = true;
-      }
-      if (this->in[SOUTH]) {
-	this->in[SOUTH]->lights[LEFT][RED] = true;
-	this->in[SOUTH]->lights[RIGHT][GREEN] = true;
-      }
-      if (this->in[EAST]) {
-	this->in[EAST]->lights[LEFT][RED] = true;
-	this->in[EAST]->lights[RIGHT][RED] = true;
-      }
-      if (this->in[WEST]) {
-	this->in[WEST]->lights[LEFT][RED] = true;
-	this->in[WEST]->lights[RIGHT][RED] = true;
-      }
+      case NORTHSOUTH_RIGHT:
+      if (this->in[NORTH]) 
+	this->in[NORTH]->lights[RIGHT] = GREEN;
+      if (this->in[SOUTH]) 
+	this->in[SOUTH]->lights[RIGHT] = GREEN;
       break;
 
-    case EASTWEST_RIGHT:
-      if (this->in[EAST]) {
-	this->in[EAST]->lights[LEFT][RED] = true;
-	this->in[EAST]->lights[RIGHT][GREEN] = true;
-      }
-      if (this->in[WEST]) {
-	this->in[WEST]->lights[LEFT][RED] = true;
-	this->in[WEST]->lights[RIGHT][GREEN] = true;
-      }
-      if (this->in[NORTH]) {
-	this->in[NORTH]->lights[LEFT][RED] = true;
-	this->in[NORTH]->lights[RIGHT][RED] = true;
-      }
-      if (this->in[SOUTH]) {
-	this->in[SOUTH]->lights[LEFT][RED] = true;
-	this->in[SOUTH]->lights[RIGHT][RED] = true;
-      }
+      case EASTWEST_RIGHT:
+      if (this->in[EAST]) 
+	this->in[EAST]->lights[RIGHT] = GREEN;
+      if (this->in[WEST]) 
+	this->in[WEST]->lights[RIGHT] = GREEN;
       break;
-    }
+      }
+    
   }

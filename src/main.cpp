@@ -21,16 +21,17 @@ void display(void)
   simulation->write_state(stdout,true);
 }
 
-static void timerCallback (int value)
+void timerCallback (int value)
 {
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
-  display();
+  if (!stopAnime)
+    display();
    /* call back again after elapsedUSecs have passed */
   glutTimerFunc (SIMULATION_INTERVAL, timerCallback, 0);
 }
 
-int main(int argc, char* argv[])
+int main (int argc, char* argv[])
 {
   //TODO: we need a way of instantiating these by reading a file
   // Add 1 unit to the length of road in order to include size of intersection
@@ -102,9 +103,9 @@ int main(int argc, char* argv[])
   // Display the initial state of the world
   simulation->viewWorld ();
   simulation->write_state(stdout,true);
-  printf ("Press RET to continue...\n");
-  getchar ();
+  printf ("Press RET to continue... \n");
 
+  getchar ();
   // Start the transitions
   glutTimerFunc (SIMULATION_INTERVAL, timerCallback, 0);
 
