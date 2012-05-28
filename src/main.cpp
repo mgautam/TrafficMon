@@ -10,27 +10,24 @@
 
 #include <stdio.h>
 
+#define SIMULATION_INTERVAL 2000
 
 static world* simulation;
 
 void display(void)
 {
-  printf("called from display\n");
-
   simulation->updateWorld();
   simulation->viewWorld();
-  simulation->write_state(stdout,false);
-
+  simulation->write_state(stdout,true);
 }
 
 static void timerCallback (int value)
 {
-  printf("called from timer\n");
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
   display();
    /* call back again after elapsedUSecs have passed */
-  glutTimerFunc (2000, timerCallback, 0);
+  glutTimerFunc (SIMULATION_INTERVAL, timerCallback, 0);
 }
 
 int main(int argc, char* argv[])
@@ -42,14 +39,15 @@ int main(int argc, char* argv[])
   intersection* i3 = new intersection(6,0);
   intersection* i4 = new intersection(0,-6);
   intersection* i5 = new intersection(-6,0);
+  intersection* i6 = new intersection(6,6);
 
-  intersection** intersections = new intersection*[5];
+  intersection** intersections = new intersection*[6];
   intersections[0] = i1;
   intersections[1] = i2;
   intersections[2] = i3;
   intersections[3] = i4;
   intersections[4] = i5;
-
+  intersections[5] = i6;
 
 
   //away from the central intersection
@@ -57,6 +55,7 @@ int main(int argc, char* argv[])
   road* r13 = new road(i1, i3);//EAST
   road* r14 = new road(i1, i4);//SOUTH
   road* r15 = new road(i1, i5);//WEST
+  road* r26 = new road(i2, i6);
 
   //towards the central intersection
   road* r21 = new road(i2, i1);
@@ -64,7 +63,7 @@ int main(int argc, char* argv[])
   road* r41 = new road(i4, i1);
   road* r51 = new road(i5, i1);
 
-  road** roads = new road*[8];
+  road** roads = new road*[9];
   roads[0] = r12;
   roads[1] = r13;
   roads[2] = r14;
@@ -73,14 +72,16 @@ int main(int argc, char* argv[])
   roads[5] = r31;
   roads[6] = r41;
   roads[7] = r51;
+  roads[8] = r26;
 
 
-  car* c1 = new car(r21); // car enters from init end point of r21.
-  car* c2 = new car(r31);
-  car* c3 = new car(r41);
-  car* c4 = new car(r51);
+  car* c1 = new car(r12); // car enters from init end point of r21.
+  car* c2 = new car(r13);
+  car* c3 = new car(r14);
+  car* c4 = new car(r15);
+  car* c5 = new car(r26);
 
-  car* cars[] = {c1,c2,c3,c4};
+  car* cars[] = {c1,c2,c3,c4,c5};
 
 
   simulation = new world(5, intersections, 8, roads, 4, cars);
@@ -96,17 +97,14 @@ int main(int argc, char* argv[])
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 
-  //  while (true) {
-
-  //    simulation->incr_timestamp();
-  //    simulation->viewWorld ();
-    
-  //   //
-  //   sleep (3);
-  // }
-
+  // Display the initial state of the world
+  simulation->viewWorld ();
   simulation->write_state(stdout,false);
-  glutTimerFunc (10, timerCallback, 0);
+  printf ("Press RET to continue...\n");
+  getchar ();
+
+  // Start the transitions
+  glutTimerFunc (SIMULATION_INTERVAL, timerCallback, 0);
 
   glutMainLoop();
 

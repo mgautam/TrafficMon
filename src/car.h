@@ -3,19 +3,11 @@
 
 
 
-#include "common.h"
-#include "intersection.h"
 #include "road.h"
 #include <stdio.h>
 #include <iostream>
 #include <cassert>
 using namespace std;
-
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
 
 typedef struct {
   float r,g,b;
@@ -24,176 +16,12 @@ typedef struct {
 class car
 {
  public:
-
-
-  //constructor
-  car(road* init_road)
-  {
-    this->curr_road = init_road;
-    this->position = init_road->length-1;
-    init_road->cars[position] = this;
-    this->color.r = ((float)rand()/(float)RAND_MAX);
-    this->color.g = ((float)rand()/(float)RAND_MAX);
-    this->color.b = ((float)rand()/(float)RAND_MAX);
-  }
-
-  void write_state(FILE* output)
-  {
-    fprintf (output, "Position:%d\n",this->position);
-    // fprintf(output, "%d %d\n", curr_road->init->x + displacement_x, curr_road->init->y + displacement_y);
-    fprintf (output, "Compass: %d\n",this->curr_road->compass);
-    // fprintf (output,"%f %f %f", color.r, color.g, color.b);
-
-  }
-
-  bool can_move()
-  {
-    if (position == 0)
-      {
-	if (turn == LEFT || turn == AHEAD)
-	  return this->curr_road->lights[0];
-	else // turn == RIGHT
-	  return this->curr_road->lights[1];
-      }
-    else if (position < 20)
-      {
-	return !curr_road->cars[position-1] ||
-	  curr_road->cars[position-1]->can_move();
-      }
-    else
-      {
-	return true;
-      }
-  }
-
-  void move()
-  {
-    if (!position)
-      return;
-
-    if (!can_move())
-      {
-	wait++;
-      }
-    else
-      {
-	wait = 0;
-	curr_road->cars[position] = 0;
-	curr_road->cars[--position] = this;
-      }
-  }
-
-  void make_turn()
-  {
-    if (position)
-      return;
-
-    if (!can_move())
-      {
-	wait++;
-      }
-    else
-      {
-	wait = 0;
-
-	if (turn == LEFT)
-	  {
-	    curr_road->cars[position] = 0;
-	    road* next_road = this->curr_road->get_left();
-
-	    if (next_road)
-	      {
-		position = next_road->length-1;
-		next_road->cars[position] = this;
-	      }
-	    else
-	      {
-		delete this;
-	      }
-
-	  }
-	else if (turn == RIGHT)
-	  {
-	    curr_road->cars[position] = 0;
-	    road* next_road = this->curr_road->get_right();
-	    
-	    if (next_road)
-	      {
-		position = next_road->length-1;
-		next_road->cars[position] = this;
-	      }
-	    else
-	      {
-		delete this;
-	      }
-	  }
-	else if (turn == AHEAD)
-	  {
-	    curr_road->cars[position] = 0;
-	    road* next_road = this->curr_road->get_ahead();
-	    
-	    if (next_road)
-	      {
-		position = next_road->length-1;
-		next_road->cars[position] = this;
-	      }
-	    else
-	      {
-		delete this;
-	      }
-	  }
-      }
-  }
-
-  void viewCar (float scale) {
-
-    // The first 0.5 is to include the offset of intersection to road
-    // -1 coz position starts from 1 not 0. 
-    // The last 0.5 as offset for between car padding
-    float roadOffset =  (0.5 + (float)this->position - 1 + 0.5);
-    float halfCarLen = 0.25;
-
-    float lenBWlanes = 0.05;
-
-    glColor3f (color.r,color.g,color.b);
-    glBegin (GL_QUADS);
-
-    switch (curr_road->compass) {
-      
-      case NORTH:
-	glVertex2f (((float)curr_road->final->x - lenBWlanes)*scale, ((float)curr_road->final->y - (roadOffset + halfCarLen))*scale);
-	glVertex2f (((float)curr_road->final->x - lenBWlanes)*scale, ((float)curr_road->final->y - (roadOffset - halfCarLen))*scale);
-	glVertex2f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y - (roadOffset - halfCarLen))*scale);
-	glVertex2f (((float)curr_road->final->x - 0.5)*scale, ((float)curr_road->final->y - (roadOffset + halfCarLen))*scale);
-	break;
-    
-      case EAST:
-	glVertex2f (((float)curr_road->final->x - (roadOffset + halfCarLen))*scale ,((float)curr_road->final->y + lenBWlanes)*scale);
-	glVertex2f (((float)curr_road->final->x - (roadOffset - halfCarLen))*scale ,((float)curr_road->final->y + lenBWlanes)*scale);
-	glVertex2f (((float)curr_road->final->x - (roadOffset - halfCarLen))*scale ,((float)curr_road->final->y + 0.5)*scale);
-	glVertex2f (((float)curr_road->final->x - (roadOffset + halfCarLen))*scale ,((float)curr_road->final->y + 0.5)*scale);
-	break;
-
-      case SOUTH:
-	glVertex2f (((float)curr_road->final->x + lenBWlanes)*scale, ((float)curr_road->final->y + (roadOffset + halfCarLen))*scale);
-	glVertex2f (((float)curr_road->final->x + lenBWlanes)*scale, ((float)curr_road->final->y + (roadOffset - halfCarLen))*scale);
-	glVertex2f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + (roadOffset - halfCarLen))*scale);
-	glVertex2f (((float)curr_road->final->x + 0.5)*scale, ((float)curr_road->final->y + (roadOffset + halfCarLen))*scale);
-	break;
-
-      case WEST:
-	glVertex2f (((float)curr_road->final->x + (roadOffset + halfCarLen))*scale ,((float)curr_road->final->y - lenBWlanes)*scale);
-	glVertex2f (((float)curr_road->final->x + (roadOffset - halfCarLen))*scale ,((float)curr_road->final->y - lenBWlanes)*scale);
-	glVertex2f (((float)curr_road->final->x + (roadOffset - halfCarLen))*scale ,((float)curr_road->final->y - 0.5)*scale);
-	glVertex2f (((float)curr_road->final->x + (roadOffset + halfCarLen))*scale ,((float)curr_road->final->y - 0.5)*scale);
-	break;
-    
-      default:
-	printf ("Error in Road Endpoints! They are invalid\n");
-	exit (-1);
-    }
-    glEnd ();
-  }
+  car (road* init_road);
+  void write_state(FILE* output);
+  bool can_move();
+  void move();
+  void make_turn();
+  void viewCar (float scale);
 
 
   //variables
@@ -211,26 +39,6 @@ class car
 
   
 };
-
-
-
-
-
-
-
-// car::car(int road, int intention, int length)
-// {
-//   this->road = road;
-//   this->intention = intention;
-//   this->length = length;
-// }
-
-// void car::enter_road(int new_road, int new_intention)
-// {
-//   this->road = new_road;
-//   this->turn = turn;
-// }
-
 
 
 #endif

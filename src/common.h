@@ -1,9 +1,12 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#define AHEAD 0
+#define WINDOW_WIDTH 500
+#define WINDOW_HEIGHT 500
+
+#define RIGHT 0
 #define LEFT 1
-#define RIGHT 2
+#define AHEAD 2
 
 #define RED 0
 #define AMBER 1

@@ -2,6 +2,15 @@
 #include "intersection.h"
 #include "car.h"
 
+#include <cstring>
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
+
 road::road(intersection* init, intersection* final)
   {
     this->init = init;
@@ -13,25 +22,28 @@ road::road(intersection* init, intersection* final)
     this->cars = new car*[length];
     memset(this->cars, 0, length*sizeof(car*));
 
-    if (this->final->x - this->init->x < 0)
+    memset (this->init->in, 0, length*sizeof(road*));
+    memset (this->init->out, 0, length*sizeof(road*));//not necessary
+
+    if (this->final->x < this->init->x)
       {
 	this->compass = WEST;
 	init->out[WEST] = this;// out to the west
 	final->in[EAST] = this;// in from the east
       }
-    else if (this->final->x - this->init->x > 0)
+    else if (this->final->x > this->init->x)
       {
 	this->compass = EAST;
 	init->out[EAST] = this;
 	final->in[WEST] = this;
       }
-    else if (this->final->y - this->init->y < 0)
+    else if (this->final->y < this->init->y)
       {
 	this->compass = SOUTH;
 	init->out[SOUTH] = this;
 	final->in[NORTH] = this;
       }
-    else if (this->final->y - this->init->y > 0)
+    else if (this->final->y > this->init->y)
       {
 	this->compass = NORTH;
 	init->out[NORTH] = this;
@@ -64,7 +76,12 @@ road* road::get_ahead()
 
 void road::write_state(FILE* output)
   {
-    fprintf(output, "%d %d %d %d\n", this->init->x, this->init->y, this->final->x, this->final->y);
+    for (int i=0; i<2; i++)
+      for (int j=0;j<3; j++)
+	if (lights[i][j])
+	  fprintf (output, "LightSet:%d Light:%d\t",i,j);
+
+    fprintf(output, "Road Coordinates: %d %d %d %d\n", this->init->x, this->init->y, this->final->x, this->final->y);
   }
 
 
@@ -128,9 +145,10 @@ void road::viewLights (float scale) {
     float intersectionOffset = 0.5;
     float LightSize = 0.5;
 
+    //lights[LEFT][GREEN] = true; // Debugging purpose only
+    //lights[RIGHT][RED] = true; // Debugging purpose only
 
     for ( int i = 0; i <=1; i++) {      
-      lights[i][i] = true; // Debugging purpose only
       for (int j = 0; j < 3; j++) {
 	
 	glColor3f (1.0f*(float)(j<=AMBER),1.0f*(float)(j>=AMBER),0.0f);
