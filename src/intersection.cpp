@@ -23,6 +23,9 @@ using namespace std;
 
     this->in_count = 0;
     this->out_count = 0;
+
+    memset (this->in, 0, MAX_DEGREE*sizeof(road*));
+    memset (this->out, 0, MAX_DEGREE*sizeof(road*));//not necessary
   }
 
   void intersection::write_state(FILE* output)
