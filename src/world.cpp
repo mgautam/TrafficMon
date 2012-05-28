@@ -86,10 +86,29 @@ using namespace std;
   }
 
 // For Debugging Purposes only
-static int x;
+static int x;//=0
 // For Debugging Purposes only
 
   void world::updateWorld(void) {
+    // For Debugging Purposes only
+     for (int i = 0; i < this->intc; i++)
+       this->intersections[i]->controlLights (x);//EASTWEST_RIGHT);x++%4
+     x = (x+1)%4;
+    // For Debugging Purposes only
+
+     for (int i = 0; i < this->intc; i++) {
+       for (int j = 0; j < MAX_DEGREE; j++) {
+	 if (this->intersections[i]->in[j]) {
+	   printf ("Intersection: x:%d, y:%d\t",this->intersections[i]->x,this->intersections[i]->y);
+	   printf ("Road: %d\t",j);
+	   printf ("LEFT:%d RIGHT:%d",this->intersections[i]->in[j]->lights[0],this->intersections[i]->in[j]->lights[1]);
+	   printf ("\n");
+	 }
+       }
+     }
+
+
+
     incr_timestamp();
     for (int c = 0; c < this->carc; c++)
       {
@@ -104,25 +123,6 @@ static int x;
 	    curr_car->move();
 	  }
       }
-
-    // for (int r = 0; r < this->roadc; r++)
-    //   {
-    // 	road* curr_road = this->roads[r];
-
-    // 	if (curr_road->cars[0])
-    // 	  curr_road->cars[0]->make_turn();
-
-    // 	for (int c = 1; c < curr_road->length; c++)
-    // 	  {
-    // 	    if (curr_road->cars[c])
-    // 	      curr_road->cars[c]->move();
-    // 	  }
-    //   }
-
-    // For Debugging Purposes only
-     for (int i = 0; i < this->intc; i++)
-       this->intersections[i]->controlLights (x++%4);//EASTWEST_RIGHT);
-    // For Debugging Purposes only
   }
 
 

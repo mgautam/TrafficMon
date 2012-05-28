@@ -54,20 +54,22 @@ int main (int argc, char* argv[])
 
 
   //away from the central intersection
-  road* r12 = new road(i1, i2);//NORTH
-  road* r13 = new road(i1, i3);//EAST
-  road* r14 = new road(i1, i4);//SOUTH
-  road* r15 = new road(i1, i5);//WEST
-  road* r26 = new road(i2, i6);
+  road* r12 = new road (i1, i2);//NORTH
+  road* r13 = new road (i1, i3);//EAST
+  road* r14 = new road (i1, i4);//SOUTH
+  road* r15 = new road (i1, i5);//WEST
+  road* r26 = new road (i2, i6);
+  road* r36 = new road (i3, i6);
 
   //towards the central intersection
-  road* r21 = new road(i2, i1);
-  road* r31 = new road(i3, i1);
-  road* r41 = new road(i4, i1);
-  road* r51 = new road(i5, i1);
-  road* r62 = new road(i6, i2);
+  road* r21 = new road (i2, i1);
+  road* r31 = new road (i3, i1);
+  road* r41 = new road (i4, i1);
+  road* r51 = new road (i5, i1);
+  road* r62 = new road (i6, i2);
+  road* r63 = new road (i6, i3);
 
-  road** roads = new road*[10];
+  road** roads = new road*[12];
   roads[0] = r12;
   roads[1] = r13;
   roads[2] = r14;
@@ -78,18 +80,20 @@ int main (int argc, char* argv[])
   roads[7] = r51;
   roads[8] = r26;
   roads[9] = r62;
-
+  roads[10] = r36;
+  roads[11] = r63;
 
   car* c1 = new car(r21); // car enters from init end point of r21.
-  // car* c2 = new car(r31);
-  // car* c3 = new car(r41);
-  // car* c4 = new car(r51);
-  // car* c5 = new car(r62);
-
-  car* cars[] = {c1};//,c2,c3,c4,c5};
+  car* c2 = new car(r31);
+  car* c3 = new car(r41);
+  car* c4 = new car(r51);
+  car* c5 = new car(r62);
 
 
-  simulation = new world(5, intersections, 8, roads, 1, cars);
+  car* cars[] = {c1,c2,c3,c4,c5};
+
+
+  simulation = new world(6, intersections, 12, roads, 5, cars);
   //simulation->write_state(stdout);
   ppainter = new painter(simulation, display, timerCallback, argc, argv);
   // ppainter->display = display;
