@@ -16,7 +16,7 @@ typedef struct {
 class car
 {
  public:
-  car (road* init_road);
+  car (road* init_road, int next_turn);
   void write_state(FILE* output);
   bool can_move();
   void move();

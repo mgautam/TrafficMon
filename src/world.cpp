@@ -10,6 +10,8 @@ using namespace std;
 #include "common.h"
 #include "world.h"
 
+#define MARGIN_PADDING 1
+
   //constructor
  world::world(int intc, intersection** intersections, int roadc, road** roads, int carc, car** cars)
   {
@@ -42,7 +44,7 @@ using namespace std;
     }
 
     this->scale = (maxWorldX - minWorldX) > (maxWorldY - minWorldY)?
-      1.5/((float)(maxWorldX - minWorldX))  :  1.5/((float)(maxWorldY - minWorldY));
+      1.5/((float)(maxWorldX - minWorldX + MARGIN_PADDING))  :  1.5/((float)(maxWorldY - minWorldY + MARGIN_PADDING));
     printf ("minX = %d, minY = %d \t maxX = %d, maxY = %d", minWorldX, minWorldY, maxWorldX, maxWorldY);
 
   }

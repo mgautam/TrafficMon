@@ -2,40 +2,42 @@
 
 void factory::create_world(world** sim)
 {
+  int SQUARE_SIZE = 2;
+  int ROAD_LENGTH = 50;
+  int FOUR = 4;
 
-  //TODO: we need a way of instantiating these by reading a file
-  // Add 1 unit to the length of road in order to include size of intersection
-  intersection** intersections = new intersection*[6];
-  intersections[0] = new intersection(0,0); 
-  intersections[1] = new intersection(0,6); 
-  intersections[2] = new intersection(6,0); 
-  intersections[3] = new intersection(0,-6);
-  intersections[4] = new intersection(-6,0);
-  intersections[5] = new intersection(6,6); 
+  intersection** intersections = new intersection*[SQUARE_SIZE*SQUARE_SIZE];
+  road** roads = new road*[FOUR*(SQUARE_SIZE-1)*SQUARE_SIZE];
+  for (int y = 0; y < SQUARE_SIZE; y++) {
 
-  road** roads = new road*[12];
-  //away from the central intersection
-  roads[0] = new road (intersections[0], intersections[1]);
-  roads[1] = new road (intersections[0], intersections[2]);
-  roads[2] = new road (intersections[0], intersections[3]);
-  roads[3] = new road (intersections[0], intersections[4]);
-  roads[4] = new road (intersections[1], intersections[5]);
-  roads[5] = new road (intersections[2], intersections[5]);
+    for (int x = 0; x < SQUARE_SIZE; x++)
+      //TODO: we need a way of instantiating these by reading a file
+      // Add 1 unit to the length of road in order to include size of intersection
+      intersections[y*SQUARE_SIZE+x] = new intersection (-SQUARE_SIZE*(ROAD_LENGTH+1)/4+(ROAD_LENGTH+1)*x,-SQUARE_SIZE*(ROAD_LENGTH+1)/4+(ROAD_LENGTH+1)*y);
 
-  //towards the central intersection
-  roads[6] = new road (intersections[1], intersections[0]);
-  roads[7] = new road (intersections[2], intersections[0]);
-  roads[8] = new road (intersections[3], intersections[0]);
-  roads[9] = new road (intersections[4], intersections[0]);
-  roads[10]= new road (intersections[5], intersections[1]);
-  roads[11]= new road (intersections[5], intersections[2]);
-
+    for (int x = 0; x < SQUARE_SIZE-1; x++) {
+      // Away from min x
+      roads[FOUR*(y*(SQUARE_SIZE-1)+x)+0] = new road (intersections[y*SQUARE_SIZE+x],intersections[y*SQUARE_SIZE+(x+1)]);
+      // Towards min x
+      roads[FOUR*(y*(SQUARE_SIZE-1)+x)+1] = new road (intersections[y*SQUARE_SIZE+(x+1)],intersections[y*SQUARE_SIZE+x]);
+    }
+ }
+  
+  for (int x = 0; x < SQUARE_SIZE; x++) {
+    for (int y = 0; y < SQUARE_SIZE-1; y++) {
+      // Away from min y
+      roads[FOUR*(y*(SQUARE_SIZE-1)+x)+2] = new road (intersections[y*SQUARE_SIZE+x],intersections[(y+1)*SQUARE_SIZE+x]);
+      // Towards min y
+      roads[FOUR*(y*(SQUARE_SIZE-1)+x)+3] = new road (intersections[(y+1)*SQUARE_SIZE+x],intersections[y*SQUARE_SIZE+x]);
+    }
+  }
+  
   car** cars = new car*[5];
-  cars[0] = new car(roads[6]); 
-  cars[1] = new car(roads[7]); 
-  cars[2] = new car(roads[8]); 
-  cars[3] = new car(roads[9]); 
-  cars[4] = new car(roads[11]);
+  cars[0] = new car(roads[0], LEFT); 
+  cars[1] = new car(roads[1], RIGHT); 
+  cars[2] = new car(roads[2], LEFT); 
+  cars[3] = new car(roads[3], LEFT); 
+  cars[4] = new car(roads[4], RIGHT);
 
-  *sim = new world(6, intersections, 12, roads, 5, cars);
+ *sim = new world ( SQUARE_SIZE*SQUARE_SIZE, intersections, FOUR*(SQUARE_SIZE-1)*SQUARE_SIZE, roads, 5, cars);
 }

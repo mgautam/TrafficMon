@@ -13,7 +13,7 @@
 
 
 //constructor
-car::car (road* init_road)
+car::car (road* init_road, int next_turn)
 {
   this->curr_road = init_road;
   this->position = init_road->length-1;
@@ -22,7 +22,7 @@ car::car (road* init_road)
   this->color.g = ((float)rand()/(float)RAND_MAX);
   this->color.b = ((float)rand()/(float)RAND_MAX);
 
-  this->turn =LEFT;
+  this->turn = next_turn;
 }
 
 void car::write_state(FILE* output)
