@@ -62,8 +62,9 @@ int main(int argc, char* argv[])
   road* r31 = new road(i3, i1);
   road* r41 = new road(i4, i1);
   road* r51 = new road(i5, i1);
+  road* r62 = new road(i6, i2);
 
-  road** roads = new road*[9];
+  road** roads = new road*[10];
   roads[0] = r12;
   roads[1] = r13;
   roads[2] = r14;
@@ -73,6 +74,7 @@ int main(int argc, char* argv[])
   roads[6] = r41;
   roads[7] = r51;
   roads[8] = r26;
+  roads[9] = r62;
 
 
   car* c1 = new car(r12); // car enters from init end point of r21.

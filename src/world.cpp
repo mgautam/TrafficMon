@@ -82,7 +82,7 @@ using namespace std;
 		this->roads[i]->cars[j]->write_state(output);
 	  }
   }
-
+static int x;
   void world::updateWorld(void) {
     incr_timestamp();
     for (int r = 0; r < this->roadc; r++)
@@ -100,11 +100,9 @@ using namespace std;
       }
 
     // For Debugging Purposes only
-     for (int i = 0; i < this->intc; i++) {
-       this->intersections[i]->controlLights (NORTHSOUTH_AHEADLEFT);
+     for (int i = 0; i < this->intc; i++)
+       this->intersections[i]->controlLights (x++%4);//EASTWEST_RIGHT);
     // For Debugging Purposes only
-
-    }
   }
 
 

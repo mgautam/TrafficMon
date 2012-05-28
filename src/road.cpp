@@ -10,6 +10,7 @@
 #include <GL/glut.h>
 #endif
 
+#define MAX_DEGREE 4
 
 road::road(intersection* init, intersection* final)
   {
@@ -22,8 +23,8 @@ road::road(intersection* init, intersection* final)
     this->cars = new car*[length];
     memset(this->cars, 0, length*sizeof(car*));
 
-    memset (this->init->in, 0, length*sizeof(road*));
-    memset (this->init->out, 0, length*sizeof(road*));//not necessary
+    memset (this->init->in, 0, MAX_DEGREE*sizeof(road*));
+    memset (this->init->out, 0, MAX_DEGREE*sizeof(road*));//not necessary
 
     if (this->final->x < this->init->x)
       {
