@@ -86,14 +86,28 @@ using namespace std;
   }
 
 // For Debugging Purposes only
-static int x;
+static int x;//=0
 // For Debugging Purposes only
 
   void world::updateWorld(void) {
     // For Debugging Purposes only
      for (int i = 0; i < this->intc; i++)
-       this->intersections[i]->controlLights (x++%4);//EASTWEST_RIGHT);
+       this->intersections[i]->controlLights (x);//EASTWEST_RIGHT);x++%4
+     x = (x+1)%4;
     // For Debugging Purposes only
+
+     for (int i = 0; i < this->intc; i++) {
+       for (int j = 0; j < MAX_DEGREE; j++) {
+	 if (this->intersections[i]->in[j]) {
+	   printf ("Intersection: x:%d, y:%d\t",this->intersections[i]->x,this->intersections[i]->y);
+	   printf ("Road: %d\t",j);
+	   printf ("LEFT:%d RIGHT:%d",this->intersections[i]->in[j]->lights[0],this->intersections[i]->in[j]->lights[1]);
+	   printf ("\n");
+	 }
+       }
+     }
+
+
 
     incr_timestamp();
     for (int c = 0; c < this->carc; c++)
