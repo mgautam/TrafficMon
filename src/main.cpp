@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
 
   // Display the initial state of the world
   simulation->viewWorld ();
-  simulation->write_state(stdout,false);
+  simulation->write_state(stdout,true);
   printf ("Press RET to continue...\n");
   getchar ();
 
