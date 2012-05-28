@@ -31,7 +31,7 @@ class road
   intersection* init;
   intersection* final;
 
-  bool lights[2][3];
+  int lights[2];
 
   int compass; // The direction this road points in World View
 };

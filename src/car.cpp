@@ -40,9 +40,9 @@ car::car (road* init_road)
     if (this->position == 0)
       {
 	if (this->turn == LEFT || this->turn == AHEAD)
-	  return this->curr_road->lights[LEFT][GREEN];
+	  return (this->curr_road->lights[LEFT] == GREEN);
 	else // this->turn == RIGHT
-	  return this->curr_road->lights[RIGHT][GREEN];
+	  return (this->curr_road->lights[RIGHT] == GREEN);
       }
     else if (this->position < this->curr_road->length)
       {

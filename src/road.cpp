@@ -26,8 +26,8 @@ road::road(intersection* init, intersection* final)
     memset (this->init->in, 0, MAX_DEGREE*sizeof(road*));
     memset (this->init->out, 0, MAX_DEGREE*sizeof(road*));//not necessary
 
-    memset (this->lights[LEFT], false, 3*sizeof(bool));
-    memset (this->lights[RIGHT], false, 3*sizeof(bool));
+    this->lights[LEFT] = RED;
+    this->lights[RIGHT] = RED;
 
     if (this->final->x < this->init->x)
       {
@@ -82,10 +82,8 @@ void road::write_state(FILE* output)
   {
     fprintf(output, "Coordinates: %2d %2d %2d %2d   ", this->init->x, this->init->y, this->final->x, this->final->y);
 
-    for (int i=0; i<2; i++)
-      for (int j=0;j<3; j++)
-	if (lights[i][j])
-	  fprintf (output, "LightSet:%d Light:%d ",i,j);
+    fprintf (output, "LightSet:LEFT Light:%d ",lights[LEFT]);
+    fprintf (output, "LightSet:RIGHT Light:%d ",lights[RIGHT]);
 
     fprintf (output,"\n");
   }
@@ -154,13 +152,15 @@ void road::viewLights (float scale) {
     //lights[LEFT][GREEN] = true; // Debugging purpose only
     //lights[RIGHT][RED] = true; // Debugging purpose only
 
-    for ( int i = 0; i <=1; i++) {      
+
+    for ( int i = 0; i <=1; i++) {
+
       for (int j = 0; j < 3; j++) {
 	
 	glColor3f (1.0f*(float)(j<=AMBER),1.0f*(float)(j>=AMBER),0.0f);
 	//glColor3i (255,0,0);
 
-	if (lights[i][j]) glBegin (GL_QUADS);
+	if (this->lights[i] == j) glBegin (GL_QUADS);
 	else glBegin (GL_LINE_LOOP);
 
 	switch (compass) {
