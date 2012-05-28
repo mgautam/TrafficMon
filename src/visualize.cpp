@@ -14,7 +14,7 @@ bool stopAnime = false;
 
 void handleKeyPress  (unsigned char key, int x, int y) {
   switch (key) {
-  case 32:
+  case 32: // Space Bar 
     if (stopAnime) {
       stopAnime = false;
       printf ("Animation Resumed. Press SPACE on GL_WINDOW to pause");

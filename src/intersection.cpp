@@ -23,12 +23,11 @@ using namespace std;
 
     this->in_count = 0;
     this->out_count = 0;
-
   }
 
   void intersection::write_state(FILE* output)
   {
-    fprintf(output, "Coordinates:%d %d\n", x, y);
+    fprintf(output, "Coordinates:%2d %2d\n", x, y);
   }
 
   void intersection::viewIntersection (float scale) {

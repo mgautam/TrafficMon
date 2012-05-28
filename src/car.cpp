@@ -27,11 +27,11 @@ car::car (road* init_road)
 
   void car::write_state(FILE* output)
   {
-    fprintf (output, "Position:%d\t",this->position);
+    fprintf (output, "Position:%d ",this->position);
     // fprintf(output, "%d %d\n", this->curr_road->init->x + this->displacement_x, this->curr_road->init->y + this->displacement_y);
-    fprintf (output, "Compass: %d\t",this->curr_road->compass);
+    fprintf (output, "Compass: %d ",this->curr_road->compass);
     // fprintf (output,"%f %f %f", this->color.r, this->color.g, this->color.b);
-    fprintf (output, "Next Turn: %d\t",this->turn);
+    fprintf (output, "Next Turn: %d ",this->turn);
     fprintf (output, "\n");
   }
 

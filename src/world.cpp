@@ -58,31 +58,36 @@ using namespace std;
 
   void world::write_state(FILE* output, bool fixtures)
   {
-    fprintf (output, "\n");
+    fprintf (output, "\n\n\n");
     fprintf(output, "time: %lld\n", timestamp);
     if (fixtures)
       {
-	fprintf(output, "Intersection Count: %d\n", intc);
+	fprintf(output, "\nIntersection Count: %d\n", intc);
 	for (int i = 0; i < this->intc; i++) {
-	  fprintf (output, "Intersection: %d\t", i);
+	  fprintf (output, "Intersection:%d\t", i);
 	  this->intersections[i]->write_state(output);
 	}
 
-	fprintf(output, "Road Count: %d\n", roadc);
+	fprintf(output, "\nRoad Count: %d\n", roadc);
 	for (int i = 0; i < this->roadc; i++) {
-	  fprintf (output, "Road: %d\t", i);
+	  fprintf (output, "Road:%d\t", i);
 	  this->roads[i]->write_state(output);
 	}
       }
 
-    for (int i = 0; i < this->roadc; i++)
-	for (int j = 0; j < this->roads[i]->length; j++)
-	  if (this->roads[i]->cars[j]) {
-	    fprintf (output,"Road:%d\t Car:%d\t",i,j);
-		this->roads[i]->cars[j]->write_state(output);
-	  }
+    fprintf (output,"\n");
+    for (int i = 0; i < this->roadc; i++) 
+      for (int j = 0; j < this->roads[i]->length; j++)
+	if (this->roads[i]->cars[j]) {
+	  fprintf (output,"Road:%d\t Car: ",i);
+	  this->roads[i]->cars[j]->write_state(output);
+	}
   }
+
+// For Debugging Purposes only
 static int x;
+// For Debugging Purposes only
+
   void world::updateWorld(void) {
     incr_timestamp();
     for (int r = 0; r < this->roadc; r++)
