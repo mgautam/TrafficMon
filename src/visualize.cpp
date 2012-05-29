@@ -7,10 +7,11 @@
 #include <GL/glut.h>
 #endif
 
-
+#include "common.h"
 #include "visualize.h"
 
 bool stopAnime = false;
+static int SIMULATOR_INTERVAL = 256;
 
 void handleKeyPress  (unsigned char key, int x, int y) {
   switch (key) {
@@ -70,11 +71,17 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     
     break;
 
+  case 110: //n- NITRO
+    SIMULATOR_INTERVAL /= 2;
+    break;
 
-
+  case 112: //p-POWER
+    SIMULATOR_INTERVAL *= 2;
+    break;
 
   }
 }
+
 
 void handleResize (int w, int h) {
   glViewport (0,0,w,h);

@@ -1,6 +1,6 @@
+#include <stdio.h>
 #include "common.h"
 #include "world.h"
-#include "visualize.h"
 #include "painter.h"
 #include "factory.h"
 
@@ -10,12 +10,10 @@
 #include <GL/glut.h>
 #endif
 
-#include <stdio.h>
-
+#include "visualize.h"
 
 static world* simulation;
 static painter* ppainter;
-
 
 void display(void)
 {

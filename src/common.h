@@ -24,7 +24,5 @@
 
 #define STEP_SIZE 0.05
 #define CENTER_SPACE 1
-#define SIMULATION_INTERVAL 30
-
 
 #endif
