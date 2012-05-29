@@ -44,32 +44,28 @@ void handleKeyPress  (unsigned char key, int x, int y) {
   case 97: // a
     glMatrixMode (GL_PROJECTION);
     glOrtho (-1.1,0.9,-1,1,-1,1);
-    //zoom in
     break;
 
   case 100: // d
     glMatrixMode (GL_PROJECTION);
     glOrtho (-0.9,1.1,-1,1,-1,1);
-    //zoom in
     break;
 
   case 115: // s
     glMatrixMode (GL_PROJECTION);
     glOrtho (-1,1,-1.1,0.9,-1,1);
-    //zoom in
     break;
 
-  case 120: // x
+  case 108: // l
     glMatrixMode (GL_PROJECTION);
     glOrtho (-2,2,-2,2,-1,1);
     //zoom out
     break;
 
-  case 122: //z
+  case 107: //k
     glMatrixMode (GL_PROJECTION);
     glOrtho (-0.5,0.5,-0.5,0.5,-1,1);
     //zoom in
-    
     break;
 
   case 110: //n- NITRO

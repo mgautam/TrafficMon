@@ -61,7 +61,7 @@ void world::write_state(FILE* output)
 
 void world::write_state(FILE* output, bool fixtures)
 {
-  
+  /* 
     fprintf (output, "\n\n\n");
     fprintf(output, "time: %lld\n", timestamp);
     if (fixtures)
@@ -86,7 +86,7 @@ void world::write_state(FILE* output, bool fixtures)
     fprintf (output,"Road:%d\t Car: ",i);
     this->roads[i]->cars[j]->write_state(output);
     }
-  
+  */
 }
 
 // For Debugging Purposes only
@@ -111,6 +111,8 @@ void world::updateWorld(void) {
 	      if (curr_car->position <= STEP_SIZE)
 		{
 		  curr_car->make_turn();
+		  curr_car->turn = 3*((float)rand()/(float)RAND_MAX);// Random turns for Reinforcement Learning
+		  printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
 		}
 
 	      else if (curr_car->position > STEP_SIZE)
