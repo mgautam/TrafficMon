@@ -22,7 +22,25 @@
 #define NORTHSOUTH_RIGHT 2
 #define EASTWEST_RIGHT 3
 
-#define STEP_SIZE 0.05
-#define CENTER_SPACE 1
+#define STEP_SIZE 0.1
+
+// Intersection
+#define  roadSideOffset 0.75
+#define halfIntersectionLen roadSideOffset
+
+// Road
+#define lenBWlanes 0.05
+#define lenBWlights 0.05
+#define LightSize 0.5
+
+// Car
+#define CarLen  (roadSideOffset-lenBWlanes)
+#define halfCarLen CarLen/2
+
+// Don't change this until I come up with a fix
+#define MIN_INTER_CAR_SPACE 1.0 + STEP_SIZE
+// (3*halfCarLen)
+
+
 
 #endif

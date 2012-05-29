@@ -20,7 +20,7 @@ road::road(intersection* init, intersection* final)
   if (this->length < 0) this->length *= -1;
   this->length -= 1;
 
-  this->cars = new car*[length];
+  this->cars = new car*[length + 2] + 2;
   memset(this->cars, 0, length*sizeof(car*));
 
   this->lights[LEFT] = RED;

@@ -45,7 +45,7 @@ world::world(int intc, intersection** intersections, int roadc, road** roads, in
 
   this->scale = (maxWorldX - minWorldX) > (maxWorldY - minWorldY)?
     1.5/((float)(maxWorldX - minWorldX + MARGIN_PADDING))  :  1.5/((float)(maxWorldY - minWorldY + MARGIN_PADDING));
-  printf ("minX = %d, minY = %d \t maxX = %d, maxY = %d", minWorldX, minWorldY, maxWorldX, maxWorldY);
+  //printf ("minX = %d, minY = %d \t maxX = %d, maxY = %d", minWorldX, minWorldY, maxWorldX, maxWorldY);
 
 }
   
@@ -61,7 +61,7 @@ void world::write_state(FILE* output)
 
 void world::write_state(FILE* output, bool fixtures)
 {
-  /*
+  /* 
     fprintf (output, "\n\n\n");
     fprintf(output, "time: %lld\n", timestamp);
     if (fixtures)
@@ -90,7 +90,7 @@ void world::write_state(FILE* output, bool fixtures)
 }
 
 // For Debugging Purposes only
-static float x = 0;
+float x = 0;
 // For Debugging Purposes only
 
 void world::updateWorld(void) {
@@ -103,32 +103,23 @@ void world::updateWorld(void) {
   incr_timestamp();
   for (int i = 0; i < this->roadc; i++) 
     {
-      for (int j = 0; j < this->roads[i]->length; j++)
+      for (int j = -2; j < this->roads[i]->length; j++)
 	{
-	  if (this->roads[i]->cars[j])
+	  car* curr_car;
+	  if ((curr_car = this->roads[i]->cars[j]))
 	    {
-	      car* curr_car = this->roads[i]->cars[j];//this->cars[c];
-	      if (curr_car->position <= STEP_SIZE)
-		{
-		  curr_car->make_turn();
-		}
+	      curr_car->move();
+	      // For Debugging Purposes only
+	      printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
+	      // For Debugging Purposes only
 
-	      else if (curr_car->position > STEP_SIZE)
-		{
-		  curr_car->move();
-		}
+	      // For Debugging Purposes only
+	      //car *newCar1 = new car (this->roads[roadc-1],LEFT); // Generate a car at every time instant
+	      // For Debugging Purposes only
 	    }
 	}
     }
 
-  for (int i = 0; i < this->carc; i++)
-    {
-      if (cars[i] && cars[i]->position == -1)
-	{
-	  delete cars[i];
-	  cars[i] = 0;
-	}
-    }
 }
 
 

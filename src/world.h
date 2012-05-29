@@ -6,6 +6,8 @@
 #include "road.h"
 #include "car.h"
 
+extern float x;
+
 class world
 {
  public:
