@@ -25,7 +25,7 @@ class car
   //variables
   int turn;
   int wait;
-  int position;
+  float position;
 
   int displacement_x;
   int displacement_y;

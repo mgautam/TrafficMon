@@ -3,7 +3,7 @@
 void factory::create_world(world** sim)
 {
   int SQUARE_SIZE = 2;
-  int ROAD_LENGTH = 50;
+  int ROAD_LENGTH = 5;
   int FOUR = 4;
 
   intersection** intersections = new intersection*[SQUARE_SIZE*SQUARE_SIZE];
