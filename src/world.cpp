@@ -112,7 +112,21 @@ void world::updateWorld(void) {
 		{
 		  curr_car->make_turn();
 		  curr_car->turn = 3*((float)rand()/(float)RAND_MAX);// Random turns for Reinforcement Learning
+
+		  // For Debugging Purposes only
 		  printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
+		  // For Debugging Purposes only
+
+		  // For Debugging Purposes only
+		  car *newCar1 = new car (this->roads[0],LEFT); // Generate a car at every time instant
+		  car *newCar2 = new car (this->roads[5],RIGHT); // Generate a car at every time instant
+		  car *newCar3 = new car (this->roads[10],LEFT); // Generate a car at every time instant
+		  car *newCar4 = new car (this->roads[15],RIGHT); // Generate a car at every time instant
+		  car *newCar5 = new car (this->roads[19],LEFT); // Generate a car at every time instant
+		  car *newCar6 = new car (this->roads[23],RIGHT); // Generate a car at every time instant
+		  // For Debugging Purposes only
+
+
 		}
 
 	      else if (curr_car->position > STEP_SIZE)
@@ -123,7 +137,7 @@ void world::updateWorld(void) {
 	}
     }
 
-  for (int i = 0; i < this->carc; i++)
+  /*  for (int i = 0; i < this->carc; i++)
     {
       if (cars[i] && cars[i]->position == -1)
 	{
@@ -131,6 +145,7 @@ void world::updateWorld(void) {
 	  cars[i] = 0;
 	}
     }
+  */
 }
 
 

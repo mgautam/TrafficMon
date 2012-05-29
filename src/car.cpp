@@ -128,9 +128,13 @@ void car::make_turn()
       }
       else {
 	// Trash the car
+	//	car *car_ptr = curr_road->cars[(int)this->position];
+	delete curr_road->cars[(int)this->position];
 	curr_road->cars[(int)this->position] = 0;
+	//	delete car_ptr;
+
 	this->position = -1;
-	this->curr_road = 0;
+	this->curr_road = 0;	
       }
     }
 }
