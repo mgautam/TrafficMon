@@ -7,30 +7,26 @@
 #include <GL/glut.h>
 #endif
 
-int painter::argc = 0;
-char** painter::argv = NULL;
+// int painter::argc = 0;
+// char** painter::argv = NULL;
 void (*painter::display) (void) = NULL;
 void (*painter::timerCallback) (int) = NULL;
 
 painter::painter(world* _simulation, void (*_display) (void), void (*_timerCallback) (int), int argc, char** argv) {
 
   this->simulation = _simulation;
- 
+  this->display = _display;
+  this->timerCallback = _timerCallback;
+  
   glutInit (&argc, argv);
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize (WINDOW_WIDTH,WINDOW_HEIGHT);
 
   glutCreateWindow ("World View");
   glDisable (GL_DEPTH_TEST);
-
-  this->display = _display;
   glutDisplayFunc (display);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
-
-  this->timerCallback = _timerCallback;
-  
-  // Start the transitions
   glutTimerFunc (SIMULATION_INTERVAL, timerCallback, 0);
 }
 
@@ -131,7 +127,7 @@ void painter::draw (intersection* curr_intersection, float scale) {
   if (!curr_intersection)
     return;
 
-  float halfIntersectionLen = 0.5;
+  float halfIntersectionLen = 1.5;
 
   glColor3f (1.0f, 0.0f, 0.0f);
   glBegin (GL_QUADS);
@@ -151,8 +147,8 @@ void painter::draw (road* curr_road, float scale) {
   glBegin (GL_QUADS);
 
   float lenBWlights = 0.05;
-  float roadSideOffset = 0.5;
-  float intersectionOffset = 0.5;
+  float roadSideOffset = 1.5;
+  float intersectionOffset = 1.5;
 
   switch (curr_road->compass) {
 
@@ -194,8 +190,8 @@ void painter::draw (road* curr_road, float scale) {
 
 void painter::drawLights (road* curr_road, float scale) {
   float lenBWlights = 0.05;
-  float roadSideOffset = 0.5;
-  float intersectionOffset = 0.5;
+  float roadSideOffset = 1.5;
+  float intersectionOffset = 1.5;
   float LightSize = 0.5;
 
   //lights[LEFT][GREEN] = true; // Debugging purpose only

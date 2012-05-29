@@ -6,7 +6,6 @@ void factory::create_world(world** sim)
   int road_length = 5;
   int road_count = 2*2*(square_size-1)*square_size;
 
-
   intersection** intersections = new intersection*[square_size*square_size];
   road** roads = new road*[road_count];
 
