@@ -2,7 +2,7 @@
 
 void factory::create_world(world** sim)
 {
-  int square_size = 3;
+  int square_size = 2;
   int road_length = 5;
   int road_count = 2*2*(square_size-1)*square_size;
 
@@ -37,8 +37,8 @@ void factory::create_world(world** sim)
     }
   
   car** cars = new car*[5];
-  cars[0] = new car(roads[0], LEFT); 
-  cars[1] = new car(roads[1], RIGHT); 
+  cars[0] = new car(roads[0], LEFT, roads[0]->length - 1); 
+  cars[1] = new car(roads[0], RIGHT, roads[0]->length - 2 ); 
   cars[2] = new car(roads[2], LEFT); 
   cars[3] = new car(roads[3], LEFT); 
   cars[4] = new car(roads[4], RIGHT);

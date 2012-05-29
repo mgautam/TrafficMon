@@ -11,10 +11,18 @@
 
 
 //constructor
-car::car (road* init_road, int next_turn)
+car::car (road* init_road, int next_turn) {
+  this->setCar (init_road, next_turn, (float)init_road->length - MIN_INTER_CAR_SPACE);//
+}
+
+car::car (road* init_road, int next_turn, int _position) {
+  this->setCar (init_road, next_turn, (float)_position);
+}
+
+void car::setCar (road* init_road, int next_turn, float _position)
 {
   this->curr_road = init_road;
-  this->position = (float)init_road->length - MIN_INTER_CAR_SPACE;
+  this->position = _position;
   init_road->cars[(int)this->position] = this;
   this->color.r = ((float)rand()/(float)RAND_MAX);
   this->color.g = ((float)rand()/(float)RAND_MAX);
@@ -47,11 +55,19 @@ bool car::can_move()
   }
   else if (this->position < this->curr_road->length)
     {
-      return this->curr_road->cars[(int)this->position-1]?
-	      this->curr_road->cars[(int)this->position-1]->can_move() ||
-	      (this->curr_road->cars[(int)this->position-1]->position < (this->position-MIN_INTER_CAR_SPACE)) : 
-	      true ;
-    }
+      if (this->curr_road->cars[(int)this->position-1]) // if a car exists just before this car,
+      {
+	if (this->curr_road->cars[(int)this->position-1]->can_move()) // if the previous car can move,
+	  return true;
+	else if ((this->position - this->curr_road->cars[(int)this->position-1]->position)  > 1) 
+	  // or if the gap between this car and previous car is more than minimum distance
+	  return true;
+	else 
+	  return false;
+      }
+      else
+	return true;
+   }
   else
     {
       printf ("Error in can move routine in car.h");

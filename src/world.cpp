@@ -61,7 +61,7 @@ void world::write_state(FILE* output)
 
 void world::write_state(FILE* output, bool fixtures)
 {
-  /*
+  
     fprintf (output, "\n\n\n");
     fprintf(output, "time: %lld\n", timestamp);
     if (fixtures)
@@ -86,7 +86,7 @@ void world::write_state(FILE* output, bool fixtures)
     fprintf (output,"Road:%d\t Car: ",i);
     this->roads[i]->cars[j]->write_state(output);
     }
-  */
+  
 }
 
 // For Debugging Purposes only
