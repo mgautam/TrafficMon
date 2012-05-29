@@ -17,7 +17,7 @@ class car
 {
  public:
   car (road* init_road, int next_turn);
-  car (road* init_road, int next_turn, int _position);
+  car (road* init_road, int next_turn, float _position);
   void  setCar (road* init_road, int next_turn, float _position);
   void write_state(FILE* output);
   bool can_move();

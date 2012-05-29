@@ -15,8 +15,8 @@ car::car (road* init_road, int next_turn) {
   this->setCar (init_road, next_turn, (float)init_road->length - MIN_INTER_CAR_SPACE);//
 }
 
-car::car (road* init_road, int next_turn, int _position) {
-  this->setCar (init_road, next_turn, (float)_position);
+car::car (road* init_road, int next_turn, float _position) {
+  this->setCar (init_road, next_turn, _position);
 }
 
 void car::setCar (road* init_road, int next_turn, float _position)
@@ -59,7 +59,7 @@ bool car::can_move()
       {
 	if (this->curr_road->cars[(int)this->position-1]->can_move()) // if the previous car can move,
 	  return true;
-	else if ((this->position - this->curr_road->cars[(int)this->position-1]->position)  > 1) 
+	else if ((this->position - this->curr_road->cars[(int)this->position-1]->position)  > MIN_INTER_CAR_SPACE) 
 	  // or if the gap between this car and previous car is more than minimum distance
 	  return true;
 	else 

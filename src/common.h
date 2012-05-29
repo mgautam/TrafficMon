@@ -25,7 +25,7 @@
 #define STEP_SIZE 0.1
 
 // Intersection
-#define  roadSideOffset 0.5
+#define  roadSideOffset 0.75
 #define halfIntersectionLen roadSideOffset
 
 // Road
@@ -37,7 +37,9 @@
 #define CarLen  (roadSideOffset-lenBWlanes)
 #define halfCarLen CarLen/2
 
-#define MIN_INTER_CAR_SPACE (3*halfCarLen)
+// Don't change this until I come up with a fix
+#define MIN_INTER_CAR_SPACE 1.0 + STEP_SIZE
+// (3*halfCarLen)
 
 
 

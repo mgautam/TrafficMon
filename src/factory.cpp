@@ -37,11 +37,11 @@ void factory::create_world(world** sim)
     }
   
   car** cars = new car*[5];
-  cars[0] = new car(roads[0], LEFT, roads[0]->length - 1); 
-  cars[1] = new car(roads[0], RIGHT, roads[0]->length - 2 ); 
-  cars[2] = new car(roads[2], LEFT); 
-  cars[3] = new car(roads[3], LEFT); 
-  cars[4] = new car(roads[4], RIGHT);
+  cars[0] = new car(roads[0], LEFT, (float)roads[0]->length - 1.1); 
+  cars[1] = new car(roads[0], LEFT, (float)roads[0]->length - 2.2); 
+  cars[2] = new car(roads[0], LEFT, (float)roads[0]->length - 3.3); 
+  cars[3] = new car(roads[0], LEFT, (float)roads[0]->length - 4.4);  
+  cars[4] = new car(roads[0], LEFT, (float)roads[0]->length - 5.5);
   
 *sim = new world ( square_size*square_size, intersections, 2*2*(square_size-1)*square_size, roads, 5, cars);
 }
