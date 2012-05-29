@@ -14,7 +14,7 @@
 car::car (road* init_road, int next_turn)
 {
   this->curr_road = init_road;
-  this->position = (float)init_road->length - CENTER_SPACE;
+  this->position = (float)init_road->length - MIN_INTER_CAR_SPACE;
   init_road->cars[(int)this->position] = this;
   this->color.r = ((float)rand()/(float)RAND_MAX);
   this->color.g = ((float)rand()/(float)RAND_MAX);
@@ -49,7 +49,7 @@ bool car::can_move()
     {
       return this->curr_road->cars[(int)this->position-1]?
 	      this->curr_road->cars[(int)this->position-1]->can_move() ||
-	      (this->curr_road->cars[(int)this->position-1]->position < (this->position-CENTER_SPACE)) : 
+	      (this->curr_road->cars[(int)this->position-1]->position < (this->position-MIN_INTER_CAR_SPACE)) : 
 	      true ;
     }
   else
@@ -106,7 +106,7 @@ void car::make_turn()
 
       if (next_road) {
 	curr_road->cars[(int)this->position] = 0;
-	this->position = next_road->length-CENTER_SPACE;//why doesn't it work when CENTER_SPACE is 0.5
+	this->position = next_road->length-MIN_INTER_CAR_SPACE;//why doesn't it work when MIN_INTER_CAR_SPACE is 0.5
 	next_road->cars[(int)this->position] = this;
 	this->curr_road = next_road;
       }
