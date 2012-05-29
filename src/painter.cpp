@@ -130,7 +130,7 @@ void painter::draw (intersection* curr_intersection, float scale) {
   if (!curr_intersection)
     return;
 
-  glColor3f (0.0f, 0.0f, 1.0f);
+  glColor3f (0.5f, 0.5f, 0.5f);
   glBegin (GL_QUADS);
   glVertex2f (((float) curr_intersection->x - halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);
   glVertex2f (((float) curr_intersection->x + halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);

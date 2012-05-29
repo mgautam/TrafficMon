@@ -43,63 +43,70 @@ void car::write_state(FILE* output)
 
 bool car::can_move()
 {
-  if (this->position <= STEP_SIZE)//A very small number close to 0
+  if (this->position == 0) // enter the intersection
     {
       if (this->turn == LEFT || this->turn == AHEAD)
-	return (this->curr_road->lights[LEFT] == GREEN);
+	{
+	  return (this->curr_road->lights[LEFT] == GREEN);
+	}
       else // this->turn == RIGHT
-	return (this->curr_road->lights[RIGHT] == GREEN);
+	{
+	  return (this->curr_road->lights[RIGHT] == GREEN);
+	}
     }
-  else if (this->position < 1) {
-    return true; // Make the car move until the end of the road
-  }
-  else if (this->position < this->curr_road->length)
+  else if (this->position < 0) //in the intersection
     {
-      if (this->curr_road->cars[(int)this->position-1]) // if a car exists just before this car,
-      {
-	if (this->curr_road->cars[(int)this->position-1]->can_move()) // if the previous car can move,
-	  return true;
-	else if ((this->position - this->curr_road->cars[(int)this->position-1]->position)  > MIN_INTER_CAR_SPACE) 
-	  // or if the gap between this car and previous car is more than minimum distance
-	  return true;
-	else 
-	  return false;
-      }
-      else
-	return true;
-   }
+      return true;
+    }
   else
     {
-      printf ("Error in can move routine in car.h");
-      exit (-1);
+      if (this->curr_road->cars[(int)this->position-1]) // if a car exists just before this car,
+	{
+	  if (this->curr_road->cars[(int)this->position-1]->can_move()) // if the previous car can move,
+	    {
+	      return true;
+	    }
+	  else
+	    {
+	      return false;
+	    }
+	}
+      else //if there are no cars in the front.
+	{
+	  return true; 
+	}
     }
 }
 
 void car::move()
 {
   // If the car is at position 0, it has to make turn
-  if (this->position <= STEP_SIZE)
+  if (this->position <= STEP_SIZE && this->position > -3)
     return;
 
   if (!can_move())
     {
       this->wait++;
+      return;
     }
+
+  if (
+
   else
     {
       this->wait = 0;
-      this->curr_road->cars[(int)this->position] = 0;
-      this->position -= STEP_SIZE;
-      this->curr_road->cars[(int)this->position] = this;
+      this->curr_road->cars[this->position] = 0;
+      this->position--;
+      this->curr_road->cars[this->position] = this;
     }
 }
 
 void car::make_turn()
 {
   // If the car is not at position 0, it has to move
-   if (this->position > STEP_SIZE) {
+  if (this->position > STEP_SIZE) {
     return;
-   }
+  }
 
   if (!can_move())
     {
