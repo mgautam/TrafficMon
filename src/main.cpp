@@ -17,6 +17,10 @@
 static world* simulation;
 static painter* ppainter;
 
+int  SIMULATION_INTERVAL = 256;
+
+
+
 void display(void)
 {
   simulation->updateWorld();
@@ -36,6 +40,7 @@ void timerCallback (int value)
 
 int main (int argc, char* argv[])
 {
+
   factory::create_world(&simulation);
 
   simulation->write_state(stdout);
