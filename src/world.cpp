@@ -90,7 +90,7 @@ void world::write_state(FILE* output, bool fixtures)
 }
 
 // For Debugging Purposes only
-static float x = 0;
+float x = 0;
 // For Debugging Purposes only
 
 void world::updateWorld(void) {
@@ -118,12 +118,7 @@ void world::updateWorld(void) {
 		  // For Debugging Purposes only
 
 		  // For Debugging Purposes only
-		  car *newCar1 = new car (this->roads[0],LEFT); // Generate a car at every time instant
-		  car *newCar2 = new car (this->roads[5],RIGHT); // Generate a car at every time instant
-		  car *newCar3 = new car (this->roads[10],LEFT); // Generate a car at every time instant
-		  car *newCar4 = new car (this->roads[15],RIGHT); // Generate a car at every time instant
-		  car *newCar5 = new car (this->roads[19],LEFT); // Generate a car at every time instant
-		  car *newCar6 = new car (this->roads[23],RIGHT); // Generate a car at every time instant
+		  car *newCar1 = new car (this->roads[roadc-1],LEFT); // Generate a car at every time instant
 		  // For Debugging Purposes only
 
 
@@ -137,15 +132,6 @@ void world::updateWorld(void) {
 	}
     }
 
-  /*  for (int i = 0; i < this->carc; i++)
-    {
-      if (cars[i] && cars[i]->position == -1)
-	{
-	  delete cars[i];
-	  cars[i] = 0;
-	}
-    }
-  */
 }
 
 

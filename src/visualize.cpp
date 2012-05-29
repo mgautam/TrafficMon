@@ -9,6 +9,7 @@
 
 #include "common.h"
 #include "visualize.h"
+#include "world.h"
 
 bool stopAnime = false;
 
@@ -35,12 +36,6 @@ void handleKeyPress  (unsigned char key, int x, int y) {
      exit (0);
      break;
      
-  case 114: //r
-    glMatrixMode (GL_PROJECTION);
-    glPopMatrix ();
-    glPushMatrix ();
-    break;
-
   case 119: // w
     glMatrixMode (GL_PROJECTION);
     glOrtho (-1,1,-0.9,1.1,-1,1);
@@ -61,16 +56,22 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     glOrtho (-1,1,-1.1,0.9,-1,1);
     break;
 
-  case 108: // l
+  case 107: // k
     glMatrixMode (GL_PROJECTION);
     glOrtho (-2,2,-2,2,-1,1);
     //zoom out
     break;
 
-  case 107: //k
+  case 106: //j
     glMatrixMode (GL_PROJECTION);
     glOrtho (-0.5,0.5,-0.5,0.5,-1,1);
     //zoom in
+    break;
+
+  case 114: //r
+    glMatrixMode (GL_PROJECTION);
+    glPopMatrix ();
+    glPushMatrix ();
     break;
 
   case 110: //n- NITRO
@@ -78,9 +79,14 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     printf ("NITROX %d powered by SEGA\n", simulation_interval);
     break;
 
-  case 112: //p-POWER
+  case 109: //m-mud
     simulation_interval *= 2;
     printf ("Damper %d\n", simulation_interval);
+    break;
+
+  case 108: //l-lights
+    printf ("L press\n");
+    x = x + 1;
     break;
 
   }

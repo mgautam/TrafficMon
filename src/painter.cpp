@@ -27,6 +27,8 @@ painter::painter(world* _simulation, void (*_display) (void), void (*_timerCallb
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 
+  //  glClearColor (1.0f,1.0f,1.0f,0.0f);
+
   glMatrixMode (GL_PROJECTION);
   glPushMatrix ();
 
@@ -142,7 +144,7 @@ void painter::draw (road* curr_road, float scale) {
   if (!curr_road)
     return;
 
-  glColor3f (0.0f, 0.0f, 1.0f);
+  glColor3f (0.5f, 0.5f, 0.5f);
   glBegin (GL_QUADS);
 
   switch (curr_road->compass) {
