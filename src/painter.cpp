@@ -1,5 +1,5 @@
-#include "painter.h"
 #include "visualize.h"
+#include "painter.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -25,7 +25,7 @@ painter::painter(world* _simulation, void (*_display) (void), void (*_timerCallb
   glutDisplayFunc (display);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
-  glutTimerFunc (SIMULATION_INTERVAL, timerCallback, 0);
+  glutTimerFunc (simulation_interval, timerCallback, 0);
 }
 
 void painter::animate()

@@ -2,7 +2,7 @@
 #define VISUALIZE_H
 
 extern bool stopAnime;
-extern int SIMULATION_INTERVAL;
+extern int simulation_interval;
 
 void handleKeyPress (unsigned char, int , int);
 void handleResize (int , int);

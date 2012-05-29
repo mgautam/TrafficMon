@@ -1,3 +1,5 @@
+#include "visualize.h"
+
 #include <stdio.h>
 #include "common.h"
 #include "world.h"
@@ -10,7 +12,7 @@
 #include <GL/glut.h>
 #endif
 
-#include "visualize.h"
+
 
 static world* simulation;
 static painter* ppainter;
@@ -29,7 +31,7 @@ void timerCallback (int value)
   if (!stopAnime)
     display();
    /* call back again after elapsedUSecs have passed */
-  glutTimerFunc (SIMULATION_INTERVAL, timerCallback, 0);
+  glutTimerFunc ( simulation_interval, timerCallback, 0);
 }
 
 int main (int argc, char* argv[])
