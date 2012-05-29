@@ -123,7 +123,7 @@ void world::updateWorld(void) {
 
   for (int i = 0; i < this->carc; i++)
     {
-      if (cars[i]->position == -1)
+      if (cars[i] && cars[i]->position == -1)
 	{
 	  delete cars[i];
 	  cars[i] = 0;
