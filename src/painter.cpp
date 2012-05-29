@@ -7,8 +7,6 @@
 #include <GL/glut.h>
 #endif
 
-// int painter::argc = 0;
-// char** painter::argv = NULL;
 void (*painter::display) (void) = NULL;
 void (*painter::timerCallback) (int) = NULL;
 
