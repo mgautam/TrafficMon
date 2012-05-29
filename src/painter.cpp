@@ -130,7 +130,7 @@ void painter::draw (intersection* curr_intersection, float scale) {
   if (!curr_intersection)
     return;
 
-  glColor3f (0.0f, 0.0f, 1.0f);
+  glColor3f (0.5f, 0.5f, 0.5f);
   glBegin (GL_QUADS);
   glVertex2f (((float) curr_intersection->x - halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);
   glVertex2f (((float) curr_intersection->x + halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);
@@ -198,10 +198,10 @@ void painter::drawLights (road* curr_road, float scale) {
       glColor3f (1.0f*(float)(j<=AMBER),1.0f*(float)(j>=AMBER),0.0f);
       //glColor3i (255,0,0);
 
-      if (curr_road->lights[i] == j) glBegin (GL_QUADS);
-      else glBegin (GL_LINE_LOOP);
+      
+      glBegin (GL_LINE_LOOP);
 
-      switch (curr_road->compass) {
+     switch (curr_road->compass) {
 
       case NORTH:
 	glVertex2f (((float)curr_road->init->x - (roadSideOffset + i*LightSize))*scale, 
@@ -253,6 +253,66 @@ void painter::drawLights (road* curr_road, float scale) {
       }
 
       glEnd ();
+
     }
+
+    
+    int j = curr_road->lights[i];
+     glColor3f (1.0f*(float)(j<=AMBER),1.0f*(float)(j>=AMBER),0.0f);
+     glBegin (GL_QUADS);
+
+     switch (curr_road->compass) {
+
+      case NORTH:
+	glVertex2f (((float)curr_road->init->x - (roadSideOffset + i*LightSize))*scale, 
+		    ((float)curr_road->final->y - (halfIntersectionLen + (j+1)*LightSize))*scale);
+	glVertex2f (((float)curr_road->init->x - (roadSideOffset + i*LightSize))*scale, 
+		    ((float)curr_road->final->y - (halfIntersectionLen + j * LightSize))*scale);
+	glVertex2f (((float)curr_road->init->x - (roadSideOffset + (i+1)*LightSize - lenBWlights))*scale, 
+		    ((float)curr_road->final->y - (halfIntersectionLen + j * LightSize))*scale);
+	glVertex2f (((float)curr_road->init->x - (roadSideOffset + (i+1)*LightSize - lenBWlights))*scale, 
+		    ((float)curr_road->final->y - (halfIntersectionLen + (j+1)*LightSize))*scale);
+	break;
+
+      case EAST:
+	glVertex2f (((float)curr_road->final->x - (halfIntersectionLen + (j+1)*LightSize))*scale,
+		    ((float)curr_road->init->y + (roadSideOffset + i*LightSize))*scale);
+	glVertex2f (((float)curr_road->final->x - (halfIntersectionLen + j * LightSize))*scale,
+		    ((float)curr_road->init->y + (roadSideOffset + i*LightSize))*scale);
+	glVertex2f (((float)curr_road->final->x - (halfIntersectionLen + j * LightSize))*scale,
+		    ((float)curr_road->init->y + (roadSideOffset + (i+1)*LightSize - lenBWlights))*scale);
+	glVertex2f (((float)curr_road->final->x - (halfIntersectionLen + (j+1) * LightSize))*scale,
+		    ((float)curr_road->init->y + (roadSideOffset + (i+1)*LightSize - lenBWlights))*scale);
+	break;
+
+      case SOUTH:
+	glVertex2f (((float)curr_road->init->x + (roadSideOffset + i*LightSize))*scale, 
+		    ((float)curr_road->final->y + (halfIntersectionLen + (j+1)*LightSize))*scale);
+	glVertex2f (((float)curr_road->init->x + (roadSideOffset + i*LightSize))*scale, 
+		    ((float)curr_road->final->y + (halfIntersectionLen + j * LightSize))*scale);
+	glVertex2f (((float)curr_road->init->x + (roadSideOffset + (i+1)*LightSize - lenBWlights))*scale, 
+		    ((float)curr_road->final->y + (halfIntersectionLen + j * LightSize))*scale);
+	glVertex2f (((float)curr_road->init->x + (roadSideOffset + (i+1)*LightSize - lenBWlights))*scale, 
+		    ((float)curr_road->final->y + (halfIntersectionLen + (j+1)*LightSize))*scale);
+	break;
+
+      case WEST:
+	glVertex2f (((float)curr_road->final->x + (halfIntersectionLen + (j+1)*LightSize))*scale,
+		    ((float)curr_road->init->y - (roadSideOffset + i*LightSize))*scale);
+	glVertex2f (((float)curr_road->final->x + (halfIntersectionLen + j * LightSize))*scale,
+		    ((float)curr_road->init->y - (roadSideOffset + i*LightSize))*scale);
+	glVertex2f (((float)curr_road->final->x + (halfIntersectionLen + j * LightSize))*scale,
+		    ((float)curr_road->init->y - (roadSideOffset + (i+1)*LightSize - lenBWlights))*scale);
+	glVertex2f (((float)curr_road->final->x + (halfIntersectionLen + (j+1) * LightSize))*scale,
+		    ((float)curr_road->init->y - (roadSideOffset + (i+1)*LightSize - lenBWlights))*scale);
+	break;
+
+      default:
+	printf ("Error in Road Endpoints! They are invalid\n");
+	exit (-1);
+      }
+
+      glEnd ();
   }
+
 }

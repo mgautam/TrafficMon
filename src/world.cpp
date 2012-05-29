@@ -119,6 +119,9 @@ void world::updateWorld(void) {
 
 		  // For Debugging Purposes only
 		  car *newCar1 = new car (this->roads[roadc-1],LEFT); // Generate a car at every time instant
+		  car *newCar2 = new car (this->roads[roadc-2],RIGHT); // Generate a car at every time instant
+		  car *newCar3 = new car (this->roads[roadc-3],LEFT); // Generate a car at every time instant
+		  car *newCar4 = new car (this->roads[roadc-4],RIGHT); // Generate a car at every time instant
 		  // For Debugging Purposes only
 
 
