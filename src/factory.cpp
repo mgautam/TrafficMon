@@ -2,7 +2,7 @@
 
 void factory::create_world(world** sim)
 {
-  int square_size = 9;
+  int square_size = 100;
   int road_length = 5;
   int road_count = 2*2*(square_size-1)*square_size;
 
