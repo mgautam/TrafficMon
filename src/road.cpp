@@ -72,7 +72,7 @@ road* road::get_right()
 }
 road* road::get_ahead()
 {
-  return final->out[(compass+2)%4];
+  return final->out[(compass+0)%4]; //+2 for U-turn
 }
 
 void road::write_state(FILE* output)
