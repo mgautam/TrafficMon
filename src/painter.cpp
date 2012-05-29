@@ -26,6 +26,10 @@ painter::painter(world* _simulation, void (*_display) (void), void (*_timerCallb
   glutDisplayFunc (display);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
+
+  glMatrixMode (GL_PROJECTION);
+  glPushMatrix ();
+
   glutTimerFunc (simulation_interval, timerCallback, 0);
 }
 
@@ -38,8 +42,8 @@ void painter::draw () {
 
   float scale = simulation->scale;
   
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
+  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+ 
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity ();
   

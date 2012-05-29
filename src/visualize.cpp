@@ -35,6 +35,11 @@ void handleKeyPress  (unsigned char key, int x, int y) {
      exit (0);
      break;
      
+  case 114: //r
+    glMatrixMode (GL_PROJECTION);
+    glPopMatrix ();
+    glPushMatrix ();
+    break;
 
   case 119: // w
     glMatrixMode (GL_PROJECTION);
@@ -69,13 +74,13 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     break;
 
   case 110: //n- NITRO
-    printf ("NITROX %d powered by SEGA\n", simulation_interval);
     simulation_interval /= 2;
+    printf ("NITROX %d powered by SEGA\n", simulation_interval);
     break;
 
   case 112: //p-POWER
-    printf ("Damper %d\n", simulation_interval);
     simulation_interval *= 2;
+    printf ("Damper %d\n", simulation_interval);
     break;
 
   }
