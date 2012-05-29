@@ -15,8 +15,6 @@ class painter {
 public:
   static void (*display) (void);
   static void (*timerCallback) (int);
-  // static int argc;
-  // static char** argv;
 
   painter(world* sim);
   painter(world* simulation, void (*display) (void), void (*timerCallback) (int), int argc, char** argv);
