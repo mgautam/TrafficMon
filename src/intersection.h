@@ -30,6 +30,8 @@ class intersection
   int in_count;
   int out_count;
 
+  int length; //2 means the intersection is 2 x 2.
+
   road* in[MAX_DEGREE];
   road* out[MAX_DEGREE];
 
