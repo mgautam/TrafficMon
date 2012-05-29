@@ -31,6 +31,48 @@ void handleKeyPress  (unsigned char key, int x, int y) {
    case 27: // Escape Key
      printf ("Escape key pressed\n");
      exit (0);
+     break;
+     
+
+  case 119: // w
+    glMatrixMode (GL_PROJECTION);
+    glOrtho (-1,1,-0.9,1.1,-1,1);
+    break;
+
+  case 97: // a
+    glMatrixMode (GL_PROJECTION);
+    glOrtho (-1.1,0.9,-1,1,-1,1);
+    //zoom in
+    break;
+
+  case 100: // d
+    glMatrixMode (GL_PROJECTION);
+    glOrtho (-0.9,1.1,-1,1,-1,1);
+    //zoom in
+    break;
+
+  case 115: // s
+    glMatrixMode (GL_PROJECTION);
+    glOrtho (-1,1,-1.1,0.9,-1,1);
+    //zoom in
+    break;
+
+  case 120: // x
+    glMatrixMode (GL_PROJECTION);
+    glOrtho (-2,2,-2,2,-1,1);
+    //zoom out
+    break;
+
+  case 122: //z
+    glMatrixMode (GL_PROJECTION);
+    glOrtho (-0.5,0.5,-0.5,0.5,-1,1);
+    //zoom in
+    
+    break;
+
+
+
+
   }
 }
 
