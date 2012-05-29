@@ -73,7 +73,6 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     break;
 
   case 110: //n- NITRO
-<<<<<<< HEAD
     printf ("NITROX %d powered by SEGA\n", simulation_interval);
     simulation_interval /= 2;
     break;
@@ -81,13 +80,6 @@ void handleKeyPress  (unsigned char key, int x, int y) {
   case 112: //p-POWER
     printf ("Damper %d\n", simulation_interval);
     simulation_interval *= 2;
-=======
-    SIMULATION_INTERVAL /= 2;
-    break;
-
-  case 112: //p-POWER
-    SIMULATION_INTERVAL *= 2;
->>>>>>> 7bd9cfa9d75ddfeaa897f341e2f5c286e3e87e50
     break;
 
   }
