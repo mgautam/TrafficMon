@@ -76,7 +76,7 @@ void painter::draw (car* curr_car, float scale) {
   // The first 0.5 is to include the offset of intersection to road
   // -1 coz position starts from 1 not 0. 
   // The last 0.5 as offset for between car padding
-  float roadOffset =  (0.5 + (float)curr_car->position+ 0.5);
+  float roadOffset =  (0.5 + curr_car->position + 0.5);
   float halfCarLen = 0.25;
 
   float lenBWlanes = 0.05;

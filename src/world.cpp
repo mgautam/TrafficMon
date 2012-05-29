@@ -61,6 +61,7 @@ using namespace std;
 
   void world::write_state(FILE* output, bool fixtures)
   {
+    /*
     fprintf (output, "\n\n\n");
     fprintf(output, "time: %lld\n", timestamp);
     if (fixtures)
@@ -85,42 +86,33 @@ using namespace std;
 	  fprintf (output,"Road:%d\t Car: ",i);
 	  this->roads[i]->cars[j]->write_state(output);
 	}
+    */
   }
 
 // For Debugging Purposes only
-static int x;//=0
+static float x = 0;
 // For Debugging Purposes only
 
   void world::updateWorld(void) {
     // For Debugging Purposes only
      for (int i = 0; i < this->intc; i++)
-       this->intersections[i]->controlLights (x);//EASTWEST_RIGHT);x++%4
-     x = (x+1)%4;
+       this->intersections[i]->controlLights (((int)x)%4);//EASTWEST_RIGHT);x++%4
+     x = x+0.05;
     // For Debugging Purposes only
 
-     for (int i = 0; i < this->intc; i++) {
-       for (int j = 0; j < MAX_DEGREE; j++) {
-	 if (this->intersections[i]->in[j]) {
-	   printf ("Intersection: x:%d, y:%d\t",this->intersections[i]->x,this->intersections[i]->y);
-	   printf ("Road: %d\t",j);
-	   printf ("LEFT:%d RIGHT:%d",this->intersections[i]->in[j]->lights[0],this->intersections[i]->in[j]->lights[1]);
-	   printf ("\n");
-	 }
-       }
-     }
-
-
-
     incr_timestamp();
-    for (int c = 0; c < this->carc; c++)
+    for (int i = 0; i < this->roadc; i++) 
+      for (int j = 0; j < this->roads[i]->length; j++)
+	if (this->roads[i]->cars[j])
+	//for (int c = 0; c < this->carc; c++)
       {
-	car* curr_car = this->cars[c];
-	if (curr_car->position == 0)
+	car* curr_car = this->roads[i]->cars[j];//this->cars[c];
+	if (curr_car->position <= STEP_SIZE)
 	  {
 	    curr_car->make_turn();
 	  }
 
-	else if (curr_car->position > 0)
+	else if (curr_car->position > STEP_SIZE)
 	  {
 	    curr_car->move();
 	  }
