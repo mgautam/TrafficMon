@@ -89,8 +89,8 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     break;
 
   case 's': // -> step to next unit in time dimension
-    stopAnime = false;
-        ppainter->display();
+    stopAnime = true;
+    ppainter->display();
     //    ppainter->timerCallback(0);
     printf ("Key Pressed: Step to next unit in time dimension\n");
     break;

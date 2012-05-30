@@ -35,10 +35,6 @@ painter::painter(world* _simulation, void (*_display) (void), void (*_timerCallb
   glutTimerFunc (simulation_interval, timerCallback, 0);
 }
 
-void painter::step(){
-  glutTimerFunc (0, timerCallback, 0);
-}
-
 void painter::animate()
 { 
   glutMainLoop();
@@ -136,16 +132,16 @@ void painter::draw (car* curr_car, float scale) {
 
 void painter::draw (intersection* curr_intersection, float scale) {
 
-  // if (!curr_intersection)
-  //   return;
+   if (!curr_intersection)
+      return;
 
-  // glColor3f (0.5f, 0.5f, 0.5f);
-  // glBegin (GL_QUADS);
-  // glVertex2f (((float) curr_intersection->x - halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);
-  // glVertex2f (((float) curr_intersection->x + halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);
-  // glVertex2f (((float) curr_intersection->x + halfIntersectionLen) * scale, ((float)curr_intersection->y - halfIntersectionLen)* scale);
-  // glVertex2f (((float) curr_intersection->x - halfIntersectionLen) * scale, ((float)curr_intersection->y - halfIntersectionLen)* scale);
-  // glEnd ();
+   glColor3f (0.5f, 0.5f, 0.5f);
+   glBegin (GL_QUADS);
+   glVertex2f (((float) curr_intersection->x - halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);
+   glVertex2f (((float) curr_intersection->x + halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);
+   glVertex2f (((float) curr_intersection->x + halfIntersectionLen) * scale, ((float)curr_intersection->y - halfIntersectionLen)* scale);
+   glVertex2f (((float) curr_intersection->x - halfIntersectionLen) * scale, ((float)curr_intersection->y - halfIntersectionLen)* scale);
+   glEnd ();
 }
 
 void painter::draw (road* curr_road, float scale) {
