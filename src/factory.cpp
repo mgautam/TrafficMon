@@ -1,10 +1,14 @@
+#include "common.h"
 #include "factory.h"
 #include <cstring>
 
 void factory::create_world(world** sim)
 {
-  int square_size = 4;
-  int road_length = 100;
+  int square_size = SQUARE_SIZE;
+  int road_length = NUM_SLOTS_IN_ROAD;
+
+
+
   int road_count = 2*2*(square_size+1)*square_size;
   int intersection_count = (square_size+2)*(square_size+2);
   intersection** intersections = new intersection*[intersection_count];
@@ -43,10 +47,11 @@ void factory::create_world(world** sim)
     }
 
   car** cars = new car*[5];
-  cars[0] = new car(roads[0], LEFT, roads[0]->length - 1); 
-  cars[1] = new car(roads[0], LEFT, (float)roads[0]->length - 2);
-  cars[2] = new car(roads[road_count/4+0], RIGHT, (float)roads[0]->length - 2); 
-  // cars[2] = new car(roads[1*5+3], LEFT, (float)roads[1*5+2]->length - 3.3); 
+  //cars[0] = new car(roads[0], LEFT, roads[0]->length - 1); 
+  //cars[1] = new car(roads[0], LEFT, (float)roads[0]->length - 2);
+  cars[0] = new car(roads[road_count/4+2*square_size+3], RIGHT, (float)roads[0]->length - 1); 
+  cars[1] = new car(roads[road_count/4+2*square_size+3], RIGHT, (float)roads[0]->length - 3); 
+  cars[2] = new car(roads[road_count/4+2*square_size+3], RIGHT, (float)roads[0]->length - 2); 
   // cars[3] = new car(roads[4*5+3], LEFT, (float)roads[4*5+2]->length - 4.4);  
   // cars[4] = new car(roads[3*5+3], LEFT, (float)roads[3*5+2]->length - 5.5);
   

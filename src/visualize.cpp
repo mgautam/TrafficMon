@@ -18,6 +18,8 @@ int simulation_interval = 256;
 
 extern painter* ppainter;
 
+static bool mirror = false;
+
 void handleKeyPress  (unsigned char key, int x, int y) {
   switch (key) {
   case 32: // SPACE BAR
@@ -39,26 +41,36 @@ void handleKeyPress  (unsigned char key, int x, int y) {
      
   case 'k':
     glMatrixMode (GL_PROJECTION);
-    glOrtho (-1,1,-0.9,1.1,-1,1);
+    if (mirror) glOrtho (-1,1,-0.9,1.1,-1,1);
+    else glOrtho (-1,1,-1.1,0.9,-1,1);
     printf (">> Perspective View Window moved down\n");
     break;
 
-  case 'h':
+  case 'j':
     glMatrixMode (GL_PROJECTION);
-    glOrtho (-1.1,0.9,-1,1,-1,1);
+    if (mirror) glOrtho (-0.9,1.1,-1,1,-1,1);
+    else glOrtho (-1.1,0.9,-1,1,-1,1);
     printf (">> Perspective View Window moved left\n");
     break;
 
   case 'l':
     glMatrixMode (GL_PROJECTION);
-    glOrtho (-0.9,1.1,-1,1,-1,1);
+    if (mirror) glOrtho (-1.1,0.9,-1,1,-1,1);
+    else glOrtho (-0.9,1.1,-1,1,-1,1);
     printf (">> Perspective View Window moved right\n");
     break;
 
-  case 'j':
+  case 'i':
     glMatrixMode (GL_PROJECTION);
-    glOrtho (-1,1,-1.1,0.9,-1,1);
-    printf (">> Perspective View Window moved down\n");
+    if (mirror) glOrtho (-1,1,-1.1,0.9,-1,1);
+    else glOrtho (-1,1,-0.9,1.1,-1,1);
+    printf (">> Perspective View Window moved up\n");
+    break;
+
+  case 'm':
+    mirror = !mirror;
+    if (mirror) printf (">> Mirror Turned on\n");
+    else printf (">> Mirror Turned off\n");
     break;
 
   case 'x':

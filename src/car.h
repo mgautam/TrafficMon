@@ -20,7 +20,7 @@ class car
   car (road* init_road, int next_turn, int position);
   void  setCar (road* init_road, int next_turn, int position);
   void write_state(FILE* output);
-  bool can_move();
+  // bool can_move();
   int move();
   void sense();
   void make_turn();

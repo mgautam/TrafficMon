@@ -1,9 +1,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#define WINDOW_WIDTH 500
-#define WINDOW_HEIGHT 500
-
+// MODEL Parameters
 #define RIGHT 0
 #define LEFT  1
 #define AHEAD 2
@@ -30,26 +28,37 @@
 
 #define STEP_SIZE 0.1
 
+#define NUM_SLOTS_IN_ROAD 100
+#define SQUARE_SIZE 2
+
+
+
+// VIEW Parameters
+#define WINDOW_WIDTH 500
+#define WINDOW_HEIGHT 500
+
 // Road
-#define roadWidth 10
-#define lenBWlanes 0.05*roadWidth
-#define lenBWlights 0.05*roadWidth
-#define LightSize roadWidth
-#define  roadSideOffset roadWidth+lenBWlanes
-//0.5
+#define ROAD_WIDTH 50
+#define HLEN_BW_LANES 0.05*ROAD_WIDTH
+
+// Traffic Lights
+#define HLEN_BW_LIGHTS 0.05*ROAD_WIDTH
+#define TL_LIGHT_SIZE ROAD_WIDTH
 
 // Intersection
-#define halfIntersectionLen roadWidth
+#define INTERSECTION_SIZE 2*(ROAD_WIDTH+HLEN_BW_LANES)
 
 // Car
-#define CarLen  5
-//(roadSideOffset-lenBWlanes)
-#define halfCarLen CarLen/2
+// If you change car length it changes road length in visualization
+#define CAR_LENGTH  10
+#define CAR_WIDTH 5
+#define HCAR_LENGTH CAR_LENGTH/2
+#define HCAR_WIDTH CAR_WIDTH/2
 
 // Don't change this until I come up with a fix
-#define MIN_INTER_CAR_SPACE 0.0f;
+#define MIN_INTER_CAR_SPACE 1.0f
 // (3*halfCarLen)
 
-
+#define SCALE_ (CAR_LENGTH+MIN_INTER_CAR_SPACE)
 
 #endif

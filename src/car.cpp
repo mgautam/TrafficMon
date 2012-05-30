@@ -42,31 +42,8 @@ void car::write_state(FILE* output)
   fprintf (output, "\n");
 }
 
-bool car::can_move()
-{
-    
-
-
-  if (this->position == 0)
-    {
-      road* next_road = this->curr_road->get_next(this->turn);
-
-      return (this->curr_road->lights[this->turn] == GREEN) && 
-	next_road->cars[next_road->length - 1] == 0;
-    }
-  if (this->position > 0)
-    {
-      return curr_road->cars[this->position-1] == 0;
-    }
-  
-  //if (this->position < 0)
-  return true;
-
-}
-
 int car::move()
 {
-  // printf("position: %d\n", position);
 
   road* next_road = curr_road->get_next(turn);
   int accrued_wait = wait;
@@ -129,7 +106,7 @@ int car::move()
     }
 
   moved = true;
-  
+
   return accrued_wait;
 }
 
@@ -186,7 +163,7 @@ void car::make_turn()
     }
 
   curr_road->cars[position] = 0;
-  position = next_road->length - 1;
+  position = next_road->length - 1 - 2;
   next_road->cars[position] = this;
   curr_road = next_road;
 }
