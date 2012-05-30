@@ -35,6 +35,10 @@ painter::painter(world* _simulation, void (*_display) (void), void (*_timerCallb
   glutTimerFunc (simulation_interval, timerCallback, 0);
 }
 
+void painter::step(){
+  glutTimerFunc (0, timerCallback, 0);
+}
+
 void painter::animate()
 { 
   glutMainLoop();

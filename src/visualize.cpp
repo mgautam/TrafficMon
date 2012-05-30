@@ -10,10 +10,13 @@
 #include "common.h"
 #include "visualize.h"
 #include "world.h"
+#include "painter.h"
 
 bool stopAnime = false;
 
 int simulation_interval = 256;
+
+extern painter* ppainter;
 
 void handleKeyPress  (unsigned char key, int x, int y) {
   switch (key) {
@@ -27,66 +30,67 @@ void handleKeyPress  (unsigned char key, int x, int y) {
       printf ("Animation Paused. Press SPACE on GL_WINDOW to resume");
     }
     printf ("\n");
-    //    stopAnime = ~stopAnime;
-    //    printf ("stopAnime = %d\n",stopAnime);
     break;
 
-   case 27: // Escape Key
+   case 'q': // Quit //27
      printf ("Escape key pressed\n");
      exit (0);
      break;
      
-  case 119: // w
+  case 'k': // w -> Pan Above
     glMatrixMode (GL_PROJECTION);
     glOrtho (-1,1,-0.9,1.1,-1,1);
     break;
 
-  case 97: // a
+  case 'h': // a -> Pan Left
     glMatrixMode (GL_PROJECTION);
     glOrtho (-1.1,0.9,-1,1,-1,1);
     break;
 
-  case 100: // d
+  case 'l': // d -> Pan Right
     glMatrixMode (GL_PROJECTION);
     glOrtho (-0.9,1.1,-1,1,-1,1);
     break;
 
-  case 115: // s
+  case 'j': // s -> Pan Down
     glMatrixMode (GL_PROJECTION);
     glOrtho (-1,1,-1.1,0.9,-1,1);
     break;
 
-  case 107: // k
+  case 'x': // k -> Zoom out
     glMatrixMode (GL_PROJECTION);
     glOrtho (-2,2,-2,2,-1,1);
-    //zoom out
     break;
 
-  case 106: //j
+  case 'z': //j -> Zoom in
     glMatrixMode (GL_PROJECTION);
     glOrtho (-0.5,0.5,-0.5,0.5,-1,1);
-    //zoom in
     break;
 
-  case 114: //r
+  case 'r': //r -> reset View
     glMatrixMode (GL_PROJECTION);
     glPopMatrix ();
     glPushMatrix ();
     break;
 
-  case 110: //n- NITRO
+  case '=': //n -> Increase Speed
     simulation_interval /= 2;
     printf ("NITROX %d powered by SEGA\n", simulation_interval);
     break;
 
-  case 109: //m-mud
+  case '-': //m -> Decrease Speed
     simulation_interval *= 2;
     printf ("Damper %d\n", simulation_interval);
     break;
 
-  case 108: //l-lights
+  case '.': // l -> lights
     printf ("L press\n");
     x = x + 1;
+    break;
+
+  case 's': // -> step to next unit in time dimension
+    ppainter->step ();
+    printf ("Key Pressed: Step to next unit in time dimension\n");
     break;
 
   }

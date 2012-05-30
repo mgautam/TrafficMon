@@ -15,9 +15,11 @@
 
 
 static world* simulation;
-static painter* ppainter;
 
-int  SIMULATION_INTERVAL = 256;
+extern painter* ppainter;
+painter* ppainter;
+
+//int  SIMULATION_INTERVAL = 256;
 
 
 

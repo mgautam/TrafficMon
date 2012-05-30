@@ -26,6 +26,7 @@ public:
   void drawLights (road* curr_road, float scale);
 
 
+  void step();
   void animate();
 
   world* simulation;
