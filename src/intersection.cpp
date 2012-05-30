@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 using namespace std;
-
 #include <cstring>
-
-#include "common.h"
-#include "intersection.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -13,7 +9,8 @@ using namespace std;
 #include <GL/glut.h>
 #endif
 
-
+#include "config.h"
+#include "intersection.h"
 
 //constructor
 intersection::intersection(int x, int y)

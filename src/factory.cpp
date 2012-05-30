@@ -1,57 +1,54 @@
-#include "common.h"
-#include "factory.h"
 #include <cstring>
+
+#include "config.h"
+#include "factory.h"
 
 void factory::create_world(world** sim)
 {
-  int square_size = SQUARE_SIZE;
-  int road_length = NUM_SLOTS_IN_ROAD;
 
-
-
-  int road_count = 2*2*(square_size+1)*square_size;
-  int intersection_count = (square_size+2)*(square_size+2);
+  int road_count = 2*2*(SQUARE_SIZE+1)*SQUARE_SIZE;
+  int intersection_count = (SQUARE_SIZE+2)*(SQUARE_SIZE+2);
   intersection** intersections = new intersection*[intersection_count];
   road** roads = new road*[road_count];
   
   memset(intersections, 0, sizeof(intersection*)*intersection_count);
-  for (int y = 0; y < square_size+2; y++)
+  for (int y = 0; y < SQUARE_SIZE+2; y++)
     {
-      for (int x = 0; x < square_size+2; x++)
+      for (int x = 0; x < SQUARE_SIZE+2; x++)
 	{
-	  if ((x == 0 || x == square_size + 1) && (y == 0 || y == square_size + 1))
+	  if ((x == 0 || x == SQUARE_SIZE + 1) && (y == 0 || y == SQUARE_SIZE + 1))
 	    continue;
 
 	  // Add 2 unit to the length of road in order to include size of intersection
-	  // intersections[y*square_size+x] = new intersection((2*x - (square_size-1))*(road_length+1), (2*y - (square_size-1))*(road_length+1));
-	  intersections[y*(square_size+2)+x] = new intersection((road_length+2)*x, (road_length+2)*y);
+	  // intersections[y*SQUARE_SIZE+x] = new intersection((2*x - (SQUARE_SIZE-1))*(NUM_SLOTS_IN_ROAD+1), (2*y - (SQUARE_SIZE-1))*(NUM_SLOTS_IN_ROAD+1));
+	  intersections[y*(SQUARE_SIZE+2)+x] = new intersection((NUM_SLOTS_IN_ROAD+2)*x, (NUM_SLOTS_IN_ROAD+2)*y);
 	}
     }
 
-  for (int y = 0; y < square_size; y++)
+  for (int y = 0; y < SQUARE_SIZE; y++)
     {
-      for (int x = 0; x < square_size + 1; x++)
+      for (int x = 0; x < SQUARE_SIZE + 1; x++)
 	{
-	  roads[y*(square_size+1)+x] = new road(intersections[(y+1)*(square_size+2)+x], intersections[(y+1)*(square_size+2) + (x+1)]);
-	  roads[road_count/4 + y*(square_size+1)+x] = new road(intersections[(y+1)*(square_size+2) + (x+1)], intersections[(y+1)*(square_size+2) + x]);
+	  roads[y*(SQUARE_SIZE+1)+x] = new road(intersections[(y+1)*(SQUARE_SIZE+2)+x], intersections[(y+1)*(SQUARE_SIZE+2) + (x+1)]);
+	  roads[road_count/4 + y*(SQUARE_SIZE+1)+x] = new road(intersections[(y+1)*(SQUARE_SIZE+2) + (x+1)], intersections[(y+1)*(SQUARE_SIZE+2) + x]);
 	}
     }
 
-  for (int x = 0; x < square_size; x++)
+  for (int x = 0; x < SQUARE_SIZE; x++)
     {
-      for (int y = 0; y < square_size + 1; y++)
+      for (int y = 0; y < SQUARE_SIZE + 1; y++)
 	{
-	  roads[road_count/2 + x*(square_size+1)+y] = new road(intersections[y*(square_size+2)+(x+1)], intersections[(y+1)*(square_size+2) + (x+1)]);
-	  roads[road_count/4*3 + x*(square_size+1)+y] = new road(intersections[(y+1)*(square_size+2)+(x+1)], intersections[y*(square_size+2) + (x+1)]);
+	  roads[road_count/2 + x*(SQUARE_SIZE+1)+y] = new road(intersections[y*(SQUARE_SIZE+2)+(x+1)], intersections[(y+1)*(SQUARE_SIZE+2) + (x+1)]);
+	  roads[road_count/4*3 + x*(SQUARE_SIZE+1)+y] = new road(intersections[(y+1)*(SQUARE_SIZE+2)+(x+1)], intersections[y*(SQUARE_SIZE+2) + (x+1)]);
 	}
     }
 
   car** cars = new car*[5];
   //cars[0] = new car(roads[0], LEFT, roads[0]->length - 1); 
   //cars[1] = new car(roads[0], LEFT, (float)roads[0]->length - 2);
-  cars[0] = new car(roads[road_count/4+2*square_size+3], RIGHT, (float)roads[0]->length - 1); 
-  cars[1] = new car(roads[road_count/4+2*square_size+3], RIGHT, (float)roads[0]->length - 3); 
-  cars[2] = new car(roads[road_count/4+2*square_size+3], RIGHT, (float)roads[0]->length - 2); 
+  cars[0] = new car(roads[road_count/4+2*SQUARE_SIZE+3], RIGHT, (float)roads[0]->length - 1); 
+  cars[1] = new car(roads[road_count/4+2*SQUARE_SIZE+3], RIGHT, (float)roads[0]->length - 3); 
+  cars[2] = new car(roads[road_count/4+2*SQUARE_SIZE+3], RIGHT, (float)roads[0]->length - 2); 
   // cars[3] = new car(roads[4*5+3], LEFT, (float)roads[4*5+2]->length - 4.4);  
   // cars[4] = new car(roads[3*5+3], LEFT, (float)roads[3*5+2]->length - 5.5);
   

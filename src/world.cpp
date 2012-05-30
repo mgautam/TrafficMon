@@ -7,7 +7,7 @@ using namespace std;
 #include <GL/glut.h>
 #endif
 
-#include "common.h"
+#include "config.h"
 #include "world.h"
 
 #define MARGIN_PADDING 1
@@ -99,8 +99,11 @@ static int TrafficPhase = 0;
 // For Debugging Purposes only
 
 void world::updateWorld(void) {
-  // For Debugging Purposes only
+  //Put traffic light changing code at the end of the routine 
+  //   if you want to give a 1 time unit window for the car to move
+  //      after GREEN light is signalled
 
+  // For Debugging Purposes only
   if (TrafficPhase%MIN_TL_SWITCH_INTERVAL == 0) {
     for (int i = 0; i < this->intc; i++)
       {

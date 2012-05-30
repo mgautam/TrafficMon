@@ -1,7 +1,3 @@
-#include "road.h"
-#include "intersection.h"
-#include "car.h"
-
 #include <cstring>
 
 #ifdef __APPLE__
@@ -9,6 +5,11 @@
 #else
 #include <GL/glut.h>
 #endif
+
+#include "config.h"
+#include "road.h"
+#include "intersection.h"
+#include "car.h"
 
 #define MAX_DEGREE 4
 

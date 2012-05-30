@@ -1,10 +1,4 @@
-#include "visualize.h"
-
 #include <stdio.h>
-#include "common.h"
-#include "world.h"
-#include "painter.h"
-#include "factory.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -12,16 +6,15 @@
 #include <GL/glut.h>
 #endif
 
-
+#include "config.h"
+#include "world.h"
+#include "painter.h"
+#include "input_device_handler.h"
+#include "factory.h"
 
 static world* simulation;
-
 extern painter* ppainter;
 painter* ppainter;
-
-//int  SIMULATION_INTERVAL = 256;
-
-
 
 void display(void)
 {

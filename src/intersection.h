@@ -3,8 +3,6 @@
 
 #define MAX_DEGREE 4
 
-#include "common.h"
-#include "road.h"
 #include <stdio.h>
 #include <iostream>
 using namespace std;
@@ -14,6 +12,8 @@ using namespace std;
 #else
 #include <GL/glut.h>
 #endif
+
+#include "road.h"
 
 class intersection
 {

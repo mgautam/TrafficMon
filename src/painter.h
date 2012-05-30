@@ -2,7 +2,7 @@
 #define PAINTER_H
 
 
-#include "common.h"
+#include "config.h"
 #include "intersection.h"
 #include "road.h"
 #include "car.h"

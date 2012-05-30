@@ -1,9 +1,6 @@
 #ifndef ROAD_H
 #define ROAD_H 1
 
-
-//#include "car.h"
-//#include "intersection.h"
 #include <stdio.h>
 #include <iostream>
 using namespace std;

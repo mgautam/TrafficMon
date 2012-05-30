@@ -2,11 +2,12 @@
 #define CAR_H 1
 
 
-
-#include "road.h"
 #include <stdio.h>
 #include <iostream>
-#include <cassert>
+//#include <cassert>
+
+#include "road.h"
+
 using namespace std;
 
 typedef struct {
@@ -20,7 +21,6 @@ class car
   car (road* init_road, int next_turn, int position);
   void  setCar (road* init_road, int next_turn, int position);
   void write_state(FILE* output);
-  // bool can_move();
   int move();
   void sense();
   void make_turn();
