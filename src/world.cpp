@@ -33,6 +33,9 @@ world::world(int intc, intersection** intersections, int roadc, road** roads)
   maxWorldX = 0;
   maxWorldY = 0;
   for (int i = 0; i < this->intc; i++) {
+    if (!this->intersections[i])
+      continue;
+
     if (maxWorldX < this->intersections[i]->x)
       maxWorldX = this->intersections[i]->x;
     if (minWorldX > this->intersections[i]->x)
@@ -97,9 +100,14 @@ static int TrafficPhase = 0;
 
 void world::updateWorld(void) {
   // For Debugging Purposes only
+
   if (TrafficPhase%MIN_TL_SWITCH_INTERVAL == 0) {
     for (int i = 0; i < this->intc; i++)
+      {
+      if (!this->intersections[i])
+	continue;
       this->intersections[i]->controlLights (((int)x)%8);//EASTWEST_RIGHT);x++%4
+      }
     x++;
   } 
   TrafficPhase++;
