@@ -5,7 +5,7 @@
 #define WINDOW_HEIGHT 500
 
 #define RIGHT 0
-#define LEFT 1
+#define LEFT  1
 #define AHEAD 2
 
 #define RED 0
@@ -26,7 +26,7 @@
 #define EASTWEST_RIGHT 6
 #define EASTWEST_R_AMBER 7
 
-#define MIN_TL_SWITCH_INTERVAL 4
+#define MIN_TL_SWITCH_INTERVAL 3
 
 #define STEP_SIZE 0.1
 

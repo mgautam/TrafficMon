@@ -201,8 +201,16 @@ void painter::drawLights (road* curr_road, float scale) {
   float light_right_offset;
 
   for ( int i = 0; i <=1; i++) {
-    light_right_offset = i*LightSize;
-    light_left_offset = (i+1)*LightSize;
+
+    if (i == LEFT || i == AHEAD) {
+      light_right_offset = 1*LightSize;
+      light_left_offset = (1+1)*LightSize;
+    }
+    else if (i == RIGHT) {
+      light_right_offset = 0*LightSize;
+      light_left_offset = (0+1)*LightSize;
+    }
+
     for (int j = 0; j < 3; j++) {
 	
       glColor3f (1.0f*(float)(j<=AMBER),1.0f*(float)(j>=AMBER),0.0f);
