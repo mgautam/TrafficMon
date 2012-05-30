@@ -22,6 +22,7 @@ class car
   void write_state(FILE* output);
   bool can_move();
   int move();
+  void sense();
   void make_turn();
 
   //variables
@@ -38,6 +39,8 @@ class car
   void escape_city();
   void enter_road(int new_road, int new_intention);
 
+  bool moved;
+  bool sensed;
   
 };
 

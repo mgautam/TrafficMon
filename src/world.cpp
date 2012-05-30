@@ -109,8 +109,36 @@ void world::updateWorld(void) {
           car* curr_car;
           if ((curr_car = this->roads[i]->cars[j]))
             {
-              curr_car->move();
-              printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
+              curr_car->sense();
+            }
+        }
+    }
+
+  for (int i = 0; i < this->roadc; i++) 
+    {
+      for (int j = -2; j < this->roads[i]->length; j++)
+        {
+          car* curr_car;
+          if ((curr_car = this->roads[i]->cars[j]))
+            {
+	      if (curr_car->sensed && !curr_car->moved)
+		{
+		  curr_car->move();
+		  printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
+		}
+            }
+        }
+    }
+
+  for (int i = 0; i < this->roadc; i++) 
+    {
+      for (int j = -2; j < this->roads[i]->length; j++)
+        {
+          car* curr_car;
+          if ((curr_car = this->roads[i]->cars[j]))
+            {
+	      curr_car->moved = false;
+	      printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
             }
         }
     }
