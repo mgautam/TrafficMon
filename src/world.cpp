@@ -13,16 +13,17 @@ using namespace std;
 #define MARGIN_PADDING 1
 
 //constructor
-world::world(int intc, intersection** intersections, int roadc, road** roads, int carc, car** cars)
+//world::world(int intc, intersection** intersections, int roadc, road** roads, int carc, car** cars)
+world::world(int intc, intersection** intersections, int roadc, road** roads)
 {
   this->intc = intc;
   this->roadc = roadc;
-  this->carc = carc;
+  //this->carc = carc;
 
   this->intersections = intersections;
   this->roads = roads;
 
-  this->cars = cars;
+  //this->cars = cars;
 
   this->timestamp = 0;
 
@@ -98,7 +99,7 @@ void world::updateWorld(void) {
   // For Debugging Purposes only
   if (TrafficPhase%MIN_TL_SWITCH_INTERVAL == 0) {
     for (int i = 0; i < this->intc; i++)
-      this->intersections[i]->controlLights (((int)x)%4);//EASTWEST_RIGHT);x++%4
+      this->intersections[i]->controlLights (((int)x)%8);//EASTWEST_RIGHT);x++%4
     x++;
   } 
   TrafficPhase++;
