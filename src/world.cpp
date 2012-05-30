@@ -91,20 +91,17 @@ void world::write_state(FILE* output, bool fixtures)
 
 // For Debugging Purposes only
 float x = 0;
-bool amberPhase = false;
+static int TrafficPhase = 0;
 // For Debugging Purposes only
 
 void world::updateWorld(void) {
   // For Debugging Purposes only
-  if (!amberPhase) {
-  for (int i = 0; i < this->intc; i++)
-    this->intersections[i]->controlLights (((int)x)%4);//EASTWEST_RIGHT);x++%4
-  x = x+1;
-  } else
-  for (int i = 0; i < this->intc; i++)
-    this->intersections[i]->controlLights (((int)x)%2+4);
-  amberPhase = !amberPhase;
-
+  if (TrafficPhase%MIN_TL_SWITCH_INTERVAL == 0) {
+    for (int i = 0; i < this->intc; i++)
+      this->intersections[i]->controlLights (((int)x)%4);//EASTWEST_RIGHT);x++%4
+    x++;
+  } 
+  TrafficPhase++;
   // For Debugging Purposes only
 
   incr_timestamp();
