@@ -56,7 +56,7 @@ void painter::draw () {
     draw(simulation->roads[i], scale);
     drawLights(simulation->roads[i], scale);
 
-    for (int j = 0; j < simulation->roads[i]->length; j++)
+    for (int j = -2; j < simulation->roads[i]->length; j++)
       {
 	if (simulation->roads[i]->cars[j])
 	  draw(simulation->roads[i]->cars[j], scale);
@@ -81,7 +81,7 @@ void painter::draw (car* curr_car, float scale) {
   // The first 0.5 is to include the offset of intersection to road
   // -1 coz position starts from 1 not 0. 
   // The last 0.5 as offset for between car padding
-  float carOffset =  (0.5 + curr_car->position + 0.5);
+  float carOffset =  (0.5 + curr_car->position + 1);
 
 
   glColor3f (curr_car->color.r,curr_car->color.g,curr_car->color.b);
@@ -127,16 +127,16 @@ void painter::draw (car* curr_car, float scale) {
 
 void painter::draw (intersection* curr_intersection, float scale) {
 
-  if (!curr_intersection)
-    return;
+  // if (!curr_intersection)
+  //   return;
 
-  glColor3f (0.5f, 0.5f, 0.5f);
-  glBegin (GL_QUADS);
-  glVertex2f (((float) curr_intersection->x - halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);
-  glVertex2f (((float) curr_intersection->x + halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);
-  glVertex2f (((float) curr_intersection->x + halfIntersectionLen) * scale, ((float)curr_intersection->y - halfIntersectionLen)* scale);
-  glVertex2f (((float) curr_intersection->x - halfIntersectionLen) * scale, ((float)curr_intersection->y - halfIntersectionLen)* scale);
-  glEnd ();
+  // glColor3f (0.5f, 0.5f, 0.5f);
+  // glBegin (GL_QUADS);
+  // glVertex2f (((float) curr_intersection->x - halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);
+  // glVertex2f (((float) curr_intersection->x + halfIntersectionLen) * scale, ((float)curr_intersection->y + halfIntersectionLen)* scale);
+  // glVertex2f (((float) curr_intersection->x + halfIntersectionLen) * scale, ((float)curr_intersection->y - halfIntersectionLen)* scale);
+  // glVertex2f (((float) curr_intersection->x - halfIntersectionLen) * scale, ((float)curr_intersection->y - halfIntersectionLen)* scale);
+  // glEnd ();
 }
 
 void painter::draw (road* curr_road, float scale) {

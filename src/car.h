@@ -21,7 +21,7 @@ class car
   void  setCar (road* init_road, int next_turn, int position);
   void write_state(FILE* output);
   bool can_move();
-  void move();
+  int move();
   void make_turn();
 
   //variables
@@ -35,6 +35,7 @@ class car
 
   road* curr_road;
 
+  void escape_city();
   void enter_road(int new_road, int new_intention);
 
   

@@ -34,6 +34,7 @@ class world
   int minWorldX, maxWorldX;
   int minWorldY, maxWorldY;
   float scale;
+
 };
 
 #endif

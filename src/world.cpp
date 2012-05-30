@@ -97,29 +97,23 @@ void world::updateWorld(void) {
   // For Debugging Purposes only
   for (int i = 0; i < this->intc; i++)
     this->intersections[i]->controlLights (((int)x)%4);//EASTWEST_RIGHT);x++%4
-  x = x+0.05;
+  x = x+1;
   // For Debugging Purposes only
 
   incr_timestamp();
+
   for (int i = 0; i < this->roadc; i++) 
     {
       for (int j = -2; j < this->roads[i]->length; j++)
-	{
-	  car* curr_car;
-	  if ((curr_car = this->roads[i]->cars[j]))
-	    {
-	      curr_car->move();
-	      // For Debugging Purposes only
-	      printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
-	      // For Debugging Purposes only
-
-	      // For Debugging Purposes only
-	      //car *newCar1 = new car (this->roads[roadc-1],LEFT); // Generate a car at every time instant
-	      // For Debugging Purposes only
-	    }
-	}
+        {
+          car* curr_car;
+          if ((curr_car = this->roads[i]->cars[j]))
+            {
+              curr_car->move();
+              printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
+            }
+        }
     }
-
 }
 
 

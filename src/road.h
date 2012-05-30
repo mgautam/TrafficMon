@@ -15,9 +15,7 @@ class road
  public:
   //constructor
   road(intersection* init, intersection* final);
-  road* get_left();
-  road* get_right();
-  road* get_ahead();
+  road* get_next(int turn);
   void write_state(FILE* output);
   bool car_can_move_to(int new_pos);
 

@@ -18,10 +18,11 @@ road::road(intersection* init, intersection* final)
   this->final = final;
   this->length = (final->x - init->x) + (final->y - init->y); //manhattan 
   if (this->length < 0) this->length *= -1;
-  this->length -= 1;
+  length = length - 2;
 
-  this->cars = new car*[length + 2] + 2;
-  memset(this->cars, 0, length*sizeof(car*));
+  this->cars = new car*[length + 2];
+  memset(this->cars, 0, (length + 2)*sizeof(car*));
+  this->cars = this->cars + 2;
 
   this->lights[LEFT] = RED;
   this->lights[RIGHT] = RED;
@@ -60,19 +61,23 @@ road::road(intersection* init, intersection* final)
   final->out_count++;
 }
 
-road* road::get_left()
+road* road::get_next(int turn)
 {
-  return final->out[(compass+3)%4];
-}
+  switch (turn)
+    {
+    case LEFT:
+      return final->out[(compass+3)%4];
 
-road* road::get_right()
-{
-  return final->out[(compass+1)%4];
+    case RIGHT:
+      return final->out[(compass+1)%4];
 
-}
-road* road::get_ahead()
-{
-  return final->out[(compass+0)%4]; //+2 for U-turn
+    case AHEAD:
+      return final->out[(compass+0)%4];
+
+    default:
+      printf("error in get_next\n");
+      exit(-1);
+    }
 }
 
 void road::write_state(FILE* output)

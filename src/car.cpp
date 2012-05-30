@@ -43,99 +43,114 @@ void car::write_state(FILE* output)
 
 bool car::can_move()
 {
-  if (this->position == 0) // enter the intersection
-    {
-      if (this->turn == LEFT || this->turn == AHEAD)
-	{
-	  return (this->curr_road->lights[LEFT] == GREEN);
-	}
-      else // this->turn == RIGHT
-	{
-	  return (this->curr_road->lights[RIGHT] == GREEN);
-	}
-    }
-  else if (this->position < 0) //in the intersection
-    {
-      return true;
-    }
-  else
-    {
-      if (this->curr_road->cars[(int)this->position-1]) // if a car exists just before this car,
-	{
-	  return this->curr_road->cars[(int)this->position-1]->can_move(); // if the previous car can move,
-	}
-      else //if there are no cars in the front.
-	{
-	  return true; 
-	}
-    }
-}
-
-void car::move()
-{
-  printf("position: %d\n", this->position);
-
-  if (!can_move())
-    {
-      this->wait++;
-      return;
-    }
-
-  printf("wait time: %d\n", this->wait);
-  //cars can move
-
-  road* next_road = NULL;
-  this->wait = 0;
-
   if (this->position == 0)
     {
-      this->curr_road->cars[this->position] = 0;
-      this->curr_road->cars[--this->position] = this;
-    }
+      road* next_road = this->curr_road->get_next(this->turn);
 
-  else if (this->position == -1)
-    {
-      if (this->turn == AHEAD || this->turn == RIGHT)
-	{
-	  this->curr_road->cars[this->position] = 0;
-	  this->curr_road->cars[--this->position] = this;
-	}
-      else if (this->turn == LEFT)
-	{
-	  if ((next_road = this->curr_road->get_left())) 
-	    {
-	      curr_road->cars[this->position] = 0;
-	      this->position = next_road->length - 1; //last position
-	      next_road->cars[this->position] = this;
-	      this->curr_road = next_road;
-	    }
-	}
+      return (this->curr_road->lights[this->turn] == GREEN) && 
+	next_road->cars[next_road->length - 1] == 0;
     }
-  else if (this->position == -2)
+  if (this->position > 0)
     {
-      if (this->turn == AHEAD)
-	next_road = this->curr_road->get_ahead();
-      else if (this->turn == RIGHT)
-	next_road = this->curr_road->get_right();
-      
-      if (next_road)
+      return curr_road->cars[this->position-1] == 0;
+    }
+  
+  //if (this->position < 0)
+  return true;
+
+}
+
+int car::move()
+{
+  road* next_road = curr_road->get_next(turn);
+  int accrued_wait = wait;
+
+  if (position > 0 && curr_road->cars[position-1] == 0)//move forward on the road
+    {
+      curr_road->cars[position] = 0;
+      curr_road->cars[--position] = this;
+      wait = 0;
+    }
+  else if (position == 0 && curr_road->lights[turn] == GREEN &&
+	   ((next_road && next_road->cars[next_road->length - 1] == 0) || !next_road) )//enter intersection
+    {
+      curr_road->cars[position] = 0;
+      curr_road->cars[--position] = this;
+      wait = 0;
+    }
+  else if (position == -1 && turn != LEFT)//move forward in the intersection
+    {
+      curr_road->cars[position] = 0;
+      curr_road->cars[--position] = this;
+      wait = 0;
+    }
+  else if (position == -1 && turn == LEFT)//turn into left road
+    {
+      curr_road->cars[position] = 0;
+
+      if (!next_road)
 	{
-	  curr_road->cars[this->position] = 0;
-	  this->position = next_road->length - 1;
-	  next_road->cars[this->position] = this;
-	  this->curr_road = next_road;
+	  //escape the city
+	  escape_city();
+	  return accrued_wait;
 	}
+
+      position = next_road->length - 1;
+      next_road->cars[position] = this;
+      curr_road = next_road;
+      wait = 0;
+    }
+  else if (position == -2) //turn != LEFT //turn into right road or move onto road ahead
+    {
+      curr_road->cars[position] = 0;
+
+      if (!next_road)
+	{
+	  //escape the city
+	  escape_city();
+	  return accrued_wait;
+	}
+
+      position = next_road->length - 1;
+      next_road->cars[position] = this;
+      curr_road = next_road;
+      wait = 0;
     }
   else
     {
-      this->curr_road->cars[this->position] = 0;
-      this->curr_road->cars[--this->position] = this;
+      wait++;
+      accrued_wait = -1;
     }
+  
+  return accrued_wait;
 
+  printf("position: %d\n", position);
 }
+
+void car::escape_city()
+{
+  delete this;
+}
+
+
 
 void car::make_turn()
 {
+  road* next_road;
+
+  if (position == -2) //turn != LEFT
+    {
+      next_road = curr_road->get_next(turn);
+    }
+  else if (position == -1 && turn == LEFT)
+    {
+      next_road = curr_road->get_next(turn);
+    }
+
+  curr_road->cars[position] = 0;
+  position = next_road->length - 1;
+  next_road->cars[position] = this;
+  curr_road = next_road;
 }
 
 
