@@ -93,6 +93,24 @@ void world::write_state(FILE* output, bool fixtures)
   */
 }
 
+
+static bool carSpawned = true;
+static long long randTime;
+void world::spawnCar (void) {
+  if (carSpawned) {
+    randTime = this->timestamp + (float)rand ()/(float)RAND_MAX * 10 + 5;
+    //printf ("Next Car at: t+%lld timeunits\t",randTime-timestamp);
+    carSpawned = false;
+  }
+  else if (this->timestamp >= randTime && this->roads[0]->cars[roads[0]->length-1] == 0) {
+    new car (this->roads[0],randTime%3);
+    //printf ("Car Spawned:%d\n",(int)randTime%3);
+    carSpawned = true;
+  }
+}
+
+
+
 // For Debugging Purposes only
 float x = 0;
 static int TrafficPhase = 0;
@@ -158,6 +176,8 @@ void world::updateWorld(void) {
             }
         }
     }
+
+  spawnCar ();
 }
 
 

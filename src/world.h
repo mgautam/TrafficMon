@@ -18,18 +18,16 @@ class world
   void write_state(FILE* output, bool fixtures);
   void updateWorld(void);
   void viewWorld (void);
-
+  void spawnCar (void);
 
   //variables
   int intc;
   int roadc;
-  //int carc;
 
   long long timestamp;
 
   intersection** intersections;
   road** roads;
-  //car** cars;
 
   // The smallest & largest co-ordinate of any intersection present in the world
   int minWorldX, maxWorldX;
