@@ -45,9 +45,6 @@
 
 // Don't change this until I come up with a fix
 #define MIN_INTER_CAR_SPACE 0.0f;
-
-
-
 // (3*halfCarLen)
 
 

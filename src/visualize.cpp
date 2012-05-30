@@ -20,79 +20,85 @@ extern painter* ppainter;
 
 void handleKeyPress  (unsigned char key, int x, int y) {
   switch (key) {
-  case 32: // Space Bar 
+  case 32: // SPACE BAR
     if (stopAnime) {
       stopAnime = false;
-      printf ("Animation Resumed. Press SPACE on GL_WINDOW to pause");
+      printf (">> Animation Resumed.");
     }
     else {
       stopAnime = true;
-      printf ("Animation Paused. Press SPACE on GL_WINDOW to resume");
+      printf (">> Animation Paused.");
     }
-    printf ("\n");
+    printf (">> \n");
     break;
 
-   case 27: // Quit //27
-     printf ("Escape key pressed\n");
+   case 27:
+     printf (">> Escape key pressed.\n");
      exit (0);
      break;
      
-  case 'k': // w -> Pan Above
+  case 'k':
     glMatrixMode (GL_PROJECTION);
     glOrtho (-1,1,-0.9,1.1,-1,1);
+    printf (">> Perspective View Window moved down\n");
     break;
 
-  case 'h': // a -> Pan Left
+  case 'h':
     glMatrixMode (GL_PROJECTION);
     glOrtho (-1.1,0.9,-1,1,-1,1);
+    printf (">> Perspective View Window moved left\n");
     break;
 
-  case 'l': // d -> Pan Right
+  case 'l':
     glMatrixMode (GL_PROJECTION);
     glOrtho (-0.9,1.1,-1,1,-1,1);
+    printf (">> Perspective View Window moved right\n");
     break;
 
-  case 'j': // s -> Pan Down
+  case 'j':
     glMatrixMode (GL_PROJECTION);
     glOrtho (-1,1,-1.1,0.9,-1,1);
+    printf (">> Perspective View Window moved down\n");
     break;
 
-  case 'x': // k -> Zoom out
+  case 'x':
     glMatrixMode (GL_PROJECTION);
     glOrtho (-2,2,-2,2,-1,1);
+    printf (">> Zooming Out\n");
     break;
 
-  case 'z': //j -> Zoom in
+  case 'z':
     glMatrixMode (GL_PROJECTION);
     glOrtho (-0.5,0.5,-0.5,0.5,-1,1);
+    printf (">> Zooming in");
     break;
 
-  case 'r': //r -> reset View
+  case 'r':
     glMatrixMode (GL_PROJECTION);
     glPopMatrix ();
     glPushMatrix ();
+    printf (">> View reset");
     break;
 
-  case '=': //n -> Increase Speed
+  case '=':
     simulation_interval /= 2;
-    printf ("NITROX %d powered by SEGA\n", simulation_interval);
+    printf (">> NITROX %d powered by SEGA\n", simulation_interval);
     break;
 
-  case '-': //m -> Decrease Speed
+  case '-':
     simulation_interval *= 2;
-    printf ("Damper %d\n", simulation_interval);
+    printf (">> Damper %d\n", simulation_interval);
     break;
 
-  case '.': // l -> lights
-    printf ("L press\n");
+  case '.':
+    printf (">> L press\n");
     x = x + 1;
     break;
 
-  case 's': // -> step to next unit in time dimension
+  case 's':
     stopAnime = true;
     ppainter->display();
-    //    ppainter->timerCallback(0);
-    printf ("Key Pressed: Step to next unit in time dimension\n");
+    printf (">> Key Pressed: Step to next unit in time dimension\n");
     break;
 
   }

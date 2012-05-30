@@ -129,7 +129,7 @@ void world::updateWorld(void) {
 	      if (curr_car->sensed && !curr_car->moved)
 		{
 		  curr_car->move();
-		  printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
+		  //printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
 		}
             }
         }
@@ -143,7 +143,7 @@ void world::updateWorld(void) {
           if ((curr_car = this->roads[i]->cars[j]))
             {
 	      curr_car->moved = false;
-	      printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
+	      //printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
             }
         }
     }

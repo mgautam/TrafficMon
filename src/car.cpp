@@ -66,6 +66,8 @@ bool car::can_move()
 
 int car::move()
 {
+  // printf("position: %d\n", position);
+
   road* next_road = curr_road->get_next(turn);
   int accrued_wait = wait;
 
@@ -129,8 +131,6 @@ int car::move()
   moved = true;
   
   return accrued_wait;
-
-  printf("position: %d\n", position);
 }
 
 void car::sense()
