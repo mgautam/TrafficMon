@@ -32,6 +32,9 @@ world::world(int intc, intersection** intersections, int roadc, road** roads, in
   maxWorldX = 0;
   maxWorldY = 0;
   for (int i = 0; i < this->intc; i++) {
+    if (!this->intersections[i])
+      continue;
+
     if (maxWorldX < this->intersections[i]->x)
       maxWorldX = this->intersections[i]->x;
     if (minWorldX > this->intersections[i]->x)
@@ -96,7 +99,11 @@ float x = 0;
 void world::updateWorld(void) {
   // For Debugging Purposes only
   for (int i = 0; i < this->intc; i++)
-    this->intersections[i]->controlLights (((int)x)%4);//EASTWEST_RIGHT);x++%4
+    {
+      if (!this->intersections[i])
+	continue;
+      this->intersections[i]->controlLights (((int)x)%4);//EASTWEST_RIGHT);x++%4
+    } 
   x = x+1;
   // For Debugging Purposes only
 

@@ -25,7 +25,7 @@
 #define STEP_SIZE 0.1
 
 // Intersection
-#define  roadSideOffset 1
+#define  roadSideOffset 10
 #define halfIntersectionLen roadSideOffset
 
 // Road
