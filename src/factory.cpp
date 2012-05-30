@@ -57,7 +57,7 @@ void factory::create_world(world** sim)
   // roads[road_count+3] = new road (intersections[square_size*square_size+3],intersections[(square_size-1)/2*square_size+0] );
   
   car** cars = new car*[5];
-  cars[0] = new car(roads[0], RIGHT, roads[0]->length - 1); 
+  cars[0] = new car(roads[0], LEFT, roads[0]->length - 1); 
   cars[1] = new car(roads[0], LEFT, (float)roads[0]->length - 2); 
   // cars[2] = new car(roads[1*5+3], LEFT, (float)roads[1*5+2]->length - 3.3); 
   // cars[3] = new car(roads[4*5+3], LEFT, (float)roads[4*5+2]->length - 4.4);  

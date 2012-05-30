@@ -52,6 +52,11 @@ void painter::draw () {
  
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity ();
+
+  glScalef (0.9f,0.9f,1.0f);
+  glTranslatef (-0.6875,-0.6875,0);//(float)(simulation->maxWorldX-simulation->minWorldX),
+  //		 (float)(simulation->maxWorldY-simulation->minWorldY),
+  //		 0);
   
   for (int i = 0; i < simulation->intc; i++)
     draw(simulation->intersections[i], scale);

@@ -32,7 +32,7 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     printf ("\n");
     break;
 
-   case 'q': // Quit //27
+   case 27: // Quit //27
      printf ("Escape key pressed\n");
      exit (0);
      break;
@@ -89,7 +89,9 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     break;
 
   case 's': // -> step to next unit in time dimension
-    ppainter->step ();
+    stopAnime = false;
+        ppainter->display();
+    //    ppainter->timerCallback(0);
     printf ("Key Pressed: Step to next unit in time dimension\n");
     break;
 
