@@ -1,4 +1,4 @@
-CC=g++
+CC= ccache g++
 CFLAGS= -I/opt/local/include -I.. -g3 -O0 -Wall
 LDFLAGS= -lglut -lGL -lGLU
 LDFLAGS =-framework GLUT -framework OpenGL

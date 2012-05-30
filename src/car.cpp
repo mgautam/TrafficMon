@@ -29,6 +29,7 @@ void car::setCar (road* init_road, int next_turn, int position)
   this->color.b = ((float)rand()/(float)RAND_MAX);
 
   this->turn = next_turn;
+  this->moved = true;
 }
 
 void car::write_state(FILE* output)
@@ -43,6 +44,9 @@ void car::write_state(FILE* output)
 
 bool car::can_move()
 {
+    
+
+
   if (this->position == 0)
     {
       road* next_road = this->curr_road->get_next(this->turn);
@@ -121,11 +125,45 @@ int car::move()
       wait++;
       accrued_wait = -1;
     }
+
+  moved = true;
   
   return accrued_wait;
 
   printf("position: %d\n", position);
 }
+
+void car::sense()
+{
+  road* next_road = curr_road->get_next(turn);
+
+  if (position > 0 && curr_road->cars[position-1] == 0)//move forward on the road
+    {
+      sensed = true;
+    }
+  else if (position == 0 && curr_road->lights[turn] == GREEN &&
+	   ((next_road && next_road->cars[next_road->length - 1] == 0) || !next_road) )//enter intersection
+    {
+      sensed = true;
+    }
+  else if (position == -1 && turn != LEFT)//move forward in the intersection
+    {
+      sensed = true;
+    }
+  else if (position == -1 && turn == LEFT)//turn into left road
+    {
+      sensed = true;
+    }
+  else if (position == -2) //turn != LEFT //turn into right road or move onto road ahead
+    {
+      sensed = true;
+    }
+  else
+    {
+      sensed = false;
+    }
+}
+
 
 void car::escape_city()
 {
