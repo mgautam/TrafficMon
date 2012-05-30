@@ -63,6 +63,34 @@ void intersection::controlLights (int PatternID) {
     if (this->in[WEST]) 
       this->in[WEST]->lights[RIGHT] = GREEN;
     break;
+
+  case NORTHSOUTH_AL_AMBER:
+    if (this->in[NORTH]) 
+      this->in[NORTH]->lights[LEFT] = AMBER;
+    if (this->in[SOUTH]) 
+      this->in[SOUTH]->lights[LEFT] = AMBER;
+    break;
+    
+  case EASTWEST_AL_AMBER:
+    if (this->in[EAST]) 
+      this->in[EAST]->lights[LEFT] = AMBER;
+    if (this->in[WEST]) 
+      this->in[WEST]->lights[LEFT] = AMBER;
+    break;  
+
+case NORTHSOUTH_R_AMBER:
+    if (this->in[NORTH]) 
+      this->in[NORTH]->lights[RIGHT] = AMBER;
+    if (this->in[SOUTH]) 
+      this->in[SOUTH]->lights[RIGHT] = AMBER;
+    break;
+    
+  case EASTWEST_R_AMBER:
+    if (this->in[EAST]) 
+      this->in[EAST]->lights[RIGHT] = AMBER;
+    if (this->in[WEST]) 
+      this->in[WEST]->lights[RIGHT] = AMBER;
+    break;
   }
     
 }
