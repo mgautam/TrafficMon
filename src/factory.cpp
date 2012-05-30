@@ -1,4 +1,5 @@
 #include "factory.h"
+#include <cstring>
 
 void factory::create_world(world** sim)
 {

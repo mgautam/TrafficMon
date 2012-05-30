@@ -87,7 +87,7 @@ void painter::draw (car* curr_car, float scale) {
   // -1 coz position starts from 1 not 0. 
   // The last 0.5 as offset for between car padding
   float carOffset =  (0.5 + curr_car->position + 1);
-
+  // offset of car along the length of the road from final intersection
 
   glColor3f (curr_car->color.r,curr_car->color.g,curr_car->color.b);
   glBegin (GL_QUADS);

@@ -30,17 +30,20 @@
 
 #define STEP_SIZE 0.1
 
-// Intersection
-#define  roadSideOffset 10
-#define halfIntersectionLen roadSideOffset
-
 // Road
-#define lenBWlanes 0.05
-#define lenBWlights 0.05
-#define LightSize 0.5
+#define roadWidth 10
+#define lenBWlanes 0.05*roadWidth
+#define lenBWlights 0.05*roadWidth
+#define LightSize roadWidth
+#define  roadSideOffset roadWidth+lenBWlanes
+//0.5
+
+// Intersection
+#define halfIntersectionLen roadWidth
 
 // Car
-#define CarLen  (roadSideOffset-lenBWlanes)
+#define CarLen  5
+//(roadSideOffset-lenBWlanes)
 #define halfCarLen CarLen/2
 
 // Don't change this until I come up with a fix
