@@ -14,9 +14,11 @@
 
 
 extern painter* ppainter;
+extern int num_spawn;
 
 bool stopAnime = false;
 int simulation_interval = 256;//msecs
+int num_spawn = 0;
 
 static bool mirror = false;
 
@@ -113,6 +115,10 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     stopAnime = true;
     ppainter->display();
     printf (">> Key Pressed: Step to next unit in time dimension\n");
+    break;
+
+  case 'g':
+    num_spawn += BATCH_SIZE;
     break;
 
   }

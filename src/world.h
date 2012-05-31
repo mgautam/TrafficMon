@@ -5,6 +5,7 @@
 #include "intersection.h"
 #include "road.h"
 #include "car.h"
+#include "learner.h"
 
 extern float x;
 
@@ -34,6 +35,8 @@ class world
   int minWorldY, maxWorldY;
   float scale;
 
+  learner *critic;
+  int performance;
 };
 
 #endif

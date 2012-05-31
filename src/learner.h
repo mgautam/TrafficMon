@@ -3,12 +3,18 @@
 
 #include "intersection.h"
 
-struct {
+//typedef struct intersection_list intersection_list;
+//typedef struct intersection_list *intersection_list_ptr;
+
+//struct intersection_list;
+
+struct intersection_list {
   intersection *node;
   intersection_list *next_node;
-} intersection_list;
+};
 
-class leaner {
+
+class learner {
  public:
   learner (void);
   learner (intersection* node);
@@ -16,6 +22,7 @@ class leaner {
   void addnode (intersection *node);
   int evaluate (intersection *node);
   int evaluate (void);
+  int evaluate (intersection **nodes, int intc);
 
   //vars
   intersection_list *initial_intersection;
