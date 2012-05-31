@@ -93,11 +93,13 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     break;
 
   case '=':
-    simulation_interval /= 2;
+    if (simulation_interval > 1)
+      simulation_interval /= 2;
     printf (">> NITROX %d powered by SEGA\n", simulation_interval);
     break;
 
   case '-':
+    if (simulation_interval < 1024*8)
     simulation_interval *= 2;
     printf (">> Damper %d\n", simulation_interval);
     break;

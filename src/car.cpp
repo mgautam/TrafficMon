@@ -39,7 +39,7 @@ void car::write_state(FILE* output)
   // fprintf(output, "%d %d\n", this->curr_road->init->x + this->displacement_x, this->curr_road->init->y + this->displacement_y);
   fprintf (output, "Compass: %d ",this->curr_road->compass);
   // fprintf (output,"%f %f %f", this->color.r, this->color.g, this->color.b);
-  fprintf (output, "Next Turn: %d ",this->turn);
+  //fprintf (output, "Next Turn: %d ",this->turn);
   fprintf (output, "\n");
 }
 
@@ -55,13 +55,16 @@ int car::move()
       curr_road->cars[--position] = this;
       wait = 0;
     }
-  else if (position == 0 && curr_road->lights[turn] == GREEN &&
+  else if (position == 0 && //curr_road->lights[turn] == GREEN &&
 	   ((next_road && next_road->cars[next_road->length - 1] == 0) || !next_road) )//enter intersection
     {
-      curr_road->cars[position] = 0;
-      curr_road->cars[--position] = this;
-      wait = 0;
-      printf ("TURN:%d next_road:%p\n",turn,next_road);
+      if ( turn == AHEAD && curr_road->lights[LEFT] == GREEN ||
+	   curr_road->lights[turn] == GREEN) {
+	curr_road->cars[position] = 0;
+	curr_road->cars[--position] = this;
+	wait = 0;
+	//printf ("TURN:%d next_road:%p\n",turn,next_road);
+      }
     }
   else if (position == -1 && turn != LEFT)//move forward in the intersection
     {
@@ -126,10 +129,16 @@ void car::sense()
     {
       sensed = true;
     }
-  else if (position == 0 && curr_road->lights[turn] == GREEN &&
+  else if (position == 0 && 
 	   ((next_road && next_road->cars[next_road->length - 1] == 0) || !next_road) )//enter intersection
     {
-      sensed = true;
+      //printf ("Worst Place: %d %p\n",turn,next_road);
+      /*if ( turn == AHEAD && curr_road->lights[LEFT] == GREEN )
+	sensed = true;
+      else if (curr_road->lights[turn] == GREEN)
+	sensed = true;
+      else*/
+	sensed = true;
     }
   else if (position == -1 && turn != LEFT)//move forward in the intersection
     {
