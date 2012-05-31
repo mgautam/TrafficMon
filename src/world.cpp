@@ -12,6 +12,8 @@ using namespace std;
 
 #define MARGIN_PADDING 1
 
+extern int num_spawn;
+
 //constructor
 //world::world(int intc, intersection** intersections, int roadc, road** roads, int carc, car** cars)
 world::world(int intc, intersection** intersections, int roadc, road** roads)
@@ -50,6 +52,9 @@ world::world(int intc, intersection** intersections, int roadc, road** roads)
   this->scale = (maxWorldX - minWorldX) > (maxWorldY - minWorldY)?
     1.5/((float)(maxWorldX - minWorldX + MARGIN_PADDING))  :  1.5/((float)(maxWorldY - minWorldY + MARGIN_PADDING));
   //printf ("minX = %d, minY = %d \t maxX = %d, maxY = %d", minWorldX, minWorldY, maxWorldX, maxWorldY);
+  
+  critic = new learner ();
+  performance = 0;
 
 }
   
@@ -102,9 +107,16 @@ void world::spawnCar (void) {
     carSpawned = false;
   }
   else if (this->timestamp >= randTime && this->roads[0]->cars[roads[0]->length-1] == 0) {
+#ifdef OPENGL_MODE
+    if (num_spawn > 0) {
+      --num_spawn;
+#endif
       new car (this->roads[0],randTime%3);
-    //printf ("Car Spawned:%d\n",(int)randTime%3);
-    carSpawned = true;
+      //printf ("Car Spawned:%d\n",(int)randTime%3);
+      carSpawned = true;
+#ifdef OPENGL_MODE
+    }
+#endif
     }
 }
 
@@ -177,6 +189,12 @@ void world::updateWorld(void) {
     }
 
   spawnCar ();
+  
+  performance += critic->evaluate (intersections,intc);
+  if (this->timestamp % 1000 == 0) {
+    printf ("Performance in last 1000 time steps is %d\n", performance);
+    performance = 0;
+    }
 }
 
 

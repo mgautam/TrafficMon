@@ -16,6 +16,7 @@ void factory::create_world(world** sim)
     {
       for (int x = 0; x < SQUARE_SIZE+2; x++)
 	{
+	  intersections[y*(SQUARE_SIZE+2)+x] = 0;
 	  if ((x == 0 || x == SQUARE_SIZE + 1) && (y == 0 || y == SQUARE_SIZE + 1))
 	    continue;
 

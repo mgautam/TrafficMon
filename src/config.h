@@ -2,6 +2,10 @@
 #define CONFIG_H
 
 // CONTROL
+ #define OPENGL_MODE 1
+
+#define BATCH_SIZE 50
+
 #define MIN_TL_SWITCH_INTERVAL 10
 
 //#define STEP_SIZE 0.1

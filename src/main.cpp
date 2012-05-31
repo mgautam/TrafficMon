@@ -12,6 +12,8 @@
 #include "input_device_handler.h"
 #include "factory.h"
 
+#include "learner.h"
+
 static world* simulation;
 extern painter* ppainter;
 painter* ppainter;
@@ -39,16 +41,18 @@ int main (int argc, char* argv[])
   factory::create_world(&simulation);
 
   simulation->write_state(stdout);
-  ppainter = new painter(simulation, display, timerCallback, argc, argv);
-  ppainter->draw();
-  // ppainter->animate();
 
-
+#ifndef OPENGL_MODE
   while (true)
-    {
+  {
       simulation->updateWorld();
       
-    }
-  
+  }
+#else
+  ppainter = new painter(simulation, display, timerCallback, argc, argv);
+  ppainter->draw();
+  ppainter->animate();
+#endif
+
   return 0;
 }
