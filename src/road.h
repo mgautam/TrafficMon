@@ -14,11 +14,12 @@ class road
   road(intersection* init, intersection* final);
   road* get_next(int turn);
   void write_state(FILE* output);
-  bool car_can_move_to(int new_pos);
 
   //variables
   int length;
-  car** cars;
+  int numlanes;
+
+  car*** cars;
 
   intersection* init;
   intersection* final;

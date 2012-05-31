@@ -18,12 +18,11 @@ class car
 {
  public:
   car (road* init_road, int next_turn);
-  car (road* init_road, int next_turn, int position);
-  void  setCar (road* init_road, int next_turn, int position);
+  car (road* init_road, int next_turn, int laneIndex);
+  void  setCar (road* init_road, int next_turn, int laneIndex);
   void write_state(FILE* output);
   int move();
   void sense();
-  void make_turn();
 
   //variables
   int turn;
@@ -35,6 +34,7 @@ class car
   COLOR color;
 
   road* curr_road;
+  int curr_lane,next_lane;
 
   void escape_city();
   void enter_road(int new_road, int new_intention);

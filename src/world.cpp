@@ -65,32 +65,33 @@ void world::write_state(FILE* output)
 
 void world::write_state(FILE* output, bool fixtures)
 {
-  /* 
+   
     fprintf (output, "\n\n\n");
     fprintf(output, "time: %lld\n", timestamp);
     if (fixtures)
     {
-    fprintf(output, "\nIntersection Count: %d\n", intc);
-    for (int i = 0; i < this->intc; i++) {
-    fprintf (output, "Intersection:%d\t", i);
-    this->intersections[i]->write_state(output);
+      fprintf(output, "\nIntersection Count: %d\n", intc);
+      for (int i = 0; i < this->intc; i++) {
+	fprintf (output, "Intersection:%d\t", i);
+	if (this->intersections[i])	this->intersections[i]->write_state(output);
+      }
+      
+      fprintf(output, "\nRoad Count: %d\n", roadc);
+      for (int i = 0; i < this->roadc; i++) {
+	fprintf (output, "Road:%d\t", i);
+	this->roads[i]->write_state(output);
+      }
     }
-
-    fprintf(output, "\nRoad Count: %d\n", roadc);
-    for (int i = 0; i < this->roadc; i++) {
-    fprintf (output, "Road:%d\t", i);
-    this->roads[i]->write_state(output);
-    }
-    }
-
+    
     fprintf (output,"\n");
     for (int i = 0; i < this->roadc; i++) 
-    for (int j = 0; j < this->roads[i]->length; j++)
-    if (this->roads[i]->cars[j]) {
-    fprintf (output,"Road:%d\t Car: ",i);
-    this->roads[i]->cars[j]->write_state(output);
-    }
-  */
+      for (int j = 0; j < this->roads[i]->length; j++)
+	for (int k = 0; k < this->roads[i]->numlanes; k++)
+	  if (this->roads[i]->cars[j][k]) {
+	    fprintf (output,"Road:%d\t Car: ",i);
+	    this->roads[i]->cars[j][k]->write_state(output);
+	  }
+ 
 }
 
 
@@ -99,14 +100,15 @@ static long long randTime;
 void world::spawnCar (void) {
   if (carSpawned) {
     randTime = this->timestamp + (float)rand ()/(float)RAND_MAX * 10 + 5;
-    //printf ("Next Car at: t+%lld timeunits\t",randTime-timestamp);
+    printf ("Next Car at: t+%lld timeunits\t",randTime-timestamp);
     carSpawned = false;
   }
-  else if (this->timestamp >= randTime && this->roads[0]->cars[roads[0]->length-1] == 0) {
-    new car (this->roads[0],randTime%3);
-    //printf ("Car Spawned:%d\n",(int)randTime%3);
+  else if (this->timestamp >= randTime && this->roads[0]->cars[roads[0]->length-1][randTime%this->roads[0]->numlanes] == 0) {
+    new car (this->roads[0],randTime%3,randTime%this->roads[0]->numlanes);
+    printf ("Car Spawned:%d\n",(int)randTime%3);
     carSpawned = true;
   }
+  fflush (stdout);
 }
 
 
@@ -140,11 +142,13 @@ void world::updateWorld(void) {
     {
       for (int j = -2; j < this->roads[i]->length; j++)
         {
-          car* curr_car;
-          if ((curr_car = this->roads[i]->cars[j]))
-            {
-              curr_car->sense();
-            }
+	  for (int k = 0; k < this->roads[i]->numlanes; k++) {
+	    car* curr_car;
+	    if ((curr_car = this->roads[i]->cars[j][k]))
+	      {
+		curr_car->sense();
+	      }
+	  }
         }
     }
 
@@ -152,15 +156,17 @@ void world::updateWorld(void) {
     {
       for (int j = -2; j < this->roads[i]->length; j++)
         {
-          car* curr_car;
-          if ((curr_car = this->roads[i]->cars[j]))
-            {
-	      if (curr_car->sensed && !curr_car->moved)
-		{
-		  curr_car->move();
-		  //printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
-		}
-            }
+  	  for (int k = 0; k < this->roads[i]->numlanes; k++) {
+	    car* curr_car;
+	    if ((curr_car = this->roads[i]->cars[j][k]))
+	      {
+		if (curr_car->sensed && !curr_car->moved)
+		  {
+		    curr_car->move();
+		    //printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
+		  }
+	      }
+	  }
         }
     }
 
@@ -168,12 +174,14 @@ void world::updateWorld(void) {
     {
       for (int j = -2; j < this->roads[i]->length; j++)
         {
-          car* curr_car;
-          if ((curr_car = this->roads[i]->cars[j]))
-            {
-	      curr_car->moved = false;
-	      //printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
-            }
+	  for (int k = 0; k < this->roads[i]->numlanes; k++) {
+	    car* curr_car;
+	    if ((curr_car = this->roads[i]->cars[j][k]))
+	      {
+		curr_car->moved = false;
+		//printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
+	      }
+	  }
         }
     }
 

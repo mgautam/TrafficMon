@@ -20,7 +20,7 @@ public:
   painter(world* simulation, void (*display) (void), void (*timerCallback) (int), int argc, char** argv);
 
   void draw ();
-  void draw (car* curr_car, float scale);
+  void draw (car* curr_car, int laneIndex, float scale);
   void draw (intersection* curr_intersection, float scale);
   void draw (road* curr_road, float scale);
   void drawLights (road* curr_road, float scale);

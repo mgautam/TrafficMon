@@ -21,10 +21,16 @@ road::road(intersection* init, intersection* final)
   if (this->length < 0) this->length *= -1;
   length = length - 2;
 
-  this->cars = new car*[length + 2];
-  memset(this->cars, 0, (length + 2)*sizeof(car*));
+  numlanes = (float)rand ()/(float) RAND_MAX *MAX_LANES_PER_ROAD;//1//MAX_LANES_PER_ROAD;
+  printf ("Road: lanes: %d \n",numlanes);
+  // printf ("%d ",(int)((float)rand ()/(float) RAND_MAX *MAX_LANES_PER_ROAD));//1
 
-  // For future references to be between -2 and (road length)
+  this->cars = new car**[length + 2];
+  for (int i = 0; i < length+2; i++) {
+    this->cars[i] = new car*[numlanes];
+    memset(this->cars[i], 0, numlanes*sizeof(car*));
+  }
+
   this->cars = this->cars + 2;
 
   this->lights[LEFT] = RED;
@@ -92,10 +98,3 @@ void road::write_state(FILE* output)
 
   fprintf (output,"\n");
 }
-
-
-bool road::car_can_move_to(int new_pos)
-{
-  return true;
-}
-

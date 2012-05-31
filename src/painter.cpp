@@ -61,8 +61,10 @@ void painter::draw () {
 
     for (int j = -2; j < simulation->roads[i]->length; j++)
       {
-	if (simulation->roads[i]->cars[j])
-	  draw(simulation->roads[i]->cars[j], scale);
+	for (int k = 0; k < simulation->roads[i]->numlanes; k++) {
+	  if (simulation->roads[i]->cars[j][k])
+	    draw(simulation->roads[i]->cars[j][k],k, scale);
+	}
       }
   }
   
@@ -73,7 +75,7 @@ void painter::draw () {
 
 
 
-void painter::draw (car* curr_car, float scale) {
+void painter::draw (car* curr_car, int laneIndex, float scale) {
 
   if (!curr_car)
     return;
@@ -84,7 +86,7 @@ void painter::draw (car* curr_car, float scale) {
   //  float carOffset_len =  (INTERSECTION_SIZE/2 + 7.5*(float)curr_car->position/(float)(CAR_LENGTH+MIN_INTER_CAR_SPACE) + HCAR_LENGTH);//*(CAR_LENGTH+MIN_INTER_CAR_SPACE)
   float carOffset_len =  (INTERSECTION_SIZE/2 +  ROAD_SCALE*curr_car->position + HCAR_LENGTH);//*(CAR_LENGTH+MIN_INTER_CAR_SPACE)
   // offset of car along the length of the road from final intersection
-  float carOffset_wid = ROAD_WIDTH/2 + HLEN_BW_LANES;
+  float carOffset_wid = LANE_WIDTH/2.0 + LANE_WIDTH * (float)laneIndex  + HLEN_BW_LANES;
 
   glColor3f (curr_car->color.r,curr_car->color.g,curr_car->color.b);
   glBegin (GL_QUADS);
