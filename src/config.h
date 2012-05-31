@@ -2,7 +2,7 @@
 #define CONFIG_H
 
 // CONTROL
-#define MIN_TL_SWITCH_INTERVAL 3
+#define MIN_TL_SWITCH_INTERVAL 10
 
 //#define STEP_SIZE 0.1
 

@@ -41,7 +41,14 @@ int main (int argc, char* argv[])
   simulation->write_state(stdout);
   ppainter = new painter(simulation, display, timerCallback, argc, argv);
   ppainter->draw();
-  ppainter->animate();
+  // ppainter->animate();
 
+
+  while (true)
+    {
+      simulation->updateWorld();
+      
+    }
+  
   return 0;
 }
