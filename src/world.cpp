@@ -65,7 +65,7 @@ void world::write_state(FILE* output)
 
 void world::write_state(FILE* output, bool fixtures)
 {
-  /* 
+  /*
     fprintf (output, "\n\n\n");
     fprintf(output, "time: %lld\n", timestamp);
     if (fixtures)
@@ -73,6 +73,7 @@ void world::write_state(FILE* output, bool fixtures)
     fprintf(output, "\nIntersection Count: %d\n", intc);
     for (int i = 0; i < this->intc; i++) {
     fprintf (output, "Intersection:%d\t", i);
+    if (this->intersections[i])
     this->intersections[i]->write_state(output);
     }
 
@@ -89,10 +90,8 @@ void world::write_state(FILE* output, bool fixtures)
     if (this->roads[i]->cars[j]) {
     fprintf (output,"Road:%d\t Car: ",i);
     this->roads[i]->cars[j]->write_state(output);
-    }
-  */
+    }*/
 }
-
 
 static bool carSpawned = true;
 static long long randTime;
@@ -103,10 +102,10 @@ void world::spawnCar (void) {
     carSpawned = false;
   }
   else if (this->timestamp >= randTime && this->roads[0]->cars[roads[0]->length-1] == 0) {
-    new car (this->roads[0],randTime%3);
+      new car (this->roads[0],randTime%3);
     //printf ("Car Spawned:%d\n",(int)randTime%3);
     carSpawned = true;
-  }
+    }
 }
 
 
