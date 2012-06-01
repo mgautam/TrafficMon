@@ -13,6 +13,8 @@ class painter {
 
 
 public:
+  float scale;
+
   static void (*display) (void);
   static void (*timerCallback) (int);
 
@@ -20,10 +22,10 @@ public:
   painter(world* simulation, void (*display) (void), void (*timerCallback) (int), int argc, char** argv);
 
   void draw ();
-  void draw (car* curr_car, float scale);
-  void draw (intersection* curr_intersection, float scale);
-  void draw (road* curr_road, float scale);
-  void drawLights (road* curr_road, float scale);
+  void draw (car* curr_car);
+  void draw (intersection* curr_intersection);
+  void draw (road* curr_road);
+  void drawLights (road* curr_road);
 
   void animate();
 

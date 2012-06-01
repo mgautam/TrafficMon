@@ -1,23 +1,15 @@
 #include <iostream>
 using namespace std;
-
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
+#include <cstring>
 
 #include "config.h"
 #include "world.h"
-
-#define MARGIN_PADDING 1
-
-extern int num_spawn;
 
 //constructor
 //world::world(int intc, intersection** intersections, int roadc, road** roads, int carc, car** cars)
 world::world(int intc, intersection** intersections, int roadc, road** roads)
 {
+
   this->intc = intc;
   this->roadc = roadc;
   //this->carc = carc;
@@ -29,33 +21,9 @@ world::world(int intc, intersection** intersections, int roadc, road** roads)
 
   this->timestamp = 0;
 
-  // Calculating world scale to map to our windowed perception of the world
-  minWorldX = 0;
-  minWorldY = 0;
-  maxWorldX = 0;
-  maxWorldY = 0;
-  for (int i = 0; i < this->intc; i++) {
-    if (!this->intersections[i])
-      continue;
-
-    if (maxWorldX < this->intersections[i]->x)
-      maxWorldX = this->intersections[i]->x;
-    if (minWorldX > this->intersections[i]->x)
-      minWorldX = this->intersections[i]->x;
-
-    if (maxWorldY < this->intersections[i]->y)
-      maxWorldY = this->intersections[i]->y;
-    if (minWorldY > this->intersections[i]->y)
-      minWorldY = this->intersections[i]->y;
-  }
-
-  this->scale = (maxWorldX - minWorldX) > (maxWorldY - minWorldY)?
-    1.5/((float)(maxWorldX - minWorldX + MARGIN_PADDING))  :  1.5/((float)(maxWorldY - minWorldY + MARGIN_PADDING));
-  //printf ("minX = %d, minY = %d \t maxX = %d, maxY = %d", minWorldX, minWorldY, maxWorldX, maxWorldY);
-  
-  critic = new learner ();
-  performance = 0;
-
+  this->num_spawn = new int[roadc];
+  this->next_spawn_time = new long long [roadc];
+  memset (this->next_spawn_time, 0, roadc);
 }
   
 void world::incr_timestamp()
@@ -70,62 +38,56 @@ void world::write_state(FILE* output)
 
 void world::write_state(FILE* output, bool fixtures)
 {
-  /*
-    fprintf (output, "\n\n\n");
-    fprintf(output, "time: %lld\n", timestamp);
-    if (fixtures)
+  fprintf (output, "\n\n\n");
+  fprintf(output, "time: %lld\n", timestamp);
+  if (fixtures)
     {
-    fprintf(output, "\nIntersection Count: %d\n", intc);
-    for (int i = 0; i < this->intc; i++) {
-    fprintf (output, "Intersection:%d\t", i);
-    if (this->intersections[i])
-    this->intersections[i]->write_state(output);
+      fprintf(output, "\nIntersection Count: %d\n", intc);
+      for (int i = 0; i < this->intc; i++) {
+	fprintf (output, "Intersection:%d\t", i);
+	if (this->intersections[i])
+	  this->intersections[i]->write_state(output);
+      }
+      
+      fprintf(output, "\nRoad Count: %d\n", roadc);
+      for (int i = 0; i < this->roadc; i++) {
+	fprintf (output, "Road:%d\t", i);
+	this->roads[i]->write_state(output);
+      }
     }
-
-    fprintf(output, "\nRoad Count: %d\n", roadc);
-    for (int i = 0; i < this->roadc; i++) {
-    fprintf (output, "Road:%d\t", i);
-    this->roads[i]->write_state(output);
-    }
-    }
-
-    fprintf (output,"\n");
-    for (int i = 0; i < this->roadc; i++) 
+  
+  fprintf (output,"\n");
+  for (int i = 0; i < this->roadc; i++) 
     for (int j = 0; j < this->roads[i]->length; j++)
-    if (this->roads[i]->cars[j]) {
-    fprintf (output,"Road:%d\t Car: ",i);
-    this->roads[i]->cars[j]->write_state(output);
-    }*/
+      if (this->roads[i]->cars[j]) {
+	fprintf (output,"Road:%d\t Car: ",i);
+	this->roads[i]->cars[j]->write_state(output);
+      }
 }
 
-static bool carSpawned = true;
-static long long randTime;
-void world::spawnCar (void) {
-  if (carSpawned) {
-    randTime = this->timestamp + (float)rand ()/(float)RAND_MAX * 10 + 5;
-    //printf ("Next Car at: t+%lld timeunits\t",randTime-timestamp);
-    carSpawned = false;
+void world::spawnCars (int roadIndex, int batchSize) {
+
+  if (batchSize) {
+    num_spawn[roadIndex] += batchSize;
   }
-  else if (this->timestamp >= randTime && this->roads[0]->cars[roads[0]->length-1] == 0) {
-#ifdef OPENGL_MODE
-    if (num_spawn > 0) {
-      --num_spawn;
-#endif
-      new car (this->roads[0],randTime%3);
-      //printf ("Car Spawned:%d\n",(int)randTime%3);
-      carSpawned = true;
-#ifdef OPENGL_MODE
+
+  for (int i=0; i < roadc; i++) {
+    if (num_spawn[i] > 0 && timestamp >= next_spawn_time[i]
+	&& (roads[i]->cars[roads[i]->length-1] == 0)) {
+      new car (roads[i],next_spawn_time[i]%3);
+      num_spawn[i]--;
+      next_spawn_time[i] = this->timestamp + (float)rand ()/(float)RAND_MAX * 10 + 5;
     }
-#endif
-    }
+  }
+
 }
 
 
 
-// For Debugging Purposes only
-float x = 0;
-static int TrafficPhase = 0;
-// For Debugging Purposes only
+// // For Debugging Purposes only
+ float x = 0;
+ static int TrafficPhase = 0;
+// // For Debugging Purposes only
 
 void world::updateWorld(void) {
   //Put traffic light changing code at the end of the routine 
@@ -133,19 +95,21 @@ void world::updateWorld(void) {
   //      after GREEN light is signalled
 
   // For Debugging Purposes only
-  if (TrafficPhase%MIN_TL_SWITCH_INTERVAL == 0) {
-    for (int i = 0; i < this->intc; i++)
-      {
-      if (!this->intersections[i])
-	continue;
-      this->intersections[i]->controlLights (((int)x)%8);//EASTWEST_RIGHT);x++%4
-      }
-    x++;
-  } 
-  TrafficPhase++;
+   if (TrafficPhase%MIN_TL_SWITCH_INTERVAL == 0) {
+     for (int i = 0; i < this->intc; i++)
+       {
+       if (!this->intersections[i])
+   	continue;
+       this->intersections[i]->controlLights (((int)x)%8);//EASTWEST_RIGHT);x++%4
+       }
+     x++;
+   } 
+   TrafficPhase++;
   // For Debugging Purposes only
 
   incr_timestamp();
+
+  spawnCars ();
 
   for (int i = 0; i < this->roadc; i++) 
     {
@@ -187,14 +151,7 @@ void world::updateWorld(void) {
             }
         }
     }
-
-  spawnCar ();
   
-  performance += critic->evaluate (intersections,intc);
-  if (this->timestamp % 1000 == 0) {
-    printf ("Performance in last 1000 time steps is %d\n", performance);
-    performance = 0;
-    }
 }
 
 

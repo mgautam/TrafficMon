@@ -14,11 +14,10 @@
 
 
 extern painter* ppainter;
-extern int num_spawn;
+extern world* simulation;
 
 bool stopAnime = false;
 int simulation_interval = 256;//msecs
-int num_spawn = 0;
 
 static bool mirror = false;
 
@@ -118,7 +117,8 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     break;
 
   case 'g':
-    num_spawn += BATCH_SIZE;
+    simulation->spawnCars (0, BATCH_SIZE);
+    printf (">> KeyPressed: %d Cars spawned\n", BATCH_SIZE);
     break;
 
   }

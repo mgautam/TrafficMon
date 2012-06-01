@@ -16,6 +16,31 @@ painter::painter(world* _simulation, void (*_display) (void), void (*_timerCallb
   this->simulation = _simulation;
   this->display = _display;
   this->timerCallback = _timerCallback;
+
+  // Calculating world scale to map to our windowed perception of the world
+  int minWorldX = 0;
+  int minWorldY = 0;
+  int maxWorldX = 0;
+  int maxWorldY = 0;
+  for (int i = 0; i < _simulation->intc; i++) {
+    if (!_simulation->intersections[i])
+      continue;
+
+    if (maxWorldX < _simulation->intersections[i]->x)
+      maxWorldX = _simulation->intersections[i]->x;
+    if (minWorldX > _simulation->intersections[i]->x)
+      minWorldX = _simulation->intersections[i]->x;
+
+    if (maxWorldY < _simulation->intersections[i]->y)
+      maxWorldY = _simulation->intersections[i]->y;
+    if (minWorldY > _simulation->intersections[i]->y)
+      minWorldY = _simulation->intersections[i]->y;
+  }
+
+  this->scale = (maxWorldX - minWorldX) > (maxWorldY - minWorldY)?
+    1.5/((float)(maxWorldX - minWorldX + MARGIN_PADDING))  :  1.5/((float)(maxWorldY - minWorldY + MARGIN_PADDING));
+  //printf ("minX = %d, minY = %d \t maxX = %d, maxY = %d", minWorldX, minWorldY, maxWorldX, maxWorldY);
+  //Calculating scale ends here
   
   glutInit (&argc, argv);
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -33,6 +58,9 @@ painter::painter(world* _simulation, void (*_display) (void), void (*_timerCallb
   glPushMatrix ();
 
   glutTimerFunc (simulation_interval, timerCallback, 0);
+
+  
+
 }
 
 void painter::animate()
@@ -42,8 +70,6 @@ void painter::animate()
 
 void painter::draw () {
 
-  float scale = simulation->scale;
-  
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
  
   glMatrixMode (GL_MODELVIEW);
@@ -53,16 +79,16 @@ void painter::draw () {
   glTranslatef (-7.5,-7.5,0);
   
   for (int i = 0; i < simulation->intc; i++)
-    draw(simulation->intersections[i], scale);
+    draw(simulation->intersections[i]);
   
   for (int i = 0; i < simulation->roadc; i++) {
-    draw(simulation->roads[i], scale);
-    drawLights(simulation->roads[i], scale);
+    draw(simulation->roads[i]);
+    drawLights(simulation->roads[i]);
 
     for (int j = -2; j < simulation->roads[i]->length; j++)
       {
 	if (simulation->roads[i]->cars[j])
-	  draw(simulation->roads[i]->cars[j], scale);
+	  draw(simulation->roads[i]->cars[j]);
       }
   }
   
@@ -73,7 +99,7 @@ void painter::draw () {
 
 
 
-void painter::draw (car* curr_car, float scale) {
+void painter::draw (car* curr_car) {
 
   if (!curr_car)
     return;
@@ -127,7 +153,7 @@ void painter::draw (car* curr_car, float scale) {
 }
 
 
-void painter::draw (intersection* curr_intersection, float scale) {
+void painter::draw (intersection* curr_intersection) {
 
 
    if (!curr_intersection)
@@ -143,7 +169,7 @@ void painter::draw (intersection* curr_intersection, float scale) {
 
 }
 
-void painter::draw (road* curr_road, float scale) {
+void painter::draw (road* curr_road) {
 
   if (!curr_road)
     return;
@@ -189,7 +215,7 @@ void painter::draw (road* curr_road, float scale) {
   glEnd ();
 }
 
-void painter::drawLights (road* curr_road, float scale) {
+void painter::drawLights (road* curr_road) {
 
   //curr_road->lights[LEFT] = GREEN; // Debugging purpose only
   //curr_road->lights[RIGHT] = GREEN; // Debugging purpose only

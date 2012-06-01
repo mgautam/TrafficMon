@@ -19,7 +19,8 @@ class world
   void write_state(FILE* output, bool fixtures);
   void updateWorld(void);
   void viewWorld (void);
-  void spawnCar (void);
+  void spawnCars (int roadIndex = 0, int batchSize = 0);
+  //void spawnCars (int roadIndex, int batchSize);
 
   //variables
   int intc;
@@ -30,13 +31,8 @@ class world
   intersection** intersections;
   road** roads;
 
-  // The smallest & largest co-ordinate of any intersection present in the world
-  int minWorldX, maxWorldX;
-  int minWorldY, maxWorldY;
-  float scale;
-
-  learner *critic;
-  int performance;
+  int *num_spawn;
+  long long *next_spawn_time;
 };
 
 #endif

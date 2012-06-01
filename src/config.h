@@ -10,18 +10,22 @@
 
 //#define STEP_SIZE 0.1
 
-#define NUM_SLOTS_IN_ROAD 100
-#define SQUARE_SIZE 2
+#define NUM_SLOTS_IN_ROAD 10
+#define SQUARE_SIZE 1
 
 
 
 // VIEW Parameters
 #define WINDOW_WIDTH 500
 #define WINDOW_HEIGHT 500
+#define MARGIN_PADDING 1
+
 
 // Road
-#define ROAD_WIDTH 50
-#define HLEN_BW_LANES 0.05*ROAD_WIDTH
+#define ROAD_WIDTH 11
+//50
+#define HLEN_BW_LANES 0
+// 0.05*ROAD_WIDTH
 
 // Traffic Lights
 #define HLEN_BW_LIGHTS 0.05*ROAD_WIDTH
@@ -33,7 +37,8 @@
 // Car
 // If you change car length it changes road length in visualization
 #define CAR_LENGTH  10
-#define CAR_WIDTH 30
+#define CAR_WIDTH 11
+//30
 #define HCAR_LENGTH CAR_LENGTH/2
 #define HCAR_WIDTH CAR_WIDTH/2
 

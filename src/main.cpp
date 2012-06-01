@@ -14,43 +14,60 @@
 
 #include "learner.h"
 
-static world* simulation;
+extern world* simulation;
+world *simulation;
+
 extern painter* ppainter;
 painter* ppainter;
 
-void display(void)
+static learner *TrafficLearner;
+static int performance = 0;
+
+void runSimulation (void)
 {
   simulation->updateWorld();
-  ppainter->draw();
-  simulation->write_state(stdout,true);
+  //simulation->write_state(stdout,true);
+
+  performance += TrafficLearner->evaluate (simulation->intersections,simulation->intc);
+  if (simulation->timestamp % 1000 == 0) {
+    printf ("Performance in last 1000 time steps is %d\n", performance);
+    performance = 0;
+  }
 }
 
+#ifdef OPENGL_MODE
 void timerCallback (int value)
 {
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
-  if (!stopAnime)
-    display();
-   /* call back again after elapsedUSecs have passed */
+  if (!stopAnime) {
+    runSimulation ();
+    ppainter->draw();
+  }
+
+   /* call back again after simulation_interval has passed */
   glutTimerFunc ( simulation_interval, timerCallback, 0);
 }
+#endif
 
 int main (int argc, char* argv[])
 {
 
   factory::create_world(&simulation);
 
-  simulation->write_state(stdout);
+  TrafficLearner = new learner ();
+ 
+  //simulation->write_state(stdout); // Write Initial State
+
 
 #ifndef OPENGL_MODE
   while (true)
   {
-      simulation->updateWorld();
-      
+    runSimulation ();
   }
 #else
-  ppainter = new painter(simulation, display, timerCallback, argc, argv);
-  ppainter->draw();
+  ppainter = new painter(simulation, runSimulation, timerCallback, argc, argv);
+  ppainter->draw(); // Draw initial state
   ppainter->animate();
 #endif
 
