@@ -38,8 +38,9 @@ class learner {
   int evaluate (intersection *node);
   int evaluate (void);
   int evaluate (intersection **nodes, int intc);
-  int* get_q_entry(int* action);
-  int get_reward();
+  float* get_q_entry(int* state, int* action);
+  float* get_max_q_entry(int* next_state);
+  float get_reward();
 
   //vars
   intersection** nodes;
@@ -48,9 +49,15 @@ class learner {
   intersection_list *last_node_ptr; // for inserting new nodes without hassle
   int intc;
 
-  int* q_table;
+  void learn();
+  int* sense_state();
+  int select_action(int* curr_state);
+  void apply_action(int* actions);
+  void action_to_actions(int action, int* actions);
+  float* q_table;
   int* state;
-  int* action;
+  int* actions;
+  world* sim;
 };
 
 #endif

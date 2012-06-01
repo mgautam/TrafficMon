@@ -10,11 +10,15 @@ learner::learner (void) {
 }
 
 learner::learner (world* sim) {
+  this->sim = sim;
   this->nodes = sim->intersections;
   this->nodec = sim->intc;
-  this->q_table = new int[NUM_TRAFFIC_PATTERNS*((int)pow(10, nodec*MAX_DEGREE))];
+  this->q_table = new float[NUM_TRAFFIC_PATTERNS*((int)pow(10, nodec*MAX_DEGREE))];
   this->state = new int[nodec + nodec*MAX_DEGREE];
-  this->action = new int[NUM_TRAFFIC_PATTERNS];
+  this->actions = new int[nodec];
+
+
+
 }
 
 
@@ -26,7 +30,7 @@ void learner::act(int* action)
     }
 }
 
-void learner::sense()
+int* learner::sense_state()
 {
   for (int i = 0; i < nodec; i++)
     {
@@ -53,53 +57,90 @@ void learner::sense()
     }
 }
 
-int* learner::get_q_entry(int* action)
+float* learner::get_q_entry(int* state, int* actions)
 {
-  int index = 0;
-
-  for (int i = 0; i < nodec; i++)
-    {
-      index += ((int) pow(NUM_TRAFFIC_PATTERNS, i))*state[i];
-    }
-
-  for (int i = 0; i < nodec; i++)
-    {
-      for (int j = 0; j < MAX_DEGREE; j++)
-	{
-	  index += (int) (pow(NUM_TRAFFIC_PATTERNS, nodec)*pow(NUM_SLOTS_IN_ROAD, i*MAX_DEGREE + j));
-	}
-    }
-
-  for (int i = 0; i < nodec; i++)
-    {
-      index += (int) pow(NUM_TRAFFIC_PATTERNS, nodec)*pow(NUM_SLOTS_IN_ROAD, nodec*MAX_DEGREE)*pow(nodec, i)*action[i];
-    }
-
-
-  return &(q_table[index]);
+  return &(q_table[0]);
 
 }
 
-void learner::learn (int* action)
+int learner::select_action(int* curr_state)
 {
-  sense();
-  int* entry = get_q_entry(action);
+  float total_kq = 0;
+  float cum_kq[nodec*NUM_TRAFFIC_PATTERNS];
 
-  int min_q_prev = 0;
-
-  for (int i = 0; i < nodec*NUM_TRAFFIC_PATTERNS; i++)
+  for (int action = 0; action < nodec*NUM_TRAFFIC_PATTERNS; action++)
     {
-      for (int j = 0; j < nodec; j++) {
-	action[j] = i/((int)pow(NUM_TRAFFIC_PATTERNS,j))%NUM_TRAFFIC_PATTERNS;
-      }
-      if (*get_q_entry(action) < min_q_prev)
-	min_q_prev = *get_q_entry(action);
+      action_to_actions(action, actions);
+      total_kq += pow(0.1, *get_q_entry(curr_state, actions));
+      cum_kq[action] = total_kq;
+    }  
+
+  float r = (float)rand()/(float)RAND_MAX*total_kq;
+
+  for (int action = 0; action < nodec*NUM_TRAFFIC_PATTERNS; action++)
+    {
+      if (cum_kq[action] >= r)
+	  return action;
     }
-    
-  *entry = get_reward() + 0.9*min_q_prev;
 }
 
-int learner::get_reward () {
+float* learner::get_max_q_entry(int* next_state)
+{
+  float* max_q_entry = 0;
+
+  for (int action = 0; action < nodec*NUM_TRAFFIC_PATTERNS; action++)
+    {
+      action_to_actions(action, actions);
+      float* q_entry = get_q_entry(next_state, actions);
+      if (!max_q_entry || *q_entry > *max_q_entry)
+	max_q_entry = q_entry;
+    }
+  return max_q_entry;
+}
+
+void learner::action_to_actions(int action, int* actions)
+{
+  for (int i = 0; i < nodec; i++)
+    {
+      actions[i] = action/((int) pow(nodec, i))%nodec;
+    }
+}
+
+void learner::apply_action(int* actions)
+{
+  for (int i = 0; i < nodec; i++)
+    {
+      nodes[i]->controlLights(actions[i]);
+    }
+
+  sim->updateWorld();
+}
+
+
+void learner::learn ()
+{
+  int* curr_state = NULL;
+  int* next_state = NULL;
+  int curr_action = 0;
+  int curr_reward = 0;
+  int* curr_actions = new int[nodec];
+
+  curr_state = sense_state();
+
+  while (true)
+    {
+      curr_action = select_action(curr_state);
+      action_to_actions(curr_action, curr_actions);
+      apply_action(curr_actions);
+      curr_reward = get_reward();
+      next_state = sense_state();
+      
+      *get_q_entry(curr_state, curr_actions) = curr_reward + 0.9 * *get_max_q_entry(next_state);
+      curr_state = next_state;
+    }
+}
+
+float learner::get_reward () {
   int total = 0;
   for (int i = 0; i < nodec; i++) {
     for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
@@ -112,7 +153,7 @@ int learner::get_reward () {
       }
     }
   }
-  return total;
+  return -(float) total;
 }
 
 float x = 0;
