@@ -49,7 +49,7 @@ void learner::sense()
     }
 }
 
-void learner::learn (int* action)
+int* learner::get_q(int* action)
 {
   int index = 0;
 
@@ -66,8 +66,21 @@ void learner::learn (int* action)
 	}
     }
 
-  // index += (int) pow(4, MAX_DEGREE)*pow(NUM_SLOTS_IN_ROAD, nodec*MAX_DEGREE)*action;
-  q_table[index] = 0;
+  for (int i = 0; i < nodec; i++)
+    {
+      index += (int) pow(4, MAX_DEGREE)*pow(NUM_SLOTS_IN_ROAD, nodec*MAX_DEGREE)*pow(4, i)*action[i];
+    }
+
+
+  return &(q_table[index]);
+
+}
+
+void learner::learn (int* action)
+{
+  sense();
+
+
 
 }
 
