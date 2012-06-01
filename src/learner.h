@@ -39,6 +39,7 @@ class learner {
   int evaluate (void);
   int evaluate (intersection **nodes, int intc);
   int* get_q_entry(int* action);
+  int get_reward();
 
   //vars
   intersection** nodes;
