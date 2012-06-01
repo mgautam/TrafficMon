@@ -4,23 +4,10 @@
 #include "intersection.h"
 #include "world.h"
 
-//typedef struct intersection_list intersection_list;
-//typedef struct intersection_list *intersection_list_ptr;
-
-//struct intersection_list;
-
-struct intersection_list {
-  intersection *node;
-  intersection_list *next_node;
-};
-
-
 class learner {
  public:
   learner (void);
   learner (world* sim);
-
-  void addnode (intersection *node);
 
   // Sense Enviroment
   int* get_state (intersection* node);

@@ -4,6 +4,7 @@
 #include "math.h"
 #include "assert.h"
 
+#define MAX_SLOTS_TO_CHECK 10
 
 learner::learner (void) {
   intc = 0;
@@ -12,7 +13,8 @@ learner::learner (void) {
 learner::learner (world* sim) {
   this->nodes = sim->intersections;
   this->nodec = sim->intc;
-  this->q_table = new int[NUM_TRAFFIC_PATTERNS*((int)pow(10, nodec*MAX_DEGREE))];
+  this->q_table = new int[NUM_TRAFFIC_PATTERNS*((int)pow(MAX_SLOTS_TO_CHECK, nodec*MAX_DEGREE))];
+  // Block the state representations based on nodes
   this->state = new int[nodec + nodec*MAX_DEGREE];
   this->action = new int[NUM_TRAFFIC_PATTERNS];
 }
@@ -38,10 +40,10 @@ void learner::sense()
       for (int j = 0; j < MAX_DEGREE; j++)
 	{
 	  road* curr_road = nodes[i]->in[j];
-	  state[nodec + i*MAX_DEGREE + j] = NUM_SLOTS_IN_ROAD;
+	  state[nodec + i*MAX_DEGREE + j] = MAX_SLOTS_TO_CHECK;
 	  if (curr_road)
 	    {
-	      for (int k = 0; k < curr_road->length; k++)
+	      for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
 		{
 		  if (curr_road->cars[k]) {
 		    state[nodec + i*MAX_DEGREE + j] = k;
