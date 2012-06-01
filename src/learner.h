@@ -18,7 +18,7 @@ struct intersection_list {
 class learner {
  public:
   learner (void);
-  learner (intersection** nodes, int nodec);
+  learner (world* sim);
 
   void addnode (intersection *node);
 
@@ -38,7 +38,7 @@ class learner {
   int evaluate (intersection *node);
   int evaluate (void);
   int evaluate (intersection **nodes, int intc);
-  int* get_q(int* action);
+  int* get_q_entry(int* action);
 
   //vars
   intersection** nodes;
@@ -49,7 +49,7 @@ class learner {
 
   int* q_table;
   int* state;
-
+  int* action;
 };
 
 #endif
