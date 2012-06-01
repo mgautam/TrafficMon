@@ -11,6 +11,7 @@
 //#define STEP_SIZE 0.1
 
 #define NUM_SLOTS_IN_ROAD 10
+#define NUM_TRAFFIC_PATTERNS 4
 #define SQUARE_SIZE 1
 
 
