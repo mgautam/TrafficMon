@@ -124,7 +124,7 @@ void learner::naiveControl (world *sim) {
        {
        if (!sim->intersections[i])
    	continue;
-       sim->intersections[i]->controlLights (((int)x)%8*2);//EASTWEST_RIGHT);x++%4
+       sim->intersections[i]->controlLights (((int)x)%4*2);//EASTWEST_RIGHT);x++%4
        }
      x++;
    } 
