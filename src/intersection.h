@@ -35,6 +35,8 @@ class intersection
   road* in[MAX_DEGREE];
   road* out[MAX_DEGREE];
 
+  int pattern_id;
+
 };
 
 #endif

@@ -26,6 +26,9 @@ intersection::intersection(int x, int y)
 }
 
 void intersection::controlLights (int PatternID) {
+
+  this->pattern_id = PatternID;
+
   for (int direction = 0; direction < 4; direction++)
     if (this->in[direction]) {
       this->in[direction]->lights[LEFT] = RED;
@@ -75,7 +78,7 @@ void intersection::controlLights (int PatternID) {
       this->in[WEST]->lights[LEFT] = AMBER;
     break;  
 
-case NORTHSOUTH_R_AMBER:
+  case NORTHSOUTH_R_AMBER:
     if (this->in[NORTH]) 
       this->in[NORTH]->lights[RIGHT] = AMBER;
     if (this->in[SOUTH]) 
