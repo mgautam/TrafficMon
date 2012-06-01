@@ -20,6 +20,9 @@ class learner {
   learner (intersection* node);
   
   void addnode (intersection *node);
+  int* get_state (intersection* node);
+  int* lights_state (intersection* node);
+
   int evaluate (intersection *node);
   int evaluate (void);
   int evaluate (intersection **nodes, int intc);

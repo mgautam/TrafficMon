@@ -24,6 +24,38 @@ void learner::addnode (intersection* node) {
   intc++;
 }
 
+int* learner::get_state (intersection *node)
+{
+  int ret_state[3*MAX_DEGREE];
+
+  for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
+    road *curr_road = node->in[roadIndex];
+    if (curr_road) {
+      ret_state[roadIndex] = curr_road->length-1;
+      for (int position = 0; position < curr_road->length; position++) {
+	if (curr_road->cars[position])
+	  ret_state[roadIndex] = position;
+      }
+    }
+    else {
+      // ret_state[
+	
+    }
+  }
+
+  for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
+    road *curr_road = node->in[roadIndex];
+    if (curr_road) {
+      ret_state[2*MAX_DEGREE+2*roadIndex] = curr_road->lights[0];
+      ret_state[2*MAX_DEGREE+2*roadIndex+1] = curr_road->lights[1];
+    }
+  }
+  return ret_state;
+
+
+
+}
+
 int learner::evaluate (intersection *node) {
   int total = 0;
   for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
@@ -32,7 +64,7 @@ int learner::evaluate (intersection *node) {
       for (int position = 0; position < curr_road->length; position++) {
 	if (curr_road->cars[position])
 	  if (curr_road->cars[position]->wait > 0) total++;
-	  //total += curr_road->cars[position]->wait;
+	total += curr_road->cars[position]->wait;
       }
     }
   }
@@ -55,10 +87,10 @@ int learner::evaluate (intersection** nodes, int intc) {
   int total = 0;
   for (int i = 0; i < intc; i++) 
     //  int i = 0;
-  {
-    if (nodes[i])
-      total += this->evaluate (nodes[i]);
-    //    printf ("%d\n",total);
-  }
+    {
+      if (nodes[i])
+	total += this->evaluate (nodes[i]);
+      //    printf ("%d\n",total);
+    }
   return total;
 }
