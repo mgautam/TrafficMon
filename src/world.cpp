@@ -84,28 +84,7 @@ void world::spawnCars (int roadIndex, int batchSize) {
 
 
 
-// // For Debugging Purposes only
- float x = 0;
- static int TrafficPhase = 0;
-// // For Debugging Purposes only
-
 void world::updateWorld(void) {
-  //Put traffic light changing code at the end of the routine 
-  //   if you want to give a 1 time unit window for the car to move
-  //      after GREEN light is signalled
-
-  // For Debugging Purposes only
-   if (TrafficPhase%MIN_TL_SWITCH_INTERVAL == 0) {
-     for (int i = 0; i < this->intc; i++)
-       {
-       if (!this->intersections[i])
-   	continue;
-       this->intersections[i]->controlLights (((int)x)%8);//EASTWEST_RIGHT);x++%4
-       }
-     x++;
-   } 
-   TrafficPhase++;
-  // For Debugging Purposes only
 
   incr_timestamp();
 

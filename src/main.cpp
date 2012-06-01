@@ -25,6 +25,7 @@ static int performance = 0;
 
 void runSimulation (void)
 {
+  TrafficLearner->naiveControl (simulation);
   simulation->updateWorld();
   //simulation->write_state(stdout,true);
 

@@ -5,7 +5,7 @@
 #include "intersection.h"
 #include "road.h"
 #include "car.h"
-#include "learner.h"
+//#include "learner.h"
 
 extern float x;
 

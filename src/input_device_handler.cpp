@@ -112,12 +112,14 @@ void handleKeyPress  (unsigned char key, int x, int y) {
 
   case 's':
     stopAnime = true;
-    ppainter->display();
+    ppainter->simulate();
+    ppainter->draw ();
     printf (">> Key Pressed: Step to next unit in time dimension\n");
     break;
 
   case 'g':
     simulation->spawnCars (0, BATCH_SIZE);
+    simulation->spawnCars (1, BATCH_SIZE);
     printf (">> KeyPressed: %d Cars spawned\n", BATCH_SIZE);
     break;
 

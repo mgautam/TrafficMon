@@ -2,6 +2,8 @@
 #include "learner.h"
 #include "car.h"
 #include "math.h"
+#include "assert.h"
+
 
 learner::learner (void) {
   intc = 0;
@@ -77,6 +79,9 @@ int* learner::get_state (intersection *node)
 
   int* ret_state = new int[3*MAX_DEGREE];
 
+  /*
+  int ret_state[3*MAX_DEGREE];
+
   for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
     road *curr_road = node->in[roadIndex];
     if (curr_road)
@@ -103,10 +108,34 @@ int* learner::get_state (intersection *node)
 }
 
 
+  */
+  return new int;
+}
+
+float x = 0;
+static int TrafficPhase = 0;
+void learner::naiveControl (world *sim) {
+  //Put traffic light changing code at the end of the routine 
+  //   if you want to give a 1 time unit window for the car to move
+  //      after GREEN light is signalled
+  
+   if (TrafficPhase % MIN_TL_SWITCH_INTERVAL == 0) {
+     for (int i = 0; i < sim->intc; i++)
+       {
+       if (!sim->intersections[i])
+   	continue;
+       sim->intersections[i]->controlLights (((int)x)%8*2);//EASTWEST_RIGHT);x++%4
+       }
+     x++;
+   } 
+   TrafficPhase++;
+  
+}
 
 
 
 int learner::evaluate (intersection *node) {
+  assert (node != 0);
   int total = 0;
   for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
     road *curr_road = node->in[roadIndex];
@@ -116,6 +145,7 @@ int learner::evaluate (intersection *node) {
 	  if (curr_road->cars[position]->wait > 0) 
 	    total++;
 	// total += curr_road->cars[position]->wait;
+	//total += curr_road->cars[position]->wait;
       }
     }
   }
