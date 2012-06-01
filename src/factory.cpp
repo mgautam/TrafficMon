@@ -5,7 +5,27 @@
 
 void factory::create_world(world** sim)
 {
+  
+  intersection** intersections = new intersection*[5];
+  intersections[0] =   new intersection (-NUM_SLOTS_IN_ROAD,0); // left
+  intersections[1] =   new intersection (0,-NUM_SLOTS_IN_ROAD); // bottom
+  intersections[2] =   new intersection (0,0); // center
+  intersections[3] =   new intersection (0,NUM_SLOTS_IN_ROAD); // top
+  intersections[4] =   new intersection (NUM_SLOTS_IN_ROAD,0); // right
+  int intersection_count = 5;
 
+
+  road** roads = new road*[4];
+  roads[0] = new road (intersections[1],intersections[2]);//NORTH
+  roads[1] = new road (intersections[0],intersections[2]);//EAST
+  roads[2] = new road (intersections[2],intersections[3]);//SOUTH
+  roads[3] = new road (intersections[2],intersections[4]);//WEST
+  int road_count = 4;
+
+
+
+
+  /*
   int road_count = 2*2*(SQUARE_SIZE+1)*SQUARE_SIZE;
   int intersection_count = (SQUARE_SIZE+2)*(SQUARE_SIZE+2);
   intersection** intersections = new intersection*[intersection_count];
@@ -48,11 +68,11 @@ void factory::create_world(world** sim)
   //cars[0] = new car(roads[0], LEFT, roads[0]->length - 1); 
   //cars[1] = new car(roads[0], LEFT, (float)roads[0]->length - 2);
   //cars[0] = new car(roads[road_count/4+2*SQUARE_SIZE+3], RIGHT, (float)roads[0]->length - 1); 
-  cars[1] = new car(roads[road_count/4+2*SQUARE_SIZE+3], AHEAD, (float)roads[0]->length - 2); 
+  //cars[1] = new car(roads[road_count/4+2*SQUARE_SIZE+3], AHEAD, (float)roads[0]->length - 2); 
   //cars[2] = new car(roads[road_count/4+2*SQUARE_SIZE+3], LEFT, (float)roads[0]->length - 3); 
   // cars[3] = new car(roads[4*5+3], LEFT, (float)roads[4*5+2]->length - 4.4);  
   // cars[4] = new car(roads[3*5+3], LEFT, (float)roads[3*5+2]->length - 5.5);
-  
+  */  
 
 
   *sim = new world ( intersection_count, intersections, road_count, roads);

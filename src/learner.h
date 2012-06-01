@@ -2,6 +2,7 @@
 #define LEARNER_H 1
 
 #include "intersection.h"
+#include "world.h"
 
 //typedef struct intersection_list intersection_list;
 //typedef struct intersection_list *intersection_list_ptr;
@@ -18,11 +19,17 @@ class learner {
  public:
   learner (void);
   learner (intersection* node);
-  
+
   void addnode (intersection *node);
+
+  // Sense Enviroment
   int* get_state (intersection* node);
   int* lights_state (intersection* node);
 
+  // Actuate
+  void naiveControl (world* simulation);
+
+  // Measure Performance
   int evaluate (intersection *node);
   int evaluate (void);
   int evaluate (intersection **nodes, int intc);
