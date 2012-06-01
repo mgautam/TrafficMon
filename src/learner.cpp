@@ -89,13 +89,16 @@ void learner::learn (int* action)
 
   int min_q_prev = 0;
 
-  for (int i = 0; i < NUM_TRAFFIC_PATTERNS; i++)
+  for (int i = 0; i < nodec*NUM_TRAFFIC_PATTERNS; i++)
     {
-      if (*get_q_entry(i) < min_q_prev)
-	min_q_prev = *get_q_entry(i);
+      for (int j = 0; j < nodec; j++) {
+	action[j] = i/((int)pow(NUM_TRAFFIC_PATTERNS,j))%NUM_TRAFFIC_PATTERNS;
+      }
+      if (*get_q_entry(action) < min_q_prev)
+	min_q_prev = *get_q_entry(action);
     }
     
-  *entry = 0.9*min_q-prev;
+  *entry = get_reward() + 0.9*min_q_prev;
 }
 
 int learner::get_reward () {
@@ -132,4 +135,8 @@ void learner::naiveControl (world *sim) {
    } 
    TrafficPhase++;
   
+}
+
+int learner::evaluate(intersection** nodes, int nodec)
+{
 }
