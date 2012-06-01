@@ -10,13 +10,32 @@ learner::learner (void) {
   intc = 0;
 }
 
+static int num_state_attribute_blocks = 2;
+static int state_space_size_per_node = 1;
+static int *attribute_block_length;
+static int *attributes_range;
+static int number_of_actions_per_state;
+
 learner::learner (world* sim) {
   this->nodes = sim->intersections;
   this->nodec = sim->intc;
-  this->q_table = new int[NUM_TRAFFIC_PATTERNS*((int)pow(MAX_SLOTS_TO_CHECK, nodec*MAX_DEGREE))];
-  // Block the state representations based on nodes
-  this->state = new int[nodec + nodec*MAX_DEGREE];
-  this->action = new int[NUM_TRAFFIC_PATTERNS];
+
+
+  attribute_block_length = new int[num_state_attribute_blocks];
+  attributes_range = new int[num_state_attribute_blocks];
+
+  attribute_block_length[] = {1,MAX_DEGREE};
+  attributes_range[] = {NUM_TRAFFIC_PATTERNS, MAX_SLOTS_TO_CHECK};
+  
+
+  for (int i = 0, i < num_state_attribute_blocks, i++)
+    state_space_size_per_node *= pow (attributes_range[i],attribute_block_length[i]);
+  int global_state_space_size = pow (state_space_size_per_node,nodec);
+
+  number_of_actions_per_state = pow (NUM_TRAFFIC_PATTERNS , nodec);
+
+  int Qtable_size = global_state_space_size * number_of_actions_per_state;
+  this->q_table = new float [Qtable_size];
 }
 
 
@@ -55,31 +74,24 @@ void learner::sense()
     }
 }
 
-int* learner::get_q_entry(int* action)
+int* learner::get_q_entry(int *state, int action)
 {
-  int index = 0;
-
-  for (int i = 0; i < nodec; i++)
-    {
-      index += ((int) pow(NUM_TRAFFIC_PATTERNS, i))*state[i];
-    }
-
-  for (int i = 0; i < nodec; i++)
-    {
-      for (int j = 0; j < MAX_DEGREE; j++)
-	{
-	  index += (int) (pow(NUM_TRAFFIC_PATTERNS, nodec)*pow(NUM_SLOTS_IN_ROAD, i*MAX_DEGREE + j));
+  int global_State = 0;
+  for (int i = 0; i < nodec; i++) {
+    int currNodeState = 0;
+      for (int j = 0; j < num_state_attribute_blocks ; j++) {
+	// Within each node
+	if (j)
+	currNodeState *= pow (attribute_block_range[j-1], attribute_block_length[j-1]);
+	for (int k = 0; k < attribute_block_length[j]; k++) {
+	  // We are evaluating state within attribute block
+	  currNodeState += pow (attribute_block_range[j],attribute_block_length[j]-k) * state[i*nodec+j*attribute_block_length[j]+k];
 	}
-    }
-
-  for (int i = 0; i < nodec; i++)
-    {
-      index += (int) pow(NUM_TRAFFIC_PATTERNS, nodec)*pow(NUM_SLOTS_IN_ROAD, nodec*MAX_DEGREE)*pow(nodec, i)*action[i];
-    }
-
-
-  return &(q_table[index]);
-
+      }
+      global_State += pow (state_space_size_per_node, i) * currNodeState;
+  }
+  
+  return &(q_table[global_State * number_of_actions + action]);
 }
 
 void learner::learn (int* action)

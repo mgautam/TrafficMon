@@ -35,7 +35,7 @@ class learner {
   intersection_list *last_node_ptr; // for inserting new nodes without hassle
   int intc;
 
-  int* q_table;
+  int** q_table;
   int* state;
   int* action;
 };
