@@ -50,10 +50,10 @@ learner::learner (world* sim, painter* ppainter) {
   this->state = new int[global_state_vector_size];
   //  this->actions = new int[nodec];
 
-  printf ("per_node_state_vector_size: %d \
+  printf ("per_node_state_vector_size: %d	\
 state_space_size_per_node: %d		  \
-global_state_vector_size: %d		  \
-global_state_space_size: %lld		  \
+global_state_vector_size: %lld		  \
+global_state_space_size: %d		  \
 q_table_size:%lld \n",
 	  per_node_state_vector_size,
 	  state_space_size_per_node,

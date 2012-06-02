@@ -1,4 +1,8 @@
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 
 #include "config.h"
 #include "input_device_handler.h"
@@ -44,7 +48,7 @@ painter::painter(world* _simulation, void (*_simulate) (void), void (*_timerCall
 
   glutCreateWindow ("World View");
   glDisable (GL_DEPTH_TEST);
-  //glutDisplayFunc (simulate);
+  glutDisplayFunc (simulate);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 
