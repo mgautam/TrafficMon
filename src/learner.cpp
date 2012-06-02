@@ -61,101 +61,6 @@ q_table_size:%lld \n",
 }
 
 
-// int* learner::sense_state()
-// {
-//   for (int i = 0; i < nodec; i++)
-//     {
-//       state[i*(1+MAX_DEGREE)] = nodes[i]->pattern_id;
-//       for (int j = 1; j < 1+MAX_DEGREE; j++)
-// 	{
-// 	  road* curr_road = nodes[i]->in[j-1];
-// 	  state[i*(1+MAX_DEGREE) + j] = MAX_SLOTS_TO_CHECK;
-// 	  if (curr_road)
-// 	    {
-// 	      for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
-// 		{
-// 		  if (curr_road->cars[k]) {
-// 		    state[ i*(1+MAX_DEGREE) + j] = k;
-// 		    break;
-// 		  }
-// 		}
-// 	    }
-// 	}
-//     }
-//   return state;
-// }
-
-
-// long double* learner::get_q_entry(int *state, int action)
-// {
-//   // Little Endian Storage and Retreival
-
-//   int global_State = 0;
-//   for (int i = 0; i < nodec; i++) {
-//     int currNodeState = 0;
-//       for (int j = 0; j < num_state_attribute_blocks ; j++) {
-// 	// Within each node
-// 	if (j)
-// 	currNodeState *= pow (attributes_block_range[j-1], attribute_block_length[j-1]);
-// 	for (int k = 0; k < attribute_block_length[j]; k++) {
-// 	  // We are evaluating state within attribute block
-// 	  currNodeState += pow (attributes_block_range[j],k) * state[i*nodec+j*attribute_block_length[j]+k];
-// 	}
-//       }
-//       global_State += pow (state_space_size_per_node, i) * currNodeState;
-//   }
-  
-//   return &(q_table[global_State * number_of_actions_per_global_state + action]);
-
-// }
-
-// int learner::select_action(int* curr_state)
-// {
-//   float total_kq = 0;
-//   float cum_kq[number_of_actions_per_global_state];
-
-//   for (int action = 0; action < number_of_actions_per_global_state; action++)
-//     {
-//       total_kq += pow(0.1, *get_q_entry(curr_state, action));//is this the right probability distribution?
-//       //It makes higher rewards to have lower kq
-//       cum_kq[action] = total_kq;
-//     }  
-
-//   float r = (float)rand()/(float)RAND_MAX*total_kq;
-
-//   for (int action = 0; action < number_of_actions_per_global_state; action++)
-//     {
-//       if (cum_kq[action] <= r)// Is this less than or greater than?
-// 	  return action;
-//     }
-//   return 0;
-// }
-
-// long double* learner::get_max_q_entry(int* next_state)
-// {
-//   long double* max_q_entry = 0;
-
-//   for (int action = 0; action < number_of_actions_per_global_state; action++)
-//     {
-//       long double* q_entry = get_q_entry (next_state, action);
-//       if (!max_q_entry || *q_entry > *max_q_entry)
-// 	max_q_entry = q_entry;
-//     }
-//   return max_q_entry;
-// }
-
-// void learner::apply_action(int action)
-// {
-//   int curr_node_action;
-//   for (int i = 0; i < nodec; i++)
-//     {
-//       curr_node_action = ((int)(action/pow (nodec,i))) % nodec;
-//       nodes[i]->controlLights(curr_node_action);
-//     }
-
-//   sim->updateWorld();
-// }
-
  int* curr_stateg = NULL;
  int* next_stateg = NULL;
  int curr_actiong = 0;
@@ -192,23 +97,20 @@ void learner::learn ()
 
   // curr_state = sense_state();
 
-  while (true)
+  for (int i = 0; i < nodec; i++)
     {
-      for (int i = 0; i < nodec; i++)
-	{
-	  nodes[i]->sense_state();
-	  nodes[i]->select_action();
-	  nodes[i]->apply_action();
-	  nodes[i]->get_reward();
-	  nodes[i]->update_q_entry();
-
-	}
-
-      // Shouldn't this be put just after apply_action?
-      //if (ppainter)
-      //ppainter->draw();
-
+      nodes[i]->sense_state();
+      nodes[i]->select_action();
+      nodes[i]->apply_action();
+      nodes[i]->get_reward();
+      nodes[i]->update_q_entry();
     }
+
+  sim->updateWorld();
+
+  // Shouldn't this be put just after apply_action?
+  //if (ppainter)
+  //ppainter->draw();
 }
 
 float learner::get_reward () {
