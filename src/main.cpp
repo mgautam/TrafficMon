@@ -13,7 +13,7 @@
 #include "factory.h"
 #include "learner.h"
 
-//#define OPENGL_MODE 1
+#define OPENGL_MODE 1
 
 extern world* simulation;
 world *simulation;
@@ -26,8 +26,8 @@ static int performance = 0;
 
 void draw (void)
 {
-  // traffic_learner->naiveControl (simulation);
-  // simulation->updateWorld();
+  traffic_learner->naiveControl (simulation);
+  simulation->updateWorld();
 
   // performance += traffic_learner->evaluate (simulation->intersections,simulation->intc
   // 					    );
@@ -47,8 +47,7 @@ void timerCallback (int value)
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
   if (!stopAnime) {
-    runSimulation ();
-    ppainter->draw();
+    draw ();
   }
 
    /* call back again after simulation_interval has passed */

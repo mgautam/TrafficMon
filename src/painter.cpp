@@ -58,9 +58,6 @@ painter::painter(world* _simulation, void (*_simulate) (void), void (*_timerCall
   glPushMatrix ();
 
   glutTimerFunc (simulation_interval, timerCallback, 0);
-
-  
-
 }
 
 void painter::animate()
