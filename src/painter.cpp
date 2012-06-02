@@ -9,7 +9,7 @@ void (*painter::timerCallback) (int) = NULL;
 
 painter::painter(world* _simulation, void (*_simulate) (void), void (*_timerCallback) (int), int argc, char** argv) {
 
-  this->simulation = _simulation;
+    this->simulation = _simulation;
   this->simulate = _simulate;
   this->timerCallback = _timerCallback;
 
@@ -44,7 +44,7 @@ painter::painter(world* _simulation, void (*_simulate) (void), void (*_timerCall
 
   glutCreateWindow ("World View");
   glDisable (GL_DEPTH_TEST);
-  glutDisplayFunc (simulate);
+  //glutDisplayFunc (simulate);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 

@@ -17,7 +17,8 @@ world *simulation;
 extern painter* ppainter;
 painter* ppainter;
 
-static learner *traffic_learner;
+extern learner *traffic_learner;
+learner *traffic_learner;
 static int performance = 0;
 
 void draw (void)
@@ -43,9 +44,9 @@ void timerCallback (int value)
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
   if (!stopAnime) {
-    traffic_learner->glLearn ();
-    // traffic_learner->naiveControl (simulation);
-    // simulation->updateWorld();
+    //traffic_learner->glLearn ();
+    traffic_learner->naiveControl (simulation);
+    simulation->updateWorld();
     ppainter->draw ();
   }
 

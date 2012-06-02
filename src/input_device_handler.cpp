@@ -7,11 +7,11 @@
 #include "input_device_handler.h"
 #include "world.h"
 #include "painter.h"
-
+#include "learner.h"
 
 extern painter* ppainter;
 extern world* simulation;
-
+extern learner* traffic_learner;
 bool stopAnime = false;
 int simulation_interval = 256;//msecs
 
@@ -108,7 +108,10 @@ void handleKeyPress  (unsigned char key, int x, int y) {
 
   case 's':
     stopAnime = true;
-    ppainter->simulate();
+    traffic_learner->naiveControl (simulation);
+    simulation->updateWorld ();
+    
+    //    ppainter->simulate();
     ppainter->draw ();
     printf (">> Key Pressed: Step to next unit in time dimension\n");
     break;
