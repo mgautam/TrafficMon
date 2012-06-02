@@ -38,12 +38,13 @@ class learner {
   void learn();
   int* sense_state();
   int select_action(int* curr_state);
-  void apply_action(int* actions);
-  void action_to_actions(int action, int* actions);
+  void apply_action(int action);
+  //  void action_to_actions(int action, int* actions);
   float* q_table;
 
   int* state;
-  int* actions;
+  //  int* actions;
+  int action;
   world* sim;
   painter* ppainter;
 
