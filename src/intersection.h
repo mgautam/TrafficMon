@@ -14,6 +14,7 @@ using namespace std;
 #endif
 
 #include "road.h"
+#include "config.h"
 
 class intersection
 {
@@ -22,8 +23,13 @@ class intersection
   void write_state(FILE* output);
   void controlLights (int PatternID);
 
-
-  //variables
+  void sense_state();
+  void select_action();
+  float* get_q_entry(int* state, int action);
+  void apply_action();
+  void get_reward();
+  void update_q_entry();
+//variables
   int x;
   int y;
   
@@ -36,6 +42,9 @@ class intersection
   road* out[MAX_DEGREE];
 
   int pattern_id;
+  int* states;
+  float reward;
+  int action;
 
 };
 

@@ -23,7 +23,7 @@ painter* ppainter;
 
 extern learner *traffic_learner;
 learner *traffic_learner;
-static int performance = 0;
+//static int performance = 0;
 
 void draw (void)
 {
