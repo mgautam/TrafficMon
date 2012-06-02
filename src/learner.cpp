@@ -66,37 +66,8 @@ q_table_size:%lld \n",
  int curr_actiong = 0;
  int curr_rewardg = 0;
 
-void learner::glLearn () {
-
-  for (int i = 0; i < nodec; i++)
-    {
-      // curr_stateg = sense_state();
-      // printf ("Current State: ");
-      // for (int i = 0; i < global_state_vector_size; i++)
-      // 	printf ("%d ",curr_stateg[i]);
-      // printf ("\n");
-
-      // curr_actiong = select_action(curr_stateg);
-      // printf ("Action: %d\n",curr_actiong);
-      // apply_action(curr_actiong);
-      // curr_rewardg = get_reward();// This is the reward for moving between states and not the reward of the state
-      // next_stateg = sense_state();
-  
-      // *get_q_entry(curr_stateg, curr_actiong) = curr_rewardg + 0.9 * *get_max_q_entry(next_stateg);
-      // curr_stateg = next_stateg;
-    }
-}
-
-
-void learner::learn ()
+void learner::glLearn ()
 {
-  // int* curr_state = NULL;
-  // int* next_state = NULL;
-  // int curr_action = 0;
-  // int curr_reward = 0;
-
-  // curr_state = sense_state();
-
   for (int i = 0; i < nodec; i++)
     {
       nodes[i]->sense_state();
@@ -107,26 +78,6 @@ void learner::learn ()
     }
 
   sim->updateWorld();
-
-  // Shouldn't this be put just after apply_action?
-  //if (ppainter)
-  //ppainter->draw();
-}
-
-float learner::get_reward () {
-  int total = 0;
-  for (int i = 0; i < nodec; i++) {
-    for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
-      road *curr_road = nodes[i]->in[roadIndex];
-      if (curr_road) {
-	for (int position = 0; position < curr_road->length; position++) {
-	  if (curr_road->cars[position] && curr_road->cars[position]->wait > 0)
-	    total++;
-	}
-      }
-    }
-  }
-  return -(float) total;
 }
 
 float x = 0;
