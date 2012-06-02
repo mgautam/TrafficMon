@@ -23,8 +23,8 @@ static int performance = 0;
 
 void draw (void)
 {
-  traffic_learner->naiveControl (simulation);
-  simulation->updateWorld();
+    traffic_learner->naiveControl (simulation);
+    simulation->updateWorld();
 
   // performance += traffic_learner->evaluate (simulation->intersections,simulation->intc
   // 					    );
@@ -33,7 +33,7 @@ void draw (void)
   //   performance = 0;
   // }
 
-  ppainter->draw();
+    ppainter->draw();
 
 
 }
@@ -44,8 +44,8 @@ void timerCallback (int value)
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
   if (!stopAnime) {
-    //traffic_learner->glLearn ();
-    traffic_learner->naiveControl (simulation);
+    traffic_learner->glLearn ();
+    //traffic_learner->naiveControl (simulation);
     simulation->updateWorld();
     ppainter->draw ();
   }

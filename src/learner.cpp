@@ -13,7 +13,7 @@ static int *attribute_block_length;
 static int *attributes_block_range;
 static int number_of_actions_per_global_state;
 static int per_node_state_vector_size;
-static int global_state_vector_size;
+static long long global_state_vector_size;
 
 learner::learner (world* sim, painter* ppainter) {
   this->sim = sim;
@@ -45,10 +45,21 @@ learner::learner (world* sim, painter* ppainter) {
 
 
 
-  int q_table_size = global_state_space_size * number_of_actions_per_global_state;
-  this->q_table = new float [q_table_size];
+  long long int q_table_size = global_state_space_size * number_of_actions_per_global_state;
+  this->q_table = new long double [q_table_size];
   this->state = new int[global_state_vector_size];
   //  this->actions = new int[nodec];
+
+  printf ("per_node_state_vector_size: %d \
+state_space_size_per_node: %d		  \
+global_state_vector_size: %d		  \
+global_state_space_size: %lld		  \
+q_table_size:%lld \n",
+	  per_node_state_vector_size,
+	  state_space_size_per_node,
+	  global_state_vector_size,
+	  global_state_space_size,
+	  q_table_size);
 }
 
 
@@ -77,7 +88,7 @@ int* learner::sense_state()
 }
 
 
-float* learner::get_q_entry(int *state, int action)
+long double* learner::get_q_entry(int *state, int action)
 {
   // Little Endian Storage and Retreival
 
@@ -122,13 +133,13 @@ int learner::select_action(int* curr_state)
   return 0;
 }
 
-float* learner::get_max_q_entry(int* next_state)
+long double* learner::get_max_q_entry(int* next_state)
 {
-  float* max_q_entry = 0;
+  long double* max_q_entry = 0;
 
   for (int action = 0; action < number_of_actions_per_global_state; action++)
     {
-      float* q_entry = get_q_entry (next_state, action);
+      long double* q_entry = get_q_entry (next_state, action);
       if (!max_q_entry || *q_entry > *max_q_entry)
 	max_q_entry = q_entry;
     }
@@ -154,8 +165,13 @@ void learner::apply_action(int action)
 
 void learner::glLearn () {
   curr_stateg = sense_state();
+  printf ("Current State: ");
+  for (int i = 0; i < global_state_vector_size; i++)
+    printf ("%d ",curr_stateg[i]);
+  printf ("\n");
 
   curr_actiong = select_action(curr_stateg);
+  printf ("Action: %d\n",curr_actiong);
   apply_action(curr_actiong);
   curr_rewardg = get_reward();// This is the reward for moving between states and not the reward of the state
   next_stateg = sense_state();

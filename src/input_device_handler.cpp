@@ -108,7 +108,8 @@ void handleKeyPress  (unsigned char key, int x, int y) {
 
   case 's':
     stopAnime = true;
-    traffic_learner->naiveControl (simulation);
+    //traffic_learner->naiveControl (simulation);
+    traffic_learner->glLearn ();
     simulation->updateWorld ();
     
     //    ppainter->simulate();
