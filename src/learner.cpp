@@ -107,7 +107,8 @@ int learner::select_action(int* curr_state)
 
   for (int action = 0; action < number_of_actions_per_global_state; action++)
     {
-      total_kq += pow(0.1, *get_q_entry(curr_state, action));
+      total_kq += pow(0.1, *get_q_entry(curr_state, action));//is this the right probability distribution?
+      //It makes higher rewards to have lower kq
       cum_kq[action] = total_kq;
     }  
 
@@ -115,7 +116,7 @@ int learner::select_action(int* curr_state)
 
   for (int action = 0; action < number_of_actions_per_global_state; action++)
     {
-      if (cum_kq[action] >= r)
+      if (cum_kq[action] <= r)// Is this less than or greater than?
 	  return action;
     }
   return 0;
@@ -127,7 +128,7 @@ float* learner::get_max_q_entry(int* next_state)
 
   for (int action = 0; action < number_of_actions_per_global_state; action++)
     {
-      float* q_entry = get_q_entry(next_state, action);
+      float* q_entry = get_q_entry (next_state, action);
       if (!max_q_entry || *q_entry > *max_q_entry)
 	max_q_entry = q_entry;
     }
@@ -144,6 +145,24 @@ void learner::apply_action(int action)
     }
 
   sim->updateWorld();
+}
+
+ int* curr_stateg = NULL;
+ int* next_stateg = NULL;
+ int curr_actiong = 0;
+ int curr_rewardg = 0;
+
+void learner::glLearn () {
+  curr_stateg = sense_state();
+
+  curr_actiong = select_action(curr_stateg);
+  apply_action(curr_actiong);
+  curr_rewardg = get_reward();// This is the reward for moving between states and not the reward of the state
+  next_stateg = sense_state();
+  
+  *get_q_entry(curr_stateg, curr_actiong) = curr_rewardg + 0.9 * *get_max_q_entry(next_stateg);
+  curr_stateg = next_stateg;
+
 }
 
 
@@ -167,8 +186,8 @@ void learner::learn ()
       curr_state = next_state;
 
       // Shouldn't this be put just after apply_action?
-      if (ppainter)
-	ppainter->draw();
+      //if (ppainter)
+      //ppainter->draw();
 
     }
 }
@@ -179,7 +198,7 @@ float learner::get_reward () {
     for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
       road *curr_road = nodes[i]->in[roadIndex];
       if (curr_road) {
-	for (int position = 0; position < MAX_SLOTS_TO_CHECK; position++) {
+	for (int position = 0; position < curr_road->length; position++) {
 	  if (curr_road->cars[position] && curr_road->cars[position]->wait > 0)
 	    total++;
 	}

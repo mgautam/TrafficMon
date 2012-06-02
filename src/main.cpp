@@ -43,7 +43,10 @@ void timerCallback (int value)
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
   if (!stopAnime) {
-    draw ();
+    traffic_learner->glLearn ();
+    // traffic_learner->naiveControl (simulation);
+    // simulation->updateWorld();
+    ppainter->draw ();
   }
 
    /* call back again after simulation_interval has passed */
@@ -55,14 +58,15 @@ int main (int argc, char* argv[])
 {
   factory::create_world(&simulation);
 
+  traffic_learner = new learner(simulation, ppainter);
+
 #ifdef OPENGL_MODE
   ppainter = new painter(simulation, draw, timerCallback, argc, argv);
   // ppainter->draw(); // Draw initial state
   ppainter->animate();
 #else
-  ppainter = new painter(simulation, draw, NULL, argc, argv);
-  traffic_learner = new learner(simulation, ppainter);
   traffic_learner->learn();
+  ppainter = new painter(simulation, draw, NULL, argc, argv);
 #endif
 
   return 0;

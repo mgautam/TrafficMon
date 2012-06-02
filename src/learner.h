@@ -16,7 +16,9 @@ class learner {
 
   void act(int* action);
   void sense();
-  void learn(int* action);
+  void glLearn ();
+  void learn();
+
 
   // Actuate
   void naiveControl (world* simulation);
@@ -35,15 +37,13 @@ class learner {
 
   int intc;
 
-  void learn();
+  //  void learn();
   int* sense_state();
   int select_action(int* curr_state);
   void apply_action(int action);
-  //  void action_to_actions(int action, int* actions);
   float* q_table;
 
   int* state;
-  //  int* actions;
   int action;
   world* sim;
   painter* ppainter;
