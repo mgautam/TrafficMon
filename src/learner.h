@@ -3,11 +3,11 @@
 
 #include "intersection.h"
 #include "world.h"
+#include "painter.h"
 
 class learner {
  public:
-  learner (void);
-  learner (world* sim);
+  learner (world* sim, painter* ppainter);
 
   // Sense Enviroment
   int* get_state (intersection* node);
@@ -45,6 +45,8 @@ class learner {
   int* state;
   int* actions;
   world* sim;
+  painter* ppainter;
+
 };
 
 #endif

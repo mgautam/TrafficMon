@@ -11,8 +11,9 @@
 #include "painter.h"
 #include "input_device_handler.h"
 #include "factory.h"
-
 #include "learner.h"
+
+//#define OPENGL_MODE 1
 
 extern world* simulation;
 world *simulation;
@@ -20,20 +21,24 @@ world *simulation;
 extern painter* ppainter;
 painter* ppainter;
 
-static learner *TrafficLearner;
+static learner *traffic_learner;
 static int performance = 0;
 
-void runSimulation (void)
+void draw (void)
 {
-  TrafficLearner->naiveControl (simulation);
-  simulation->updateWorld();
-  //simulation->write_state(stdout,true);
+  // traffic_learner->naiveControl (simulation);
+  // simulation->updateWorld();
 
-  performance += TrafficLearner->evaluate (simulation->intersections,simulation->intc);
-  if (simulation->timestamp % 1000 == 0) {
-    printf ("Performance in last 1000 time steps is %d\n", performance);
-    performance = 0;
-  }
+  // performance += traffic_learner->evaluate (simulation->intersections,simulation->intc
+  // 					    );
+  // if (simulation->timestamp % 1000 == 0) {
+  //   printf ("Performance in last 1000 time steps is %d\n", performance);
+  //   performance = 0;
+  // }
+
+  ppainter->draw();
+
+
 }
 
 #ifdef OPENGL_MODE
@@ -53,23 +58,16 @@ void timerCallback (int value)
 
 int main (int argc, char* argv[])
 {
-
   factory::create_world(&simulation);
 
-  TrafficLearner = new learner ();
- 
-  //simulation->write_state(stdout); // Write Initial State
-
-
-#ifndef OPENGL_MODE
-  while (true)
-  {
-    runSimulation ();
-  }
-#else
-  ppainter = new painter(simulation, runSimulation, timerCallback, argc, argv);
-  ppainter->draw(); // Draw initial state
+#ifdef OPENGL_MODE
+  ppainter = new painter(simulation, draw, timerCallback, argc, argv);
+  // ppainter->draw(); // Draw initial state
   ppainter->animate();
+#else
+  ppainter = new painter(simulation, draw, NULL, argc, argv);
+  traffic_learner = new learner(simulation, ppainter);
+  traffic_learner->learn();
 #endif
 
   return 0;
