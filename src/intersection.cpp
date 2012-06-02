@@ -25,7 +25,45 @@ intersection::intersection(int x, int y)
   this->in_count = 0;
   this->out_count = 0;
 
-  this->states = new int[2*(MAX_DEGREE + 1)]; //traffic pattern, car counts
+  attribute_block_length = new int[num_state_attribute_blocks];
+  attributes_block_range = new int[num_state_attribute_blocks];
+
+  /**** Configure this block to add different features ****/
+  num_state_attribute_blocks = 2;
+  
+  attribute_block_length[0] = 1;
+  attributes_block_range[0] = NUM_TRAFFIC_PATTERNS;
+
+  attribute_block_length[1] = MAX_DEGREE;
+  attributes_block_range[1] = MAX_SLOTS_TO_CHECK;
+
+  number_of_actions_per_state = NUM_TRAFFIC_PATTERNS;
+  /**** Configure this block to add different features ****/
+
+  state_vector_size = 0;
+  for (int i = 0; i < num_state_attribute_blocks; i++)
+    state_vector_size += attribute_block_length[i];
+
+  state_space_size = 1;
+  for (int i = 0; i < num_state_attribute_blocks; i++)
+    state_space_size *= pow (attributes_block_range[i],attribute_block_length[i]);
+  
+  
+  long long int q_table_size = state_space_size * number_of_actions_per_state;
+  //  this->q_table = new float [q_table_size];
+  q_table = (float *) malloc (q_table_size * sizeof (float));
+
+  
+  printf ("state_vector_size: %d       \
+state_space_size: %d		       \
+q_table_size:%lld \n",
+          state_vector_size,
+          state_space_size,
+          q_table_size);
+
+  this->states = new int*[2];
+  this->states[0] = new int[state_vector_size]; //curr_state
+  this->states[1] = new int[state_vector_size]; //next_state
 
   memset (this->in, 0, MAX_DEGREE*sizeof(road*));
   memset (this->out, 0, MAX_DEGREE*sizeof(road*));//not necessary
@@ -33,19 +71,20 @@ intersection::intersection(int x, int y)
 
 void intersection::sense_state ()
 {
-  memcpy(states + (MAX_DEGREE + 1), states, sizeof(int)*(MAX_DEGREE + 1));
-  states[0] = pattern_id;
+  // What's happening here?
+  memcpy(states[1], states[0], sizeof(int)*state_vector_size);
+  states[0][0] = pattern_id;
 
   for (int j = 0; j < MAX_DEGREE; j++)
     {
       road* curr_road = in[j];
-      states[1 + j] = MAX_SLOTS_TO_CHECK;
+      states[0][1 + j] = MAX_SLOTS_TO_CHECK;
       if (curr_road)
 	{
 	  for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
 	    {
 	      if (curr_road->cars[k]) {
-		states[1 + j] = k;
+		states[0][1 + j] = k;
 		break;
 	      }
 	    }
@@ -60,7 +99,7 @@ void intersection::select_action()
 
   for (int action = 0; action < NUM_TRAFFIC_PATTERNS; action++)
     {
-      total_kq += pow(0.1, *get_q_entry(states + 0, action));//is this the right probability distribution?
+      total_kq += pow(0.1, *get_q_entry(states[0], action));//is this the right probability distribution?
       //It makes higher rewards to have lower kq
       cum_kq[action] = total_kq;
     }  
@@ -99,13 +138,36 @@ void intersection::get_reward () {
 
 float* intersection::get_q_entry(int* state, int action)
 {
-  return 0;
+  int currStateIndex = 0;
+  for (int j = 0; j < num_state_attribute_blocks ; j++) {
+    // Within each node
+    if (j)
+      currStateIndex *= pow (attributes_block_range[j-1], attribute_block_length[j-1]);
+    for (int k = 0; k < attribute_block_length[j]; k++) {
+      // We are evaluating state within attribute block
+      currStateIndex += pow (attributes_block_range[j],k) * state[j*attribute_block_length[j]+k];
+    }
+  }
+   
+  return &(q_table[currStateIndex * number_of_actions_per_state + action]);
+
+ }
+
+float* intersection::get_max_q_entry (int *state) {
+  float *MaxQEntrySoFar = 0;
+  for (int i = 0; i < number_of_actions_per_state; i++) {
+    if ( !MaxQEntrySoFar || *(MaxQEntrySoFar) < *get_q_entry (state, i) )
+      MaxQEntrySoFar = get_q_entry (state, i);
+  }
+  return MaxQEntrySoFar;
 }
+
 
 void intersection::update_q_entry()
 {
-  // *get_q_entry(curr_state, curr_action) = curr_reward + 0.9 * *get_max_q_entry(next_state);
+  *get_q_entry(states[0], action) = reward + 0.9 * *get_max_q_entry(states[1]);
   // curr_state = next_state;
+     states[0] = states[1];
 }
 
 void intersection::controlLights (int PatternID) {
@@ -181,6 +243,18 @@ void intersection::controlLights (int PatternID) {
 
 void intersection::write_state(FILE* output)
 {
+  fprintf (output, "Current State: ");
+  for (int i = 0; i < state_vector_size; i++)
+    fprintf (output, " %d", states[0][i]);
+  fprintf (output,"\n");
+
+  fprintf (output, "Next State: ");
+  for (int i = 0; i < state_vector_size; i++)
+    fprintf (output, " %d", states[1][i]);
+  fprintf (output, "\n");
+
+  fprintf (output, "Action: %d\n", action);
+
   fprintf(output, "Coordinates:%2d %2d\n", x, y);
 }
 

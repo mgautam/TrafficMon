@@ -26,6 +26,7 @@ class intersection
   void sense_state();
   void select_action();
   float* get_q_entry(int* state, int action);
+  float* get_max_q_entry (int *state);
   void apply_action();
   void get_reward();
   void update_q_entry();
@@ -42,10 +43,18 @@ class intersection
   road* out[MAX_DEGREE];
 
   int pattern_id;
-  int* states;
+  int** states;
   float reward;
   int action;
 
+  float *q_table;
+
+  int num_state_attribute_blocks;
+  int state_space_size;
+  int *attribute_block_length;
+  int *attributes_block_range;
+  int number_of_actions_per_state;
+  int state_vector_size;
 };
 
 #endif
