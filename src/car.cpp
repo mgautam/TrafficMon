@@ -47,7 +47,6 @@ int car::move()
 {
   //printf ("pOSITION: %d\n",position);
   road* next_road = curr_road->get_next(turn);
-  int accrued_wait = wait;
 
   if (position > 0 && curr_road->cars[position-1] == 0)//move forward on the road
     {
@@ -84,7 +83,6 @@ int car::move()
 	{
 	  //escape the city
 	  escape_city();
-	  return accrued_wait;
 	}
 
       position = next_road->length - 1;
@@ -104,7 +102,6 @@ int car::move()
 	{
 	  //escape the city
 	  escape_city();
-	  return accrued_wait;
 	}
 
       position = next_road->length - 1;
@@ -119,12 +116,11 @@ int car::move()
     {
       printf ("Wait!\n");
       wait++;
-      accrued_wait = -1;
     }
 
   moved = true;
 
-  return accrued_wait;
+  return wait;
 }
 
 void car::sense()
