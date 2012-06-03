@@ -142,6 +142,7 @@ void intersection::get_reward () {
   }
 
   reward = -(float) total; // because they are all costs & not rewards
+  printf ("%f\n",reward);
 }
 
 float* intersection::get_q_entry(int* state, int action)
@@ -162,7 +163,7 @@ float* intersection::get_q_entry(int* state, int action)
       currStateIndex *= blockMultiplier;
     blockIndex += attribute_block_length[j];
   }
-  printf ("%d\n",currStateIndex);
+  // printf ("%d\n",currStateIndex);
   return &(q_table[currStateIndex * number_of_actions_per_state + action]);
 
  }
