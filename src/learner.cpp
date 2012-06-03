@@ -94,7 +94,7 @@ void learner::print_to_file (void) {
 	for (int m = 0; m < nodes[i]->state_vector_size; m++)
 	  fprintf (output, "%d ", curr_state[m]);
 	fprintf (output, "Action: %d\t", action);
-	fprintf (output, "%f", nodes[i]->q_table[j]);
+	fprintf (output, "%f", *(nodes[i]->get_q_entry (curr_state,action)) );
 	fprintf (output,"\n");
       }
 
