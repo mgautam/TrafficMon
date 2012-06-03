@@ -89,8 +89,25 @@ void painter::draw () {
 	  draw(simulation->roads[i]->cars[j]);
       }
   }
+
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_BLEND);
+  glEnable(GL_LINE_SMOOTH);
+  glLineWidth(2.0);
+  output(0, 0, "This is antialiased.");
   
   glutSwapBuffers ();
+}
+
+void painter::output(GLfloat x, GLfloat y, char *text)
+{
+   glPushMatrix();
+   glTranslatef(x,y,0);
+   glScalef(100, 100, 100);
+   char* p;
+   for (p = text; *p; p++)
+     glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+   glPopMatrix();
 }
 
 

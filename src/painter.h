@@ -1,6 +1,7 @@
 #ifndef PAINTER_H
 #define PAINTER_H
 
+#include <GLUT/glut.h>
 
 #include "config.h"
 #include "intersection.h"
@@ -27,6 +28,7 @@ public:
   void draw (road* curr_road);
   void drawLights (road* curr_road);
 
+  void output(GLfloat, GLfloat, char*);
   void animate();
 
   world* simulation;
