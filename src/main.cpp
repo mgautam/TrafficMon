@@ -27,6 +27,7 @@ learner *traffic_learner;
 extern int curr_mode;
 
 #ifdef OPENGL_MODE
+
 void display (void) {
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
@@ -42,6 +43,11 @@ void display (void) {
     //simulation->updateWorld();
     ppainter->draw ();
   }
+
+
+
+
+
 }
 void timerCallback (int value)
 {
