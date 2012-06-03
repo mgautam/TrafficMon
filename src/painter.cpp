@@ -74,7 +74,7 @@ void painter::draw () {
   glLoadIdentity ();
 
   glScalef (0.125f,0.125f,1.0f);
-  glTranslatef (-7.5,-7.5,0);
+  glTranslatef (0,0,0);
   
   for (int i = 0; i < simulation->intc; i++)
     draw(simulation->intersections[i]);

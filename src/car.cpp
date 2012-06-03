@@ -30,6 +30,7 @@ void car::setCar (road* init_road, int next_turn, int position)
 
   this->turn = next_turn;
   this->moved = true;
+  this->wait = 0;
 }
 
 void car::write_state(FILE* output)
@@ -44,34 +45,39 @@ void car::write_state(FILE* output)
 
 int car::move()
 {
-
+  //printf ("pOSITION: %d\n",position);
   road* next_road = curr_road->get_next(turn);
   int accrued_wait = wait;
 
   if (position > 0 && curr_road->cars[position-1] == 0)//move forward on the road
     {
+      printf ("Move Forward\n");
       curr_road->cars[position] = 0;
       curr_road->cars[--position] = this;
       wait = 0;
     }
-  else if (position == 0 && //curr_road->lights[turn] == GREEN &&
+  else if (position == 0 &&
 	   ((next_road && next_road->cars[next_road->length - 1] == 0) || !next_road) )//enter intersection
     {
+      printf ("position 0 nextroad empty\n");
       if ( (turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||  curr_road->lights[turn] == GREEN) {
 	curr_road->cars[position] = 0;
 	curr_road->cars[--position] = this;
 	wait = 0;
 	//printf ("TURN:%d next_road:%p\n",turn,next_road);
       }
+      else wait++;
     }
   else if (position == -1 && turn != LEFT)//move forward in the intersection
     {
+      printf ("pos-1 turn!=LEFT\n");
       curr_road->cars[position] = 0;
       curr_road->cars[--position] = this;
       wait = 0;
     }
   else if (position == -1 && turn == LEFT)//turn into left road
     {
+      printf ("pos-1 LEFT\n");
       curr_road->cars[position] = 0;
 
       if (!next_road)
@@ -91,6 +97,7 @@ int car::move()
     }
   else if (position == -2) //turn != LEFT //turn into right road or move onto road ahead
     {
+      printf ("pos-2 \n");
       curr_road->cars[position] = 0;
 
       if (!next_road)
@@ -110,6 +117,7 @@ int car::move()
     }
   else
     {
+      printf ("Wait!\n");
       wait++;
       accrued_wait = -1;
     }

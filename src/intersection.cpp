@@ -14,7 +14,7 @@ using namespace std;
 #include "car.h"
 #include <math.h>
 
-#define MAX_SLOTS_TO_CHECK 10
+#define MAX_SLOTS_TO_CHECK 8
 
 //constructor
 intersection::intersection(int x, int y)
@@ -78,17 +78,18 @@ void intersection::sense_state ()
   for (int j = 0; j < MAX_DEGREE; j++)
     {
       road* curr_road = in[j];
-      states[0][1 + j] = MAX_SLOTS_TO_CHECK-1;
+
       if (curr_road)
-	{
-	  for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
-	    {
-	      if (curr_road->cars[k]) {
-		states[0][1 + j] = k;
-		break;
-	      }
-	    }
-	}
+				{
+					states[0][1 + j] = MAX_SLOTS_TO_CHECK-1;
+					for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
+						{
+							if (curr_road->cars[k]) {
+								states[0][1 + j] = k;
+								break;
+							}
+						}
+				}
     }
 }
 
@@ -136,10 +137,13 @@ void intersection::get_reward () {
     road *curr_road = in[roadIndex];
     if (curr_road) {
       for (int position = 0; position < curr_road->length; position++) {
-	if (curr_road->cars[position] && curr_road->cars[position]->wait > 0) {
-	  total++;
-	  printf ("%d\n",total);
-	}
+				if (curr_road->cars[position]) {
+					printf ("Car %p: Position:%d Wait%d\n",curr_road->cars[position],position, curr_road->cars[position]->wait);
+					if (curr_road->cars[position]->wait > 0) {
+						total++;
+						//printf ("%d\n",total);
+					}
+				}
       }
     }
   }
