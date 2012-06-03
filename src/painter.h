@@ -19,7 +19,7 @@ public:
   //  static void (*
 
   painter(world* sim);
-  painter(world* simulation, void (*timerCallback) (int), int argc, char** argv);
+  painter(world* simulation, void (*display) (void), void (*timerCallback) (int), int argc, char** argv);
 
   void draw ();
   void draw (car* curr_car);

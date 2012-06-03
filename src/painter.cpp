@@ -8,14 +8,15 @@
 #include "input_device_handler.h"
 #include "painter.h"
 
-
+static void (*simulate) (void) = NULL;
 void (*painter::timerCallback) (int) = NULL;
 
-painter::painter(world* _simulation, void (*_timerCallback) (int), int argc, char** argv) {
+painter::painter(world* _simulation, void (*display)(void), void (*_timerCallback) (int), int argc, char** argv) {
 
-    this->simulation = _simulation;
+  this->simulation = _simulation;
 
-  this->timerCallback = _timerCallback;
+    simulate = display;
+    this->timerCallback = _timerCallback;
 
   // Calculating world scale to map to our windowed perception of the world
   int minWorldX = 0;
@@ -48,6 +49,7 @@ painter::painter(world* _simulation, void (*_timerCallback) (int), int argc, cha
 
   glutCreateWindow ("World View");
   glDisable (GL_DEPTH_TEST);
+  glutDisplayFunc (simulate);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 
