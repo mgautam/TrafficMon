@@ -158,8 +158,8 @@ float* intersection::get_q_entry(int* state, int action)
       // We are evaluating state within attribute block
       currStateIndex += pow (attributes_block_range[j],attribute_block_length[j]-1-k) * state[blockIndex+k];
     }
-
-    currStateIndex *= blockMultiplier;
+    if (j != num_state_attribute_blocks-1)
+      currStateIndex *= blockMultiplier;
     blockIndex += attribute_block_length[j];
   }
   printf ("%d\n",currStateIndex);
