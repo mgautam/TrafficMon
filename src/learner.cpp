@@ -87,7 +87,6 @@ void learner::print_to_file (void) {
 			int curr_state[5] = {p, t4, t3, t2, t1};
 			for (int action = 0; action < 4; action++)
 			  {
-			    
 			    fprintf (output, "State: %d => %d %d %d %d %d, Action: %d\t", state_no, t1, t2, t3, t4, p, action);
 			    fprintf (output, "%f\n", *(nodes[i]->get_q_entry (curr_state,action)));
 			    state_no++;
