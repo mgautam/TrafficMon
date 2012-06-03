@@ -30,6 +30,8 @@ class intersection
   void apply_action();
   void get_reward();
   void update_q_entry();
+
+  void select_learned_action (void);
 //variables
   int x;
   int y;

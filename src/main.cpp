@@ -23,24 +23,8 @@ painter* ppainter;
 
 extern learner *traffic_learner;
 learner *traffic_learner;
-//static int performance = 0;
 
-void draw (void)
-{
-    traffic_learner->naiveControl (simulation);
-    simulation->updateWorld();
-
-  // performance += traffic_learner->evaluate (simulation->intersections,simulation->intc
-  // 					    );
-  // if (simulation->timestamp % 1000 == 0) {
-  //   printf ("Performance in last 1000 time steps is %d\n", performance);
-  //   performance = 0;
-  // }
-
-    ppainter->draw();
-
-
-}
+extern int curr_mode;
 
 #ifdef OPENGL_MODE
 void timerCallback (int value)
@@ -48,8 +32,14 @@ void timerCallback (int value)
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
   if (!stopAnime) {
-    traffic_learner->glLearn ();
-    //traffic_learner->naiveControl (simulation);
+
+    if (curr_mode == 0)
+      traffic_learner->naiveControl (simulation);
+    else if (curr_mode == 1)
+      traffic_learner->learn ();
+    else 
+      traffic_learner->comply ();
+
     simulation->updateWorld();
     ppainter->draw ();
   }
@@ -66,12 +56,12 @@ int main (int argc, char* argv[])
   traffic_learner = new learner(simulation, ppainter);
 
 #ifdef OPENGL_MODE
-  ppainter = new painter(simulation, draw, timerCallback, argc, argv);
+  ppainter = new painter(simulation, timerCallback, argc, argv);
   // ppainter->draw(); // Draw initial state
   ppainter->animate();
 #else
   traffic_learner->learn();
-  ppainter = new painter(simulation, draw, NULL, argc, argv);
+  ppainter = new painter(simulation, NULL, argc, argv);
 #endif
 
   return 0;

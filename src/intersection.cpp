@@ -116,6 +116,14 @@ void intersection::select_action()
     }
 }
 
+void intersection::select_learned_action () {
+  int best_action = 0;
+  for (int action = 0; action < NUM_TRAFFIC_PATTERNS; action++) {
+    if ( *get_q_entry (states[0],best_action) < *get_q_entry (states[0],action) )
+      best_action = action;
+  }
+}
+
 void intersection::apply_action()
 {
   controlLights(action);
@@ -133,7 +141,7 @@ void intersection::get_reward () {
     }
   }
 
-  reward = -(float) total;
+  reward = -(float) total; // because they are all costs & not rewards
 }
 
 float* intersection::get_q_entry(int* state, int action)

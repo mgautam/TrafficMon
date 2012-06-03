@@ -14,19 +14,6 @@ learner::learner (world* sim, painter* ppainter) {
 }
 
 
-void learner::glLearn ()
-{
-  for (int i = 0; i < nodec; i++)
-    {
-      nodes[i]->sense_state();
-      nodes[i]->select_action();
-      nodes[i]->apply_action();
-      nodes[i]->get_reward();
-      nodes[i]->update_q_entry();
-    }
-
-  sim->updateWorld();
-}
 
 float x = 0;
 static int TrafficPhase = 0;
@@ -48,7 +35,39 @@ void learner::naiveControl (world *sim) {
   
 }
 
+
+
+void learner::learn ()
+{
+  for (int i = 0; i < nodec; i++)
+    {
+      nodes[i]->sense_state();
+      nodes[i]->select_action();
+      nodes[i]->apply_action();
+      nodes[i]->get_reward();
+      nodes[i]->update_q_entry();
+    }
+
+  //sim->updateWorld();
+}
+
+
+
+void learner::comply () {
+  for (int i = 0; i < nodec; i++) {
+    nodes[i]->sense_state();
+    nodes[i]->select_learned_action ();
+    nodes[i]->apply_action ();
+  } 
+  printf ("Called!\n");
+  //sim->updateWorld ();
+}
+
 int learner::evaluate(intersection** nodes, int nodec)
 {
   return 0;
+}
+
+void learner::print_to_file (void) {
+
 }

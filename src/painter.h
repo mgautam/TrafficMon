@@ -15,12 +15,11 @@ class painter {
 public:
   float scale;
 
-  static void (*simulate) (void);
   static void (*timerCallback) (int);
   //  static void (*
 
   painter(world* sim);
-  painter(world* simulation, void (*simulate) (void), void (*timerCallback) (int), int argc, char** argv);
+  painter(world* simulation, void (*timerCallback) (int), int argc, char** argv);
 
   void draw ();
   void draw (car* curr_car);

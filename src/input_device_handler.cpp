@@ -21,6 +21,12 @@ int simulation_interval = 256;//msecs
 
 static bool mirror = false;
 
+extern int curr_mode;
+int curr_mode = 0;
+
+char modes[3][20]= {"Naive","Learning","Comply"};
+
+
 void handleKeyPress  (unsigned char key, int x, int y) {
   switch (key) {
   case 32: // SPACE BAR
@@ -112,11 +118,15 @@ void handleKeyPress  (unsigned char key, int x, int y) {
 
   case 's':
     stopAnime = true;
-    //traffic_learner->naiveControl (simulation);
-    traffic_learner->glLearn ();
-    simulation->updateWorld ();
     
-    //    ppainter->simulate();
+    if (curr_mode == 0)
+      traffic_learner->naiveControl (simulation);
+    else if (curr_mode == 1)
+      traffic_learner->learn ();
+    else 
+      traffic_learner->comply ();
+
+    simulation->updateWorld ();
     ppainter->draw ();
     printf (">> Key Pressed: Step to next unit in time dimension\n");
     break;
@@ -127,6 +137,15 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     printf (">> KeyPressed: %d Cars spawned\n", BATCH_SIZE);
     break;
 
+  case 't':
+    curr_mode = ((++curr_mode) % 3);
+    printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
+    break;
+
+  case 'p':
+    traffic_learner->print_to_file ();
+    printf (">> Print Learned Table\n");
+    break;
   }
 }
 

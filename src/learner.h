@@ -9,42 +9,23 @@ class learner {
  public:
   learner (world* sim, painter* ppainter);
 
-  // Sense Enviroment
-  int* get_state (intersection* node);
-  int* lights_state (intersection* node);
-
-
-  void act(int* action);
-  void sense();
-  void glLearn ();
-  void learn();
-
-
   // Actuate
   void naiveControl (world* simulation);
+  void learn ();
+  void comply ();
 
   // Measure Performance
   int evaluate (intersection *node);
   int evaluate (void);
   int evaluate (intersection **nodes, int intc);
-  long double* get_q_entry(int* state, int action);
-  long double* get_max_q_entry(int* next_state);
-  float get_reward();
+
+  // Show Results
+  void print_to_file (void);
 
   //vars
   intersection** nodes;
   int nodec;
 
-  int intc;
-
-  //  void learn();
-  int* sense_state();
-  int select_action(int* curr_state);
-  void apply_action(int action);
-  long double* q_table;
-
-  int* state;
-  int action;
   world* sim;
   painter* ppainter;
 
