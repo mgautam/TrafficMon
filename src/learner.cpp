@@ -44,11 +44,16 @@ void learner::learn ()
       nodes[i]->sense_state();
       nodes[i]->select_action();
       nodes[i]->apply_action();
+    }
+
+  sim->updateWorld();
+  
+  for (int i = 0; i < nodec; i++)
+    {
       nodes[i]->get_reward();
       nodes[i]->update_q_entry();
     }
 
-  //sim->updateWorld();
 }
 
 
@@ -60,7 +65,7 @@ void learner::comply () {
     nodes[i]->apply_action ();
   } 
   printf ("Called!\n");
-  //sim->updateWorld ();
+  sim->updateWorld ();
 }
 
 int learner::evaluate(intersection** nodes, int nodec)

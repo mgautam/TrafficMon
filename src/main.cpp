@@ -39,7 +39,7 @@ void display (void) {
     else 
       traffic_learner->comply ();
 
-    simulation->updateWorld();
+    //simulation->updateWorld();
     ppainter->draw ();
   }
 }

@@ -127,6 +127,7 @@ void intersection::select_learned_action () {
 void intersection::apply_action()
 {
   controlLights(action);
+  //  states[0] = states[1];
 }
 
 void intersection::get_reward () {
@@ -135,14 +136,16 @@ void intersection::get_reward () {
     road *curr_road = in[roadIndex];
     if (curr_road) {
       for (int position = 0; position < curr_road->length; position++) {
-	if (curr_road->cars[position] && curr_road->cars[position]->wait > 0)
+	if (curr_road->cars[position] && curr_road->cars[position]->wait > 0) {
 	  total++;
+	  printf ("%d\n",total);
+	}
       }
     }
   }
 
   reward = -(float) total; // because they are all costs & not rewards
-  printf ("%f\n",reward);
+  //printf ("%f\n",reward);
 }
 
 float* intersection::get_q_entry(int* state, int action)
@@ -182,7 +185,7 @@ void intersection::update_q_entry()
 {
   *get_q_entry(states[0], action) = reward + 0.9 * *get_max_q_entry(states[1]);
   // curr_state = next_state;
-     states[0] = states[1];
+  
 }
 
 void intersection::controlLights (int PatternID) {
