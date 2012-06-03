@@ -69,5 +69,39 @@ int learner::evaluate(intersection** nodes, int nodec)
 }
 
 void learner::print_to_file (void) {
+  FILE *output = fopen ("../leaned_values.txt","w");
+  int *curr_state;
+  
+  for (int i = 0; i < nodec; i++) {
+    fprintf (output,"Node: %d\n", i);
+    curr_state = new int [nodes[i]->state_vector_size];
 
+    for (int j = 0; j < nodes[i]->state_space_size; j++) {
+
+      int stateIndex = j;
+      int blockIndex = nodes[i]->num_state_attribute_blocks-1;
+      for (int k = nodes[i]->num_state_attribute_blocks-1; k >= 0; k--) {
+	for (int l = nodes[i]->attribute_block_length[k]-1; l >= 0; l--) {
+	  curr_state[blockIndex+l] = stateIndex % nodes[i]->attributes_block_range[k];
+	  stateIndex -= curr_state[blockIndex+l];
+	  stateIndex /= nodes[i]->attributes_block_range[k];
+	}
+	blockIndex -= nodes[i]->attribute_block_length[k];
+      }
+
+
+      fprintf (output, "State: %d\t",j);
+      for (int m = 0; m < nodes[i]->state_vector_size; m++)
+	fprintf (output, "%d ", curr_state[m]);
+      fprintf (output,"\n");
+
+
+    }
+    
+
+    fprintf (output,"\n\n");
+    delete curr_state;
+  }
+
+  fclose (output);
 }

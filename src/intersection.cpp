@@ -147,14 +147,20 @@ void intersection::get_reward () {
 float* intersection::get_q_entry(int* state, int action)
 {
   int currStateIndex = 0;
+  int blockIndex = 0;
+  int blockMultiplier = state_space_size;
+
   for (int j = 0; j < num_state_attribute_blocks ; j++) {
     // Within each node
-    if (j)
-      currStateIndex *= pow (attributes_block_range[j-1], attribute_block_length[j-1]);
+    blockMultiplier /= pow (attributes_block_range[j], attribute_block_length[j]);
+
     for (int k = 0; k < attribute_block_length[j]; k++) {
       // We are evaluating state within attribute block
-      currStateIndex += pow (attributes_block_range[j],k) * state[j*attribute_block_length[j]+k];
+      currStateIndex += pow (attributes_block_range[j],attribute_block_length[j]-1-k) * state[blockIndex+k];
     }
+
+    currStateIndex *= blockMultiplier;
+    blockIndex += attribute_block_length[j];
   }
    
   return &(q_table[currStateIndex * number_of_actions_per_state + action]);
