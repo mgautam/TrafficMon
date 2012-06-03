@@ -126,7 +126,7 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     else 
       traffic_learner->comply ();
 
-    simulation->updateWorld ();
+    //simulation->updateWorld ();
     ppainter->draw ();
     printf (">> Key Pressed: Step to next unit in time dimension\n");
     break;

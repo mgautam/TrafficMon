@@ -32,7 +32,8 @@ void learner::naiveControl (world *sim) {
      x++;
    } 
    TrafficPhase++;
-  
+   
+   sim->updateWorld ();
 }
 
 
