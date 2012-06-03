@@ -78,7 +78,7 @@ void intersection::sense_state ()
   for (int j = 0; j < MAX_DEGREE; j++)
     {
       road* curr_road = in[j];
-      states[0][1 + j] = MAX_SLOTS_TO_CHECK;
+      states[0][1 + j] = MAX_SLOTS_TO_CHECK-1;
       if (curr_road)
 	{
 	  for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
