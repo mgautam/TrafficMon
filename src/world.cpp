@@ -29,6 +29,7 @@ world::world(int intc, intersection** intersections, int roadc, road** roads)
 void world::incr_timestamp()
 {
   this->timestamp++;
+  printf ("\ntime %lld:\n",timestamp);
 }
 
 void world::write_state(FILE* output)

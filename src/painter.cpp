@@ -11,6 +11,21 @@
 static void (*simulate) (void) = NULL;
 void (*painter::timerCallback) (int) = NULL;
 
+static void displayText (float x, float y, char *text) {
+
+  glPushMatrix ();
+  glScalef (0.125f,0.125f,1.0f);
+  glColor3f(1.0f,1.0f,1.0f);
+
+  while (*text) {
+    glutStrokeCharacter(GLUT_STROKE_ROMAN, *text);
+    text++;
+  }
+  glScalef (8.0f,8.0f,1.0f);  
+  glPopMatrix ();
+
+}
+
 painter::painter(world* _simulation, void (*display)(void), void (*_timerCallback) (int), int argc, char** argv) {
 
   this->simulation = _simulation;
@@ -90,24 +105,25 @@ void painter::draw () {
       }
   }
 
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glEnable(GL_BLEND);
-  glEnable(GL_LINE_SMOOTH);
-  glLineWidth(2.0);
-  output(0, 0, "This is antialiased.");
-  
   glutSwapBuffers ();
 }
 
 void painter::output(GLfloat x, GLfloat y, char *text)
 {
-   glPushMatrix();
+  //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  //  glEnable(GL_BLEND);
+  //  glEnable(GL_LINE_SMOOTH);
+  //   glPushMatrix();
+  glLineWidth(10.0);
+  glColor3f(1.0f,0.0f,0.0f);
+
+
    glTranslatef(x,y,0);
-   glScalef(100, 100, 100);
+   //   glScalef(100, 100, 100);
    char* p;
    for (p = text; *p; p++)
      glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
-   glPopMatrix();
+   // glPopMatrix();
 }
 
 
@@ -137,6 +153,7 @@ void painter::draw (car* curr_car) {
     glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale);
     glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale);
     glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale);
+    //displayText (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - carOffset_len)*scale, "Car");
     break;
     
   case EAST:
@@ -165,7 +182,9 @@ void painter::draw (car* curr_car) {
     exit (-1);
   }
   glEnd ();
+
 }
+
 
 
 void painter::draw (intersection* curr_intersection) {

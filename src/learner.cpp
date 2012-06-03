@@ -47,7 +47,7 @@ void learner::learn ()
       nodes[i]->apply_action();
     }
 
-  sim->updateWorld();
+  sim->updateWorld();//cars move here
   
   for (int i = 0; i < nodec; i++)
     {
@@ -82,13 +82,13 @@ void learner::print_to_file (void) {
     
     for (int p = 0; p < 4; p++)
       {
-	for (int t1 = 0; t1 < 10; t1++)
+	for (int t1 = 0; t1 < 8 ; t1++)
 	  {
-	    for (int t2 = 0; t2 < 10; t2++)
+	    for (int t2 = 0; t2 < 8 ; t2++)
 	      {
-		for (int t3 = 0; t3 < 10; t3++)
+		for (int t3 = 0; t3 < 8 ; t3++)
 		  {
-		    for (int t4 = 0; t4 < 10; t4++)
+		    for (int t4 = 0; t4 < 8;  t4++)
 		      {
 			int curr_state[5] = {p, t4, t3, t2, t1};
 			for (int action = 0; action < 4; action++)

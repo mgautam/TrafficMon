@@ -11,18 +11,18 @@ void factory::create_world(world** sim)
   intersections[1] =   new intersection (0,-NUM_SLOTS_IN_ROAD); // bottom
   intersections[2] =   new intersection (0,0); // center
   intersections[3] =   new intersection (0,NUM_SLOTS_IN_ROAD); // top
-  intersections[4] =   new intersection (NUM_SLOTS_IN_ROAD,0); // right
-  int intersection_count = 5;
+  //intersections[4] =   new intersection (NUM_SLOTS_IN_ROAD,0); // right
+  int intersection_count = 4;
 
 
   road** roads = new road*[6];
   roads[0] = new road (intersections[1],intersections[2]);//NORTH
   roads[1] = new road (intersections[0],intersections[2]);//EAST
   roads[2] = new road (intersections[2],intersections[3]);//SOUTH
-  roads[3] = new road (intersections[2],intersections[4]);//WEST
-  roads[4] = new road (intersections[2],intersections[1]);
-  roads[5] = new road (intersections[2],intersections[0]);
-  int road_count = 6;
+  //roads[3] = new road (intersections[2],intersections[4]);//WEST
+  //roads[4] = new road (intersections[2],intersections[1]);
+  //roads[5] = new road (intersections[2],intersections[0]);
+  int road_count = 3;
 
 
 
@@ -67,11 +67,11 @@ void factory::create_world(world** sim)
     }
   */
   car** cars = new car*[5];
-  cars[0] = new car(roads[0], LEFT, roads[0]->length - 1); 
-  cars[1] = new car(roads[0], LEFT, (float)roads[0]->length - 2);
-  //cars[0] = new car(roads[road_count/4+2*SQUARE_SIZE+3], RIGHT, (float)roads[0]->length - 1); 
-  //cars[1] = new car(roads[road_count/4+2*SQUARE_SIZE+3], AHEAD, (float)roads[0]->length - 2); 
-  //cars[2] = new car(roads[road_count/4+2*SQUARE_SIZE+3], LEFT, (float)roads[0]->length - 3); 
+  cars[0] = new car(roads[0], RIGHT, roads[0]->length - 1); 
+  cars[1] = new car(roads[0], RIGHT, (float)roads[0]->length - 2);
+  cars[2] = new car(roads[0], RIGHT, (float)roads[0]->length - 3);
+  cars[3] = new car(roads[0], RIGHT, (float)roads[0]->length - 4);
+  cars[4] = new car(roads[0], RIGHT, (float)roads[0]->length - 5);
   // cars[3] = new car(roads[4*5+3], LEFT, (float)roads[4*5+2]->length - 4.4);  
   // cars[4] = new car(roads[3*5+3], LEFT, (float)roads[3*5+2]->length - 5.5);
  

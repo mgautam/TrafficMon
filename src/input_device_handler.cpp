@@ -22,7 +22,7 @@ int simulation_interval = 256;//msecs
 static bool mirror = false;
 
 extern int curr_mode;
-int curr_mode = 0;
+int curr_mode = 1;
 
 char modes[3][20]= {"Naive","Learning","Comply"};
 
@@ -89,7 +89,7 @@ void handleKeyPress  (unsigned char key, int x, int y) {
   case 'z':
     glMatrixMode (GL_PROJECTION);
     glOrtho (-0.5,0.5,-0.5,0.5,-1,1);
-    printf (">> Zooming in");
+    printf (">> Zooming in\n");
     break;
 
   case 'r':

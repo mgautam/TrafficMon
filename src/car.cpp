@@ -47,7 +47,7 @@ int car::move()
 {
   //printf ("pOSITION: %d\n",position);
   road* next_road = curr_road->get_next(turn);
-
+  printf ("Car: %p :",this);
   if (position > 0 && curr_road->cars[position-1] == 0)//move forward on the road
     {
       printf ("Move Forward\n");
@@ -65,7 +65,6 @@ int car::move()
 	wait = 0;
 	//printf ("TURN:%d next_road:%p\n",turn,next_road);
       }
-      else wait++;
     }
   else if (position == -1 && turn != LEFT)//move forward in the intersection
     {
@@ -79,16 +78,18 @@ int car::move()
       printf ("pos-1 LEFT\n");
       curr_road->cars[position] = 0;
 
+      wait = 0;
       if (!next_road)
 	{
 	  //escape the city
 	  escape_city();
+	  return wait;
 	}
-
+     
       position = next_road->length - 1;
       next_road->cars[position] = this;
       curr_road = next_road;
-      wait = 0;
+
 
       // setting the next turn to be random
       this->turn = (float)rand ()/(float)RAND_MAX * 3;
@@ -98,16 +99,17 @@ int car::move()
       printf ("pos-2 \n");
       curr_road->cars[position] = 0;
 
+      wait = 0;
       if (!next_road)
 	{
 	  //escape the city
 	  escape_city();
+	  return wait;
 	}
 
       position = next_road->length - 1;
       next_road->cars[position] = this;
       curr_road = next_road;
-      wait = 0;
 
       // setting the next turn to be random
       this->turn = (float)rand ()/(float)RAND_MAX * 3;
@@ -115,7 +117,6 @@ int car::move()
   else
     {
       printf ("Wait!\n");
-      wait++;
     }
 
   moved = true;
@@ -134,13 +135,23 @@ void car::sense()
   else if (position == 0 && 
 	   ((next_road && next_road->cars[next_road->length - 1] == 0) || !next_road) )//enter intersection
     {
+      if ((turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||  curr_road->lights[turn] == GREEN) {
+	wait = 0;
+	sensed = true;
+      }
+      else {
+	wait++;
+	sensed = false;
+      }
       //printf ("Worst Place: %d %p\n",turn,next_road);
       /*if ( turn == AHEAD && curr_road->lights[LEFT] == GREEN )
 	sensed = true;
       else if (curr_road->lights[turn] == GREEN)
 	sensed = true;
-      else*/
-	sensed = true;
+      else
+      	sensed = true;
+      */
+
     }
   else if (position == -1 && turn != LEFT)//move forward in the intersection
     {
@@ -156,6 +167,7 @@ void car::sense()
     }
   else
     {
+      wait++;
       sensed = false;
     }
 }
