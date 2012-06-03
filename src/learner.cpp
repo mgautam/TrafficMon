@@ -40,6 +40,7 @@ void learner::naiveControl (world *sim) {
 
 void learner::learn ()
 {
+  printf ("\ntime %lld:\n",sim->timestamp);
   for (int i = 0; i < nodec; i++)
     {
       nodes[i]->sense_state();
@@ -47,14 +48,14 @@ void learner::learn ()
       nodes[i]->apply_action();
     }
 
-  sim->updateWorld();//cars move here
+  sim->updateWorld();//cars move here cars = clients
   
   for (int i = 0; i < nodec; i++)
     {
       nodes[i]->get_reward();
       nodes[i]->update_q_entry();
     }
-
+  sim->incr_timestamp();
 }
 
 

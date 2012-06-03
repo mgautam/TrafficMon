@@ -29,7 +29,7 @@ void car::setCar (road* init_road, int next_turn, int position)
   this->color.b = ((float)rand()/(float)RAND_MAX);
 
   this->turn = next_turn;
-  this->moved = true;
+  this->moved = false;
   this->wait = 0;
 }
 

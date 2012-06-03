@@ -31,6 +31,12 @@ extern int curr_mode;
 void display (void) {
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
+    ppainter->draw ();
+
+
+}
+void timerCallback (int value)
+{
   if (!stopAnime) {
 
     if (curr_mode == 0)
@@ -41,18 +47,8 @@ void display (void) {
       traffic_learner->comply ();
 
     //simulation->updateWorld();
-    ppainter->draw ();
+    ppainter->draw();
   }
-
-
-
-
-
-}
-void timerCallback (int value)
-{
-  display ();
-
    /* call back again after simulation_interval has passed */
   glutTimerFunc ( simulation_interval, timerCallback, 0);
 }
@@ -66,7 +62,7 @@ int main (int argc, char* argv[])
 
 #ifdef OPENGL_MODE
   ppainter = new painter(simulation, display, timerCallback, argc, argv);
-  // ppainter->draw(); // Draw initial state
+  //ppainter->draw(); // Draw initial state
   ppainter->animate();
 #else
   traffic_learner->learn();

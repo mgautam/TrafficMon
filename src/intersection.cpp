@@ -100,7 +100,7 @@ void intersection::select_action()
 
   for (int action = 0; action < NUM_TRAFFIC_PATTERNS; action++)
     {
-      total_kq += pow(0.1, *get_q_entry(states[0], action));//is this the right probability distribution?
+      total_kq += pow(0.5, *get_q_entry(states[0], action));//is this the right probability distribution?
       //It makes higher rewards to have lower kq
       cum_kq[action] = total_kq;
     }  

@@ -29,7 +29,6 @@ world::world(int intc, intersection** intersections, int roadc, road** roads)
 void world::incr_timestamp()
 {
   this->timestamp++;
-  printf ("\ntime %lld:\n",timestamp);
 }
 
 void world::write_state(FILE* output)
@@ -87,8 +86,6 @@ void world::spawnCars (int roadIndex, int batchSize) {
 
 void world::updateWorld(void) {
 
-  incr_timestamp();
-
   spawnCars ();
 
   for (int i = 0; i < this->roadc; i++) 
@@ -113,7 +110,6 @@ void world::updateWorld(void) {
 	      if (curr_car->sensed && !curr_car->moved)
 		{
 		  curr_car->move();
-		  //printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
 		}
             }
         }
@@ -131,7 +127,6 @@ void world::updateWorld(void) {
             }
         }
     }
-  
 }
 
 
