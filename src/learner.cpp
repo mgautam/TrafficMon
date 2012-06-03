@@ -89,11 +89,14 @@ void learner::print_to_file (void) {
 	blockIndex -= nodes[i]->attribute_block_length[k];
       }
 
-
-      fprintf (output, "State: %d\t",j);
-      for (int m = 0; m < nodes[i]->state_vector_size; m++)
-	fprintf (output, "%d ", curr_state[m]);
-      fprintf (output,"\n");
+      for (int action = 0; action < nodes[i]->number_of_actions_per_state; action++) {
+	fprintf (output, "State: %d\t",j);
+	for (int m = 0; m < nodes[i]->state_vector_size; m++)
+	  fprintf (output, "%d ", curr_state[m]);
+	fprintf (output, "Action: %d\t", action);
+	fprintf (output, "%f", nodes[i]->q_table[j]);
+	fprintf (output,"\n");
+      }
 
 
     }
