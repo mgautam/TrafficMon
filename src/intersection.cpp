@@ -14,7 +14,7 @@ using namespace std;
 #include "car.h"
 #include <math.h>
 
-#define MAX_SLOTS_TO_CHECK 10
+
 
 //constructor
 intersection::intersection(int x, int y)
@@ -52,7 +52,7 @@ intersection::intersection(int x, int y)
   long long int q_table_size = state_space_size * number_of_actions_per_state;
   //  this->q_table = new float [q_table_size];
   q_table = (float *) malloc (q_table_size * sizeof (float));
-	memset (q_table, 0, q_table_size * sizeof (float));
+  memset (q_table, 0, q_table_size * sizeof (float));
   
   printf ("state_vector_size: %d       \
 state_space_size: %d		       \
@@ -60,10 +60,10 @@ q_table_size:%lld \n",
           state_vector_size,
           state_space_size,
           q_table_size);
-
+  
   this->curr_state = new int[state_vector_size]; //curr_state
   this->prev_state = new int[state_vector_size]; //prev_state
-
+  
   memset (this->in, 0, MAX_DEGREE*sizeof(road*));
   memset (this->out, 0, MAX_DEGREE*sizeof(road*));//not necessary
 }
@@ -73,14 +73,14 @@ void intersection::sense_state ()
   prev_wait = curr_wait;
   memcpy(prev_state, curr_state, sizeof(int)*state_vector_size);
   // prev_state = curr_state;
-
+  
   curr_wait = get_wait ();
   curr_state[0] = pattern_id;
-
+  
   for (int j = 0; j < MAX_DEGREE; j++)
     {
       road* curr_road = in[j];
-
+      
       if (curr_road)
 	{
 	  curr_state[1 + j] = MAX_SLOTS_TO_CHECK-1;
@@ -140,6 +140,7 @@ int intersection::get_wait () {
   for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
     road *curr_road = in[roadIndex];
     if (curr_road) {
+      // We check whole road not just MAX_SLOTS_TO_CHECK
       for (int position = 0; position < curr_road->length; position++) {
 	if (curr_road->cars[position]) {
 	  //printf ("Car %p: Position:%d Wait%d\n",curr_road->cars[position],position, curr_road->cars[position]->wait);
@@ -161,7 +162,7 @@ void intersection::get_reward (void) {
 
     // reward = (float) 1.0/( 1.0 + exp(- (prev_wait - curr_wait) ));//logistic function
 
-  reward = (float) ( prev_wait - curr_wait);  + 1* (prev_state[0] == curr_state[0]);
+  reward = (float) ( prev_wait - curr_wait);//  + 0.5* (prev_state[0] == curr_state[0]);
 
   //  printf ("%d -> %f\n",action,reward);
 }

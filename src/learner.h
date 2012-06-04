@@ -18,6 +18,7 @@ class learner {
   int evaluate (intersection *node);
   int evaluate (void);
   int evaluate (intersection **nodes, int intc);
+  void displayPerformance (int timeInterval);
 
   // Show Results
   void print_to_file (void);

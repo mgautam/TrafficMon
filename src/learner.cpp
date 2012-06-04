@@ -34,6 +34,8 @@ void learner::naiveControl (world *sim) {
    TrafficPhase++;
    
    sim->updateWorld ();
+   sim->incr_timestamp();
+   this->evaluate ();
 }
 
 
@@ -89,7 +91,7 @@ int learner::evaluate(void)//intersection** nodes, int nodec)
     if (nodes[i]) {
       for (int r = 0; r <  nodes[i]->in_count; r++){
 	if ( nodes[i]->in[r] )
-	  for (int s = 0; s < nodes[i]->in[r]->length;s++)
+	  for (int s = 0; s < nodes[i]->in[r]->length;s++) // We check whole road not just MAX_SLOTS_TO_CHECK
 	    if (nodes[i]->in[r]->cars[s] && nodes[i]->in[r]->cars[s]->wait > 0) {
 	      performance--;
 	    }
@@ -98,8 +100,8 @@ int learner::evaluate(void)//intersection** nodes, int nodec)
   return performance;
 }
 
-void displayPerformance (void) {
-  printf (">> Performance in last interval of %d time units is %d << \n",PERFORMANCE_CALC_INTERVAL,
+void learner::displayPerformance (int timeInterval) {
+  printf (">> Performance in last interval of %d time units is %d << \n",timeInterval,
 	  performance);
   performance = 0;
 }
@@ -119,8 +121,7 @@ void learner::comply () {
   sim->incr_timestamp();
 
   this->evaluate ();
-  if ( !(sim->timestamp % PERFORMANCE_CALC_INTERVAL) )
-    displayPerformance ();
+
 }
 
 void learner::print_to_file (void) {

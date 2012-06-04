@@ -29,6 +29,12 @@ char modes[4][20]= {"Naive","Learning","Comply", "Learn&Comply"};
 extern bool stopDisplay;
 bool stopDisplay = false;
 
+extern int learnTime;
+int learnTime = 0;
+extern int complyTime;
+int complyTime = COMPLY_TIME;
+
+
 void handleKeyPress  (unsigned char key, int x, int y) {
   switch (key) {
   case 32: // SPACE BAR
@@ -125,11 +131,35 @@ void handleKeyPress  (unsigned char key, int x, int y) {
       traffic_learner->naiveControl (simulation);
     else if (curr_mode == 1)
       traffic_learner->learn ();
-    else if (curr_mode == 2)
+       else if (curr_mode == 2) {
       traffic_learner->comply ();
-    else {
-      traffic_learner->learn ();
-      traffic_learner->comply ();
+      if ( !(simulation->timestamp % PERFORMANCE_CALC_INTERVAL) )
+	traffic_learner->displayPerformance (PERFORMANCE_CALC_INTERVAL);
+    }
+    else
+    {
+
+	if (learnTime > 0) 
+	  {
+	    traffic_learner->learn ();
+	    learnTime--;
+	    //printf ("learnTime:%d\n",learnTime);
+	  }
+	if (learnTime <= 0 && complyTime <=0)
+	  complyTime = COMPLY_TIME;
+
+
+	if (complyTime > 0)
+	  {
+	    traffic_learner->comply ();
+	    complyTime--;
+	    //printf ("complyTime:%d\n",complyTime);
+	  }
+	if (complyTime <= 0 && learnTime <=0) {
+	  learnTime = LEARN_TIME;      
+	  traffic_learner->displayPerformance (COMPLY_TIME);
+	}     
+
     }
     //simulation->updateWorld ();
     ppainter->draw ();
@@ -144,6 +174,10 @@ void handleKeyPress  (unsigned char key, int x, int y) {
 
   case 't':
     curr_mode = ((++curr_mode) % 4);
+    if (curr_mode == 3) { //Learn&Comply MODE
+      learnTime = 0;// This is the setting to intially know the performance
+      complyTime = COMPLY_TIME; // and to compare with later performance
+    }
     printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
     break;
 

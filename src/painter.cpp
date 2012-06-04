@@ -4,6 +4,7 @@
 #include <GL/glut.h>
 #endif
 
+#include <math.h>
 #include "config.h"
 #include "input_device_handler.h"
 #include "painter.h"
@@ -88,8 +89,8 @@ void painter::draw () {
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity ();
 
-  glScalef (0.125f,0.125f,1.0f);
-  glTranslatef (0,0,0);
+  glScalef (2.0*scale,2.0*scale,1.0f);
+  glTranslatef (-0.5/scale,-0.5/scale,0);
   
   for (int i = 0; i < simulation->intc; i++)
     draw(simulation->intersections[i]);
