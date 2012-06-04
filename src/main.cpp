@@ -46,8 +46,12 @@ void timerCallback (int value)
       traffic_learner->naiveControl (simulation);
     else if (curr_mode == 1)
       traffic_learner->learn ();
-    else 
+    else if (curr_mode == 2)
       traffic_learner->comply ();
+    else {
+      traffic_learner->learn ();
+      traffic_learner->comply ();
+    }
 
     //simulation->updateWorld();
     if (!stopDisplay) {
@@ -70,8 +74,13 @@ void nonDisplay (void)
 	traffic_learner->naiveControl (simulation);
       else if (curr_mode == 1)
 	traffic_learner->learn ();
-      else 
+      else if (curr_mode == 2)
 	traffic_learner->comply ();
+      else {
+	traffic_learner->learn ();
+	traffic_learner->comply ();
+      }
+	
     }
     if (!stopAnime)
       timerCallback (0);

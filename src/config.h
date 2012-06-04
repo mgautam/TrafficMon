@@ -14,6 +14,10 @@
 
 #define LEARNING_RATE 0.1
 
+#define PERFORMANCE_CALC_INTERVAL 1000
+
+
+
 // VIEW Parameters
 #define WINDOW_WIDTH 500
 #define WINDOW_HEIGHT 500

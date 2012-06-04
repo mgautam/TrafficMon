@@ -40,7 +40,8 @@ void learner::naiveControl (world *sim) {
 
 void learner::learn ()
 {
-  printf ("\ntime %lld:\n",sim->timestamp);
+  if ( !(sim->timestamp % 1000) )
+    printf ("time %lld\n",sim->timestamp);
   if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
     for (int i = 0; i < nodec; i++)
       {
@@ -62,6 +63,8 @@ void learner::learn ()
 	  //printf ("Second Sense:\n ");
 	  nodes[i]->sense_state();
 	  nodes[i]->get_reward();
+	  // for (int j = 1; j < 5; j++)
+	  //    printf ("%d ", nodes[i]->prev_state[j]);
 	  // if (i == 4) {
 	  //   printf ("Node %d: \n",i);
 	  //   for (int k = 0; k < 4; k++) {
@@ -79,7 +82,27 @@ void learner::learn ()
   sim->incr_timestamp();
 }
 
+static int performance = 0;
+int learner::evaluate(void)//intersection** nodes, int nodec)
+{
+  for (int i = 0; i < nodec; i++)
+    if (nodes[i]) {
+      for (int r = 0; r <  nodes[i]->in_count; r++){
+	if ( nodes[i]->in[r] )
+	  for (int s = 0; s < nodes[i]->in[r]->length;s++)
+	    if (nodes[i]->in[r]->cars[s] && nodes[i]->in[r]->cars[s]->wait > 0) {
+	      performance--;
+	    }
+      }
+    }
+  return performance;
+}
 
+void displayPerformance (void) {
+  printf (">> Performance in last interval of %d time units is %d << \n",PERFORMANCE_CALC_INTERVAL,
+	  performance);
+  performance = 0;
+}
 
 void learner::comply () {
   if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
@@ -91,14 +114,13 @@ void learner::comply () {
       }
     } 
   }
-  printf ("Called!\n");
+  // printf ("Called!\n");
   sim->updateWorld ();
   sim->incr_timestamp();
-}
 
-int learner::evaluate(intersection** nodes, int nodec)
-{
-  return 0;
+  this->evaluate ();
+  if ( !(sim->timestamp % PERFORMANCE_CALC_INTERVAL) )
+    displayPerformance ();
 }
 
 void learner::print_to_file (void) {

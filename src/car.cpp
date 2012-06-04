@@ -45,9 +45,6 @@ void car::write_state(FILE* output)
 
 int car::move()
 {
-
-
-
   //printf ("pOSITION: %d\n",position);
   road* next_road = curr_road->get_next(turn);
   //printf ("Car: %p :",this);
@@ -56,7 +53,6 @@ int car::move()
     turn = UTURN;
     next_road = curr_road->get_next(UTURN);
   }
-
 
 
   if (position > 0 && curr_road->cars[position-1] == 0)//move forward on the road
