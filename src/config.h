@@ -2,7 +2,7 @@
 #define CONFIG_H
 
 // CONTROL
-#define BATCH_SIZE 10
+#define BATCH_SIZE 1
 
 #define MIN_TL_SWITCH_INTERVAL 3
 
@@ -10,7 +10,7 @@
 
 #define NUM_SLOTS_IN_ROAD 10
 #define NUM_TRAFFIC_PATTERNS 4
-#define SQUARE_SIZE 2
+#define SQUARE_SIZE 1
 
 #define LEARNING_RATE 0.1
 
