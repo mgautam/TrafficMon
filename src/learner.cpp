@@ -80,13 +80,15 @@ void learner::learn ()
 
 
 void learner::comply () {
-  for (int i = 0; i < nodec; i++) {
-    if (nodes[i]) {
-      nodes[i]->sense_state();
-      nodes[i]->select_learned_action ();
-      nodes[i]->apply_action ();
-    }
-  } 
+  if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+    for (int i = 0; i < nodec; i++) {
+      if (nodes[i]) {
+	nodes[i]->sense_state();
+	nodes[i]->select_learned_action ();
+	nodes[i]->apply_action ();
+      }
+    } 
+  }
   printf ("Called!\n");
   sim->updateWorld ();
 }
