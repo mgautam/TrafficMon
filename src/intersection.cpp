@@ -52,7 +52,12 @@ intersection::intersection(int x, int y)
   long long int q_table_size = state_space_size * number_of_actions_per_state;
   //  this->q_table = new float [q_table_size];
   q_table = (float *) malloc (q_table_size * sizeof (float));
-	memset (q_table, 0, q_table_size * sizeof (float));
+
+  for (long long i = 0; i < q_table_size; i++)
+    {
+      q_table[i] = (float)rand()/(float)RAND_MAX;
+    }
+  // memset (q_table, 0, q_table_size * sizeof (float));
   
   printf ("state_vector_size: %d       \
 state_space_size: %d		       \
