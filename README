@@ -1,0 +1,75 @@
+==================================================================
+TrafficMon 
+
+City Traffic Monitor and Controller using Reinforcement Learning
+
+Supervisor / Mentor: Mike Bain 
+Authors: Gautam Manoharan (gman086@cse) and Sean Young (seany@cse)
+Date: 3 June 2012
+
+==================================================================
+
+Directories
+===========
+
+src: program source files (c++)
+doc: report  
+
+
+Building Prerequisites
+======================
+
+FreeGLUT (Linux) or GLUT (Mac OS X)
+
+
+Building TrafficMon
+===================
+
+TrafficMon is tested on Mac OS X and Linux.
+
+On Mac OS X, run:
+$ make -C src 
+
+On Linux, run:
+$ make -f Makefile_lin -C src
+
+
+Running TrafficMon
+==================
+
+$ bin/TrafficMon
+
+
+Inside TrafficMon
+=================
+
+Some keyboard controls for moving around in the Graphical Display
+
+J: pan camera left
+L: pan camera right
+K: pan camera down
+I: pan camera up
+M: mirror keys
+
+T: toggle training / validation
+
+Z: zoom in
+X: zoom out
+
+S: step in
+SPACE BAR: pause/resume
+D: toggle display
+R: reset screen
+
+ESC: quit
+
+P: print learned q table to file
+
+-: slow down simulation / learning
++: speed up simulation / learning
+
+
+Bug Reporting (IMPORTANT!!!)
+============================
+
+All bugs should be reported to Gautam Manoharan or Sean Young
