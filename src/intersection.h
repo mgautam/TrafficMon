@@ -29,6 +29,7 @@ class intersection
   float* get_max_q_entry (int *state);
   void apply_action();
   void get_reward();
+  int get_wait ();
   void update_q_entry();
 
   void select_learned_action (void);
@@ -45,7 +46,8 @@ class intersection
   road* out[MAX_DEGREE];
 
   int pattern_id;
-  int** states;
+  int* curr_state;
+  int* prev_state;
   float reward;
   int action;
 

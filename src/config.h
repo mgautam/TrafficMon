@@ -2,7 +2,7 @@
 #define CONFIG_H
 
 // CONTROL
-#define BATCH_SIZE 50
+#define BATCH_SIZE 1
 
 #define MIN_TL_SWITCH_INTERVAL 10
 
@@ -12,7 +12,7 @@
 #define NUM_TRAFFIC_PATTERNS 4
 #define SQUARE_SIZE 1
 
-
+#define LEARNING_RATE 0.1
 
 // VIEW Parameters
 #define WINDOW_WIDTH 500
@@ -52,6 +52,7 @@
 #define RIGHT 0
 #define LEFT  1
 #define AHEAD 2
+#define UTURN 3
 
 #define RED 0
 #define AMBER 1

@@ -14,7 +14,7 @@ using namespace std;
 #include "car.h"
 #include <math.h>
 
-#define MAX_SLOTS_TO_CHECK 8
+#define MAX_SLOTS_TO_CHECK 10
 
 //constructor
 intersection::intersection(int x, int y)
@@ -61,35 +61,39 @@ q_table_size:%lld \n",
           state_space_size,
           q_table_size);
 
-  this->states = new int*[2];
-  this->states[0] = new int[state_vector_size]; //curr_state
-  this->states[1] = new int[state_vector_size]; //next_state
+  this->curr_state = new int[state_vector_size]; //curr_state
+  this->prev_state = new int[state_vector_size]; //prev_state
 
   memset (this->in, 0, MAX_DEGREE*sizeof(road*));
   memset (this->out, 0, MAX_DEGREE*sizeof(road*));//not necessary
 }
 
+int curr_wait;
+int prev_wait;
 void intersection::sense_state ()
 {
-  // What's happening here?
-  memcpy(states[1], states[0], sizeof(int)*state_vector_size);
-  states[0][0] = pattern_id;
+  prev_wait = curr_wait;
+  memcpy(prev_state, curr_state, sizeof(int)*state_vector_size);
+  // prev_state = curr_state;
+
+  curr_wait = get_wait ();
+  curr_state[0] = pattern_id;
 
   for (int j = 0; j < MAX_DEGREE; j++)
     {
       road* curr_road = in[j];
 
       if (curr_road)
-				{
-					states[0][1 + j] = MAX_SLOTS_TO_CHECK-1;
-					for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
-						{
-							if (curr_road->cars[k]) {
-								states[0][1 + j] = k;
-								break;
-							}
-						}
-				}
+	{
+	  curr_state[1 + j] = MAX_SLOTS_TO_CHECK-1;
+	  for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
+	    {
+	      if (curr_road->cars[k]) {
+		curr_state[1 + j] = k;
+		break;
+	      }
+	    }
+	}
     }
 }
 
@@ -100,18 +104,20 @@ void intersection::select_action()
 
   for (int action = 0; action < NUM_TRAFFIC_PATTERNS; action++)
     {
-      total_kq += pow(0.5, *get_q_entry(states[0], action));//is this the right probability distribution?
+      total_kq += pow(0.3, *get_q_entry(curr_state, action));//is this the right probability distribution?
       //It makes higher rewards to have lower kq
       cum_kq[action] = total_kq;
-    }  
+      //printf (" %f ",total_kq);
+    } 
 
   float r = (float)rand()/(float)RAND_MAX*total_kq;
-
+  //printf ("\t%f :",r);
   for (int action = 0; action < NUM_TRAFFIC_PATTERNS; action++)
     {
       if (cum_kq[action] >= r)// Is this less than or greater than?
 	{
 	  this->action = action;
+	  //printf ("%d\n",this->action);
 	  return;
 	}
     }
@@ -120,36 +126,42 @@ void intersection::select_action()
 void intersection::select_learned_action () {
   int best_action = 0;
   for (int action = 0; action < NUM_TRAFFIC_PATTERNS; action++) {
-    if ( *get_q_entry (states[0],best_action) < *get_q_entry (states[0],action) )
+    if ( *get_q_entry (curr_state,best_action) < *get_q_entry (curr_state,action) )
       best_action = action;
   }
+  this->action = best_action;
 }
 
 void intersection::apply_action()
 {
   controlLights(action);
-  //  states[0] = states[1];
 }
 
-void intersection::get_reward () {
+int intersection::get_wait () {
   int total = 0;
   for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
     road *curr_road = in[roadIndex];
     if (curr_road) {
       for (int position = 0; position < curr_road->length; position++) {
-				if (curr_road->cars[position]) {
-					printf ("Car %p: Position:%d Wait%d\n",curr_road->cars[position],position, curr_road->cars[position]->wait);
-					if (curr_road->cars[position]->wait > 0) {
-						total++;
-						//printf ("%d\n",total);
-					}
-				}
+	if (curr_road->cars[position]) {
+	  //printf ("Car %p: Position:%d Wait%d\n",curr_road->cars[position],position, curr_road->cars[position]->wait);
+	  if (curr_road->cars[position]->wait > 0) {
+	    total++;
+	    //printf ("%d\n",total);
+	  }
+	}
       }
     }
   }
 
-  reward = -(float) total; // because they are all costs & not rewards
+  //reward = -(float) total; // because they are all costs & not rewards
   //printf ("%f\n",reward);
+  return total;
+}
+
+void intersection::get_reward (void) {
+  reward = (float) ( prev_wait - curr_wait);
+  //  printf ("%d -> %f\n",action,reward);
 }
 
 float* intersection::get_q_entry(int* state, int action)
@@ -170,7 +182,7 @@ float* intersection::get_q_entry(int* state, int action)
       currStateIndex *= blockMultiplier;
     blockIndex += attribute_block_length[j];
   }
-  // printf ("%d\n",currStateIndex);
+  //  printf (" %d ",currStateIndex);
   return &(q_table[currStateIndex * number_of_actions_per_state + action]);
 
  }
@@ -187,9 +199,11 @@ float* intersection::get_max_q_entry (int *state) {
 
 void intersection::update_q_entry()
 {
-  *get_q_entry(states[0], action) = reward + 0.9 * *get_max_q_entry(states[1]);
-  // curr_state = next_state;
-  
+  float alpha = LEARNING_RATE;
+  float prev_Qvalue =   *get_q_entry(prev_state, action);
+  float curr_Qvalue = reward + 0.9 * *get_max_q_entry(curr_state);
+  *get_q_entry(prev_state, action) = (1 - alpha) * prev_Qvalue + alpha * curr_Qvalue;
+  // previous = current
 }
 
 void intersection::controlLights (int PatternID) {
@@ -265,15 +279,15 @@ void intersection::controlLights (int PatternID) {
 
 void intersection::write_state(FILE* output)
 {
+  fprintf (output, "Previous State: ");
+  for (int i = 0; i < state_vector_size; i++)
+    fprintf (output, " %d", prev_state[i]);
+  fprintf (output, "\n");
+
   fprintf (output, "Current State: ");
   for (int i = 0; i < state_vector_size; i++)
-    fprintf (output, " %d", states[0][i]);
+    fprintf (output, " %d", curr_state[i]);
   fprintf (output,"\n");
-
-  fprintf (output, "Next State: ");
-  for (int i = 0; i < state_vector_size; i++)
-    fprintf (output, " %d", states[1][i]);
-  fprintf (output, "\n");
 
   fprintf (output, "Action: %d\n", action);
 

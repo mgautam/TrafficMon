@@ -45,12 +45,23 @@ void car::write_state(FILE* output)
 
 int car::move()
 {
+
+
+
   //printf ("pOSITION: %d\n",position);
   road* next_road = curr_road->get_next(turn);
-  printf ("Car: %p :",this);
+  //printf ("Car: %p :",this);
+
+  if ( position == curr_road->length-1 && !next_road) {
+    turn = UTURN;
+    next_road = curr_road->get_next(UTURN);
+  }
+
+
+
   if (position > 0 && curr_road->cars[position-1] == 0)//move forward on the road
     {
-      printf ("Move Forward\n");
+      //printf ("Move Forward\n");
       curr_road->cars[position] = 0;
       curr_road->cars[--position] = this;
       wait = 0;
@@ -58,8 +69,10 @@ int car::move()
   else if (position == 0 &&
 	   ((next_road && next_road->cars[next_road->length - 1] == 0) || !next_road) )//enter intersection
     {
-      printf ("position 0 nextroad empty\n");
-      if ( (turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||  curr_road->lights[turn] == GREEN) {
+      //printf ("position 0 nextroad empty\n");
+      if ( (turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||
+	   (turn == UTURN && curr_road->lights[RIGHT] == GREEN) ||
+	   curr_road->lights[turn] == GREEN) {
 	curr_road->cars[position] = 0;
 	curr_road->cars[--position] = this;
 	wait = 0;
@@ -68,17 +81,19 @@ int car::move()
     }
   else if (position == -1 && turn != LEFT)//move forward in the intersection
     {
-      printf ("pos-1 turn!=LEFT\n");
+      //printf ("pos-1 turn!=LEFT\n");
       curr_road->cars[position] = 0;
       curr_road->cars[--position] = this;
       wait = 0;
     }
   else if (position == -1 && turn == LEFT)//turn into left road
     {
-      printf ("pos-1 LEFT\n");
+      //printf ("pos-1 LEFT\n");
       curr_road->cars[position] = 0;
 
       wait = 0;
+
+
       if (!next_road)
 	{
 	  //escape the city
@@ -90,13 +105,12 @@ int car::move()
       next_road->cars[position] = this;
       curr_road = next_road;
 
-
       // setting the next turn to be random
-      this->turn = (float)rand ()/(float)RAND_MAX * 3;
+      this->turn = AHEAD;//(float)rand ()/(float)RAND_MAX * 3;
     }
   else if (position == -2) //turn != LEFT //turn into right road or move onto road ahead
     {
-      printf ("pos-2 \n");
+      //printf ("pos-2 \n");
       curr_road->cars[position] = 0;
 
       wait = 0;
@@ -112,11 +126,11 @@ int car::move()
       curr_road = next_road;
 
       // setting the next turn to be random
-      this->turn = (float)rand ()/(float)RAND_MAX * 3;
+      this->turn = AHEAD;//(float)rand ()/(float)RAND_MAX * 3;
     }
   else
     {
-      printf ("Wait!\n");
+      //printf ("Wait!\n");
     }
 
   moved = true;
@@ -127,6 +141,11 @@ int car::move()
 void car::sense()
 {
   road* next_road = curr_road->get_next(turn);
+  if ( position == curr_road->length-1 && !next_road) {
+    turn = UTURN;
+    next_road = curr_road->get_next(UTURN);
+  }
+
 
   if (position > 0 && curr_road->cars[position-1] == 0)//move forward on the road
     {
@@ -135,7 +154,9 @@ void car::sense()
   else if (position == 0 && 
 	   ((next_road && next_road->cars[next_road->length - 1] == 0) || !next_road) )//enter intersection
     {
-      if ((turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||  curr_road->lights[turn] == GREEN) {
+      if ((turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||  
+	  (turn == UTURN && curr_road->lights[RIGHT] == GREEN) ||  
+	  curr_road->lights[turn] == GREEN) {
 	wait = 0;
 	sensed = true;
       }

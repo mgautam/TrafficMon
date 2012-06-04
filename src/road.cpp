@@ -76,6 +76,9 @@ road* road::get_next(int turn)
 
     case AHEAD:
       return final->out[(compass+0)%4];
+    
+    case UTURN:
+      return final->out[(compass+2)%4];
 
     default:
       printf("error in get_next\n");

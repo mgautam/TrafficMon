@@ -82,13 +82,13 @@ void handleKeyPress  (unsigned char key, int x, int y) {
 
   case 'x':
     glMatrixMode (GL_PROJECTION);
-    glOrtho (-2,2,-2,2,-1,1);
+    glOrtho (-1.2,1.2,-1.2,1.2,-1,1);
     printf (">> Zooming Out\n");
     break;
 
   case 'z':
     glMatrixMode (GL_PROJECTION);
-    glOrtho (-0.5,0.5,-0.5,0.5,-1,1);
+    glOrtho (-5.0/6.0,5.0/6.0,-5.0/6.0,5.0/6.0,-1,1);
     printf (">> Zooming in\n");
     break;
 
@@ -132,8 +132,8 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     break;
 
   case 'g':
-    simulation->spawnCars (0, BATCH_SIZE);
-    simulation->spawnCars (1, BATCH_SIZE);
+    simulation->spawnCars (0*(SQUARE_SIZE+1)+0, BATCH_SIZE);
+    simulation->spawnCars (1*(SQUARE_SIZE+1)+0, BATCH_SIZE);
     printf (">> KeyPressed: %d more cars spawned\n", BATCH_SIZE);
     break;
 

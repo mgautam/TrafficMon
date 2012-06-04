@@ -12,6 +12,7 @@ extern float x;
 class world
 {
  public:
+
   //  world(int intc, intersection** intersections, int roadc, road** roads, int carc, car** cars);
   world(int intc, intersection** intersections, int roadc, road** roads);
   void incr_timestamp();
@@ -25,6 +26,7 @@ class world
   //variables
   int intc;
   int roadc;
+  int carc;
 
   long long timestamp;
 
