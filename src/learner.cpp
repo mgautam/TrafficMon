@@ -55,25 +55,27 @@ void learner::learn ()
 
   sim->updateWorld();//cars move here cars = clients
   
-  for (int i = 0; i < nodec; i++)
-    {
-      if (nodes[i]) {
-	//printf ("Second Sense:\n ");
-	nodes[i]->sense_state();
-	nodes[i]->get_reward();
-	// if (i == 4) {
-	//   printf ("Node %d: \n",i);
-	//   for (int k = 0; k < 4; k++) {
-	//   printf ("\t");
-	//   for (int j = 0; j < 5; j++)
-	//   printf ("%d ", nodes[i]->prev_state[j]);
-	//   printf ("%d : ",k);
-	//   printf ("%i %f\n", nodes[i]->get_q_entry (nodes[i]->prev_state,k) - nodes[i]->q_table, *nodes[i]->get_q_entry (nodes[i]->prev_state,k));
-	//    }
-	//}
-	nodes[i]->update_q_entry();
+  if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+    for (int i = 0; i < nodec; i++)
+      {
+	if (nodes[i]) {
+	  //printf ("Second Sense:\n ");
+	  nodes[i]->sense_state();
+	  nodes[i]->get_reward();
+	  // if (i == 4) {
+	  //   printf ("Node %d: \n",i);
+	  //   for (int k = 0; k < 4; k++) {
+	  //   printf ("\t");
+	  //   for (int j = 0; j < 5; j++)
+	  //   printf ("%d ", nodes[i]->prev_state[j]);
+	  //   printf ("%d : ",k);
+	  //   printf ("%i %f\n", nodes[i]->get_q_entry (nodes[i]->prev_state,k) - nodes[i]->q_table, *nodes[i]->get_q_entry (nodes[i]->prev_state,k));
+	  //    }
+	  //}
+	  nodes[i]->update_q_entry();
+	}
       }
-    }
+  }
   sim->incr_timestamp();
 }
 
@@ -91,6 +93,7 @@ void learner::comply () {
   }
   printf ("Called!\n");
   sim->updateWorld ();
+  sim->incr_timestamp();
 }
 
 int learner::evaluate(intersection** nodes, int nodec)

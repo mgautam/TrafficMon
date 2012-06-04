@@ -135,7 +135,7 @@ void handleKeyPress  (unsigned char key, int x, int y) {
 
   case 'g':
     simulation->spawnCars (0*(SQUARE_SIZE+1)+0, BATCH_SIZE);
-    // simulation->spawnCars (1*(SQUARE_SIZE+1)+0, BATCH_SIZE);
+    simulation->spawnCars (1*(SQUARE_SIZE+1)+2, BATCH_SIZE);
     printf (">> KeyPressed: %d more cars spawned\n", BATCH_SIZE);
     break;
 

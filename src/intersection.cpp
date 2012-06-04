@@ -122,7 +122,7 @@ void intersection::select_action()
 }
 
 void intersection::select_learned_action () {
-  int best_action = 0;
+  int best_action = 1;
   for (int action = 0; action < NUM_TRAFFIC_PATTERNS; action++) {
     if ( *get_q_entry (curr_state,best_action) < *get_q_entry (curr_state,action) )
       best_action = action;
@@ -158,7 +158,11 @@ int intersection::get_wait () {
 }
 
 void intersection::get_reward (void) {
-  reward = (float) 1.0/( 1.0 + exp(- (prev_wait - curr_wait) ));//logistic function
+
+    // reward = (float) 1.0/( 1.0 + exp(- (prev_wait - curr_wait) ));//logistic function
+
+  reward = (float) ( prev_wait - curr_wait);  + 1* (prev_state[0] == curr_state[0]);
+
   //  printf ("%d -> %f\n",action,reward);
 }
 

@@ -70,9 +70,10 @@ int car::move()
 	   ((next_road && next_road->cars[next_road->length - 1] == 0) || !next_road) )//enter intersection
     {
       //printf ("position 0 nextroad empty\n");
-      if ( (turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||
-	   (turn == UTURN && curr_road->lights[RIGHT] == GREEN) ||
-	   curr_road->lights[turn] == GREEN) {
+      if ((turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||  
+	  (turn == UTURN && curr_road->lights[RIGHT] == GREEN) ||  
+	  (turn == RIGHT && curr_road->lights[RIGHT] == GREEN) ||
+	  (turn == LEFT && curr_road->lights[LEFT] == GREEN))	{
 	curr_road->cars[position] = 0;
 	curr_road->cars[--position] = this;
 	wait = 0;
@@ -156,7 +157,8 @@ void car::sense()
     {
       if ((turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||  
 	  (turn == UTURN && curr_road->lights[RIGHT] == GREEN) ||  
-	  curr_road->lights[turn] == GREEN) {
+	  (turn == RIGHT && curr_road->lights[RIGHT] == GREEN) ||
+	  (turn == LEFT && curr_road->lights[LEFT] == GREEN))	{
 	wait = 0;
 	sensed = true;
       }
