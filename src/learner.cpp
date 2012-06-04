@@ -44,6 +44,7 @@ void learner::learn ()
   for (int i = 0; i < nodec; i++)
     {
       if (nodes[i]) {
+	//printf ("First Sense:\n");
 	nodes[i]->sense_state();
 	nodes[i]->select_action();
 	nodes[i]->apply_action();
@@ -55,18 +56,19 @@ void learner::learn ()
   for (int i = 0; i < nodec; i++)
     {
       if (nodes[i]) {
-	nodes[i]->get_reward();
-	if (i == 4) {
-	  //	  printf ("Node %d: \n");
-	  for (int k = 0; k < 4; k++) {
-	    printf ("\t");
-	    for (int j = 0; j < 5; j++)
-	      printf ("%d ", nodes[i]->prev_state[j]);
-	    printf ("%d : ",k);
-	    printf ("%f\n", *nodes[i]->get_q_entry (nodes[i]->prev_state,k));
-	  }
-	}
+	//printf ("Second Sense:\n ");
 	nodes[i]->sense_state();
+	nodes[i]->get_reward();
+	// if (i == 4) {
+	//   printf ("Node %d: \n",i);
+	//   for (int k = 0; k < 4; k++) {
+	//   printf ("\t");
+	//   for (int j = 0; j < 5; j++)
+	//   printf ("%d ", nodes[i]->prev_state[j]);
+	//   printf ("%d : ",k);
+	//   printf ("%i %f\n", nodes[i]->get_q_entry (nodes[i]->prev_state,k) - nodes[i]->q_table, *nodes[i]->get_q_entry (nodes[i]->prev_state,k));
+	//    }
+	//}
 	nodes[i]->update_q_entry();
       }
     }
@@ -93,7 +95,7 @@ int learner::evaluate(intersection** nodes, int nodec)
 }
 
 void learner::print_to_file (void) {
-  /*  FILE *output = fopen ("../learned_values.txt","w");
+  FILE *output = fopen ("../learned_values.txt","w");
   int *curr_state;
   
   for (int i = 0; i < nodec; i++) {
@@ -104,14 +106,14 @@ void learner::print_to_file (void) {
       for (int j = 0; j < nodes[i]->state_space_size; j++) {
 	
 	int stateIndex = j;
-	int blockIndex = nodes[i]->state_vector_size-1;
+	int blockIndex = nodes[i]->state_vector_size;
 	for (int k = nodes[i]->num_state_attribute_blocks-1; k >= 0; k--) {
+	  blockIndex -= nodes[i]->attribute_block_length[k];
 	  for (int l = nodes[i]->attribute_block_length[k]-1; l >= 0; l--) {
 	    curr_state[blockIndex+l] = stateIndex % nodes[i]->attributes_block_range[k];
 	    stateIndex -= curr_state[blockIndex+l];
 	    stateIndex /= nodes[i]->attributes_block_range[k];
 	  }
-	  blockIndex -= nodes[i]->attribute_block_length[k];
 	}
 	
 	for (int action = 0; action < nodes[i]->number_of_actions_per_state; action++) {
@@ -119,7 +121,6 @@ void learner::print_to_file (void) {
 	  for (int m = 0; m < nodes[i]->state_vector_size; m++)
 	    fprintf (output, "%d ", curr_state[m]);
 	  fprintf (output, "Action: %d\t", action);
-	  curr_state[0] = 0;
 	  fprintf (output, "%f", *(nodes[i]->get_q_entry (curr_state,action)) );
 	  fprintf (output,"\n");
 	}
@@ -135,37 +136,4 @@ void learner::print_to_file (void) {
   
   fclose (output);
 }
-  */
-  FILE *output = fopen ("../learned_values.txt","w");
-  
-  for (int i = 0; i < nodec; i++) {
-    if (nodes[i]) {
-    fprintf (output,"Node: %d\n", i);
-    int state_no = 0;  
-    for (int p = 0; p < 4; p++)
-      {
-	for (int t1 = 0; t1 < 10 ; t1++)
-	  {
-	    for (int t2 = 0; t2 < 10 ; t2++)
-	      {
-		for (int t3 = 0; t3 < 10 ; t3++)
-		  {
-		    for (int t4 = 0; t4 < 10;  t4++)
-		      {
-			int curr_state[5] = {p, t4, t3, t2, t1};
-			for (int action = 0; action < 4; action++)
-			  {
-			    fprintf (output, "State: %d => %d %d %d %d %d, Action: %d\t", state_no, p, t4, t3, t2, t1, action);
-			    fprintf (output, "%f\n", *(nodes[i]->get_q_entry (curr_state,action)));		   
-			  }
-			state_no++;
-		      }
-		  }
-	      }
-	  }
-      }
-    }
-  }
 
-  fclose (output);
-  }
