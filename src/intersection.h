@@ -51,6 +51,10 @@ class intersection
   float reward;
   int action;
 
+  int curr_wait;
+  int prev_wait;
+
+
   float *q_table;
 
   int num_state_attribute_blocks;

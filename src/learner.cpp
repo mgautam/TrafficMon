@@ -41,15 +41,17 @@ void learner::naiveControl (world *sim) {
 void learner::learn ()
 {
   printf ("\ntime %lld:\n",sim->timestamp);
-  for (int i = 0; i < nodec; i++)
-    {
-      if (nodes[i]) {
-	//printf ("First Sense:\n");
-	nodes[i]->sense_state();
-	nodes[i]->select_action();
-	nodes[i]->apply_action();
+  if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+    for (int i = 0; i < nodec; i++)
+      {
+	if (nodes[i]) {
+	  //printf ("First Sense:\n");
+	  nodes[i]->sense_state();
+	  nodes[i]->select_action();
+	  nodes[i]->apply_action();
+	}
       }
-    }
+  }
 
   sim->updateWorld();//cars move here cars = clients
   

@@ -68,8 +68,6 @@ q_table_size:%lld \n",
   memset (this->out, 0, MAX_DEGREE*sizeof(road*));//not necessary
 }
 
-int curr_wait;
-int prev_wait;
 void intersection::sense_state ()
 {
   prev_wait = curr_wait;
