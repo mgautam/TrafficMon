@@ -158,7 +158,7 @@ int intersection::get_wait () {
 }
 
 void intersection::get_reward (void) {
-  reward = (float) ( prev_wait - curr_wait);
+  reward = (float) ( prev_wait - curr_wait);//  + 0.5* (prev_state[0] == curr_state[0]);
   //  printf ("%d -> %f\n",action,reward);
 }
 
