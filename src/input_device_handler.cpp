@@ -24,7 +24,7 @@ static bool mirror = false;
 extern int curr_mode;
 int curr_mode = 1;
 
-char modes[3][20]= {"Naive","Learning","Comply"};
+char modes[4][20]= {"Naive","Learning","Comply", "Learn&Comply"};
 
 extern bool stopDisplay;
 bool stopDisplay = false;
@@ -125,9 +125,12 @@ void handleKeyPress  (unsigned char key, int x, int y) {
       traffic_learner->naiveControl (simulation);
     else if (curr_mode == 1)
       traffic_learner->learn ();
-    else 
+    else if (curr_mode == 2)
       traffic_learner->comply ();
-
+    else {
+      traffic_learner->learn ();
+      traffic_learner->comply ();
+    }
     //simulation->updateWorld ();
     ppainter->draw ();
     printf (">> Key Pressed: Step to next unit in time dimension\n");
@@ -140,7 +143,7 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     break;
 
   case 't':
-    curr_mode = ((++curr_mode) % 3);
+    curr_mode = ((++curr_mode) % 4);
     printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
     break;
 

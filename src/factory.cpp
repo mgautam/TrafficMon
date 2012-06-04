@@ -66,7 +66,7 @@ void factory::create_world(world** sim)
 	}
     }
   
-  car** cars = new car*[5];
+  //car** cars = new car*[5];
   // cars[0] = new car(roads[0], RIGHT, roads[0]->length - 1); 
   //cars[1] = new car(roads[0], RIGHT, (float)roads[0]->length - 3);
   //cars[2] = new car(roads[0], RIGHT, (float)roads[0]->length - 5);
