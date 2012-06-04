@@ -55,18 +55,8 @@ void learner::learn ()
   for (int i = 0; i < nodec; i++)
     {
       if (nodes[i]) {
-	nodes[i]->get_reward();
-	if (i == 4) {
-	  //	  printf ("Node %d: \n");
-	  for (int k = 0; k < 4; k++) {
-	    printf ("\t");
-	    for (int j = 0; j < 5; j++)
-	      printf ("%d ", nodes[i]->prev_state[j]);
-	    printf ("%d : ",k);
-	    printf ("%f\n", *nodes[i]->get_q_entry (nodes[i]->prev_state,k));
-	  }
-	}
 	nodes[i]->sense_state();
+	nodes[i]->get_reward();
 	nodes[i]->update_q_entry();
       }
     }
