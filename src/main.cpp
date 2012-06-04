@@ -28,7 +28,7 @@ extern int curr_mode;
 
 extern bool stopDisplay;
 
-#ifdef OPENGL_MODE
+void nonDisplay (void);
 
 void display (void) {
    /* Do timer processing */
@@ -50,13 +50,35 @@ void timerCallback (int value)
       traffic_learner->comply ();
 
     //simulation->updateWorld();
-    if (!stopDisplay)
+    if (!stopDisplay) {
       ppainter->draw();
+    }
+    // else {
+    //   nonDisplay ();
+    // }
   }
    /* call back again after simulation_interval has passed */
   glutTimerFunc ( simulation_interval, timerCallback, 0);
 }
-#endif
+
+void nonDisplay (void)
+{
+  while (true) {
+    if (!stopAnime) {
+      
+      if (curr_mode == 0)
+	traffic_learner->naiveControl (simulation);
+      else if (curr_mode == 1)
+	traffic_learner->learn ();
+      else 
+	traffic_learner->comply ();
+    }
+    if (!stopAnime)
+      timerCallback (0);
+  }
+}
+
+
 
 int main (int argc, char* argv[])
 {

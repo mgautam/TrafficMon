@@ -163,7 +163,11 @@ int intersection::get_wait () {
 }
 
 void intersection::get_reward (void) {
+
+    // reward = (float) 1.0/( 1.0 + exp(- (prev_wait - curr_wait) ));//logistic function
+
   reward = (float) ( prev_wait - curr_wait);  + 1* (prev_state[0] == curr_state[0]);
+
   //  printf ("%d -> %f\n",action,reward);
 }
 
