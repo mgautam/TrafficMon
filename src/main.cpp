@@ -26,11 +26,14 @@ learner *traffic_learner;
 
 extern int curr_mode;
 
+extern bool stopDisplay;
+
 #ifdef OPENGL_MODE
 
 void display (void) {
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
+  if (!stopDisplay)
     ppainter->draw ();
 
 
@@ -47,7 +50,8 @@ void timerCallback (int value)
       traffic_learner->comply ();
 
     //simulation->updateWorld();
-    ppainter->draw();
+    if (!stopDisplay)
+      ppainter->draw();
   }
    /* call back again after simulation_interval has passed */
   glutTimerFunc ( simulation_interval, timerCallback, 0);

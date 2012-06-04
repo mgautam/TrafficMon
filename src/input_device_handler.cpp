@@ -26,6 +26,8 @@ int curr_mode = 1;
 
 char modes[3][20]= {"Naive","Learning","Comply"};
 
+extern bool stopDisplay;
+bool stopDisplay = false;
 
 void handleKeyPress  (unsigned char key, int x, int y) {
   switch (key) {
@@ -145,6 +147,11 @@ void handleKeyPress  (unsigned char key, int x, int y) {
   case 'p':
     traffic_learner->print_to_file ();
     printf (">> Print Learned Table\n");
+    break;
+  
+  case 'd':
+    stopDisplay = !stopDisplay;
+    printf (">> Display Mode Toggled: No%c Showing\n", stopDisplay*'T'+(!stopDisplay)*'w');
     break;
   }
 }
