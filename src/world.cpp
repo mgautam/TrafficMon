@@ -73,7 +73,7 @@ void world::spawnCars (int roadIndex, int batchSize) {
   for (int i=0; i < roadc; i++) {
     if (num_spawn[i] > 0 && timestamp >= next_spawn_time[i]
 	&& (roads[i]->cars[roads[i]->length-1] == 0)) {
-      new car (roads[i],AHEAD);//next_spawn_time[i]%3);
+      new car (roads[i], (float)rand ()/(float)RAND_MAX * 3);
       num_spawn[i]--;
       next_spawn_time[i] = this->timestamp + (float)rand ()/(float)RAND_MAX * 10 + 5;
     }
