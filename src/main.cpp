@@ -43,6 +43,12 @@ extern int complyTime;
 
 void timerCallback (int value)
 {
+  if (simulation->timestamp == 100000)
+    {
+      exit(0);
+    }
+  
+
   if (!stopAnime) {
 
     if (curr_mode == 0) {

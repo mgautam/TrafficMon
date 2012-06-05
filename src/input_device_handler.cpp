@@ -22,7 +22,7 @@ int simulation_interval = 256;//msecs
 static bool mirror = false;
 
 extern int curr_mode;
-int curr_mode = 1;
+int curr_mode = 3;
 
 char modes[4][20]= {"Naive","Learning","Comply", "Learn&Comply"};
 

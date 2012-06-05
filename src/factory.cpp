@@ -66,15 +66,37 @@ void factory::create_world(world** sim)
 	}
     }
   
-  //car** cars = new car*[5];
-  // cars[0] = new car(roads[0], RIGHT, roads[0]->length - 1); 
-  //cars[1] = new car(roads[0], RIGHT, (float)roads[0]->length - 3);
-  //cars[2] = new car(roads[0], RIGHT, (float)roads[0]->length - 5);
-  //cars[3] = new car(roads[0], RIGHT, (float)roads[0]->length - 7);
-  //cars[4] = new car(roads[0], RIGHT, (float)roads[0]->length - 5);
-  // cars[3] = new car(roads[4*5+3], LEFT, (float)roads[4*5+2]->length - 4.4);  
-  // cars[4] = new car(roads[3*5+3], LEFT, (float)roads[3*5+2]->length - 5.5);
+  car** cars = new car*[10];
+  cars[0] = new car(roads[0], AHEAD, roads[0]->length - 1); 
+  cars[1] = new car(roads[0], RIGHT, (float)roads[0]->length - 3);
+  cars[2] = new car(roads[0], LEFT, (float)roads[0]->length - 5);
+  cars[3] = new car(roads[0], LEFT, (float)roads[0]->length - 7);
+
+  cars[5] = new car(roads[3], AHEAD, (float)roads[0]->length - 1);
+  cars[6] = new car(roads[3], RIGHT, (float)roads[0]->length - 3);
+  cars[7] = new car(roads[3], LEFT, (float)roads[0]->length - 5);
+  cars[8] = new car(roads[3], LEFT, (float)roads[0]->length - 7);
  
+  new car(roads[20], LEFT, (float)roads[0]->length - 1);
+  new car(roads[20], RIGHT, (float)roads[0]->length - 3);
+  new car(roads[20], AHEAD, (float)roads[0]->length - 5);
+  new car(roads[20], AHEAD, (float)roads[0]->length - 7);
+
+  new car(roads[23], LEFT, (float)roads[0]->length - 1);
+  new car(roads[23], RIGHT, (float)roads[0]->length - 3);
+  new car(roads[23], AHEAD, (float)roads[0]->length - 5);
+  new car(roads[23], AHEAD, (float)roads[0]->length - 7);
+
+  // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
+  // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
+  // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
+  // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
+  // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
+
+
+
+
+
 
 
   *sim = new world ( intersection_count, intersections, road_count, roads);

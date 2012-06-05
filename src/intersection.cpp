@@ -57,7 +57,7 @@ intersection::intersection(int x, int y)
     {
       q_table[i] = (float)rand()/(float)RAND_MAX;
     }
-  // memset (q_table, 0, q_table_size * sizeof (float));
+  memset (q_table, 0, q_table_size * sizeof (float));
   
   printf ("state_vector_size: %d       \
 state_space_size: %d		       \
