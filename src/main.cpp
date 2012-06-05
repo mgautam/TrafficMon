@@ -1,25 +1,31 @@
 #include <stdio.h>
+#include <stdlib.h>
 
+/*
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #endif
 
-#include "config.h"
-#include "world.h"
 #include "painter.h"
 #include "input_device_handler.h"
+*/
+
+#include "config.h"
+#include "world.h"
+
 #include "factory.h"
 #include "learner.h"
 
-#define OPENGL_MODE 1
 
 extern world* simulation;
 world *simulation;
 
+/*
 extern painter* ppainter;
 painter* ppainter;
+*/
 
 extern learner *traffic_learner;
 learner *traffic_learner;
@@ -43,12 +49,6 @@ extern int complyTime;
 
 void timerCallback (int value)
 {
-  if (simulation->timestamp == 100000)
-    {
-      exit(0);
-    }
-  
-
   if (!stopAnime) {
 
     if (curr_mode == 0) {

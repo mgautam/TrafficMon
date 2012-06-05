@@ -1,13 +1,16 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <iostream>
 using namespace std;
 #include <cstring>
 
+/*
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #endif
+*/
 
 #include "config.h"
 #include "intersection.h"
@@ -55,9 +58,9 @@ intersection::intersection(int x, int y)
 
   for (long long i = 0; i < q_table_size; i++)
     {
-      q_table[i] = (float)rand()/(float)RAND_MAX;
+      q_table[i] = (float)rand()/(float)RAND_MAX; //Random Initialization of Q_table
     }
-  memset (q_table, 0, q_table_size * sizeof (float));
+  // memset (q_table, 0, q_table_size * sizeof (float));//Zero Initialization of Q_table
   
   printf ("state_vector_size: %d       \
 state_space_size: %d		       \

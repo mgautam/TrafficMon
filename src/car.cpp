@@ -1,8 +1,15 @@
+#include <stdlib.h>
+
+
+/*
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #endif
+*/
+
+
 
 #include "config.h"
 #include "intersection.h"

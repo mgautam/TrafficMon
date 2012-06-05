@@ -3,11 +3,11 @@
 
 #include "intersection.h"
 #include "world.h"
-#include "painter.h"
+//#include "painter.h"
 
 class learner {
  public:
-  learner (world* sim, painter* ppainter);
+  learner (world* sim);//, painter* ppainter);
 
   // Actuate
   void naiveControl (world* simulation);
@@ -28,7 +28,7 @@ class learner {
   int nodec;
 
   world* sim;
-  painter* ppainter;
+  //painter* ppainter;
 
 };
 
