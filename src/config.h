@@ -22,7 +22,7 @@
 
 
 // VIEW Parameters
-//#define OPENGL_MODE 1
+#define OPENGL_MODE 1
 #define WINDOW_WIDTH 500
 #define WINDOW_HEIGHT 500
 #define MARGIN_PADDING 1

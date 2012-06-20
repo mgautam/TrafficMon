@@ -1,5 +1,3 @@
-#ifdef OPENGL_MODE
-
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -12,6 +10,8 @@
 #include "painter.h"
 
 //static void (*simulate) (void) = NULL;
+#ifdef OPENGL_MODE
+
 
 static void displayText (float x, float y, char *text) {
 

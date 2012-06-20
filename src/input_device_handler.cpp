@@ -1,4 +1,3 @@
-#ifdef OPENGL_MODE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,6 +33,7 @@ static bool mirror = false;
 
 char modes[4][20]= {"Naive","Learning","Comply", "Learn&Comply"};
 
+#ifdef OPENGL_MODE
 
 
 void handleKeyPress  (unsigned char key, int x, int y) {
