@@ -26,8 +26,8 @@ int curr_mode = 3;
 
 char modes[4][20]= {"Naive","Learning","Comply", "Learn&Comply"};
 
-extern bool stopDisplay;
-bool stopDisplay = false;
+extern bool fullSpeed;
+bool fullSpeed = false;
 
 extern int learnTime;
 int learnTime = 0;
@@ -130,7 +130,7 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     if (curr_mode == 0)
       traffic_learner->naiveControl (simulation);
     else if (curr_mode == 1)
-      traffic_learner->learn ();
+      traffic_learner->learn (fullSpeed);
        else if (curr_mode == 2) {
       traffic_learner->comply ();
       if ( !(simulation->timestamp % PERFORMANCE_CALC_INTERVAL) )
@@ -141,7 +141,7 @@ void handleKeyPress  (unsigned char key, int x, int y) {
 
 	if (learnTime > 0) 
 	  {
-	    traffic_learner->learn ();
+	    traffic_learner->learn (fullSpeed);
 	    learnTime--;
 	    //printf ("learnTime:%d\n",learnTime);
 	  }
@@ -186,9 +186,9 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     printf (">> Print Learned Table\n");
     break;
   
-  case 'd':
-    stopDisplay = !stopDisplay;
-    printf (">> Display Mode Toggled: No%c Showing\n", stopDisplay*'T'+(!stopDisplay)*'w');
+  case 'f':
+    fullSpeed = !fullSpeed;
+    printf (">> Full Speed %c%cactivated\n", (!fullSpeed)*'d', (!fullSpeed)*'e');
     break;
   }
 }

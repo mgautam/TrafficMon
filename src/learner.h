@@ -11,7 +11,7 @@ class learner {
 
   // Actuate
   void naiveControl (world* simulation);
-  void learn ();
+  void learn (bool fullSpeed);
   void comply ();
 
   // Measure Performance

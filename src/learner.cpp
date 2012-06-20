@@ -40,9 +40,9 @@ void learner::naiveControl (world *sim) {
 
 
 
-void learner::learn ()
+void learner::learn (bool fullSpeed)
 {
-  if ( !(sim->timestamp % 100) )
+  if ( !( sim->timestamp % (fullSpeed?10000:100) ) )
     printf ("time %lld\n",sim->timestamp);
 
 

@@ -33,13 +33,13 @@ learner *traffic_learner;
 
 extern int curr_mode;
 
-extern bool stopDisplay;
+extern bool fullSpeed;
 
 
 void display (void) {
    /* Do timer processing */
    /* maybe glutPostRedisplay(), if necessary */
-  if (!stopDisplay)
+  if (!fullSpeed)
     ppainter->draw ();
 
   glutPostRedisplay ();
@@ -49,10 +49,12 @@ extern int learnTime;
 extern int complyTime;
 
 void *coreEngine (void* ptr) {
-  sleep (1); // Without this sleep I get seg fault! I don't know why
 
   while (true) {
-    usleep (simulation_interval*1000);
+
+    if (!fullSpeed)
+      usleep (simulation_interval*1000);
+
     if (!stopAnime) {
       if (curr_mode == 0) {
 	traffic_learner->naiveControl (simulation);
@@ -60,7 +62,7 @@ void *coreEngine (void* ptr) {
 	  traffic_learner->displayPerformance (PERFORMANCE_CALC_INTERVAL);
       }
       else if (curr_mode == 1)
-	traffic_learner->learn ();
+	traffic_learner->learn (fullSpeed);
       else if (curr_mode == 2) {
 	traffic_learner->comply ();
 	if ( !(simulation->timestamp % PERFORMANCE_CALC_INTERVAL) )
@@ -71,7 +73,7 @@ void *coreEngine (void* ptr) {
 	  
 	  if (learnTime > 0) 
 	    {
-	      traffic_learner->learn ();
+	      traffic_learner->learn (fullSpeed);
 	      learnTime--;
 	      //printf ("learnTime:%d\n",learnTime);
 	    }
@@ -98,16 +100,19 @@ void *coreEngine (void* ptr) {
 
 int main (int argc, char* argv[])
 {
-  pthread_t engineThread;
-  int value;
-  int iret = pthread_create ( &engineThread, NULL, coreEngine, (void*) value);
-
   factory::create_world(&simulation);
 
   traffic_learner = new learner(simulation);//, ppainter);
 
+
+  pthread_t engineThread;
+  int value = 0;
+  int iret = pthread_create ( &engineThread, NULL, coreEngine, (void*) value);
+
+
   ppainter = new painter(simulation, display, argc, argv);
   //ppainter->draw(); // Draw initial state
+
   ppainter->animate();
 
 
