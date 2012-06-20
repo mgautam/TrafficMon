@@ -1,8 +1,6 @@
 #ifndef PAINTER_H
 #define PAINTER_H
 
-#ifdef OPENGL_MODE
-
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -15,17 +13,15 @@
 #include "car.h"
 #include "world.h"
 
+#ifdef OPENGL_MODE
+
 class painter {
-
-
 
 public:
   float scale;
 
-  static void (*display) (void);
-
   painter(world* sim);
-  painter(world* simulation, int argc, char** argv);
+  painter(world* simulation, void (*display)(void), int argc, char** argv);
 
   void draw ();
   void draw (car* curr_car);
@@ -37,6 +33,7 @@ public:
   void animate();
 
   world* simulation;
+
 };
 
 #endif

@@ -1,5 +1,3 @@
-#ifdef OPENGL_MODE
-
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -11,8 +9,9 @@
 #include "input_device_handler.h"
 #include "painter.h"
 
-//static void (*simulate) (void) = NULL;
 
+#ifdef OPENGL_MODE
+/*
 static void displayText (float x, float y, char *text) {
 
   glPushMatrix ();
@@ -27,23 +26,11 @@ static void displayText (float x, float y, char *text) {
   glPopMatrix ();
 
 }
+*/
 
-extern bool fullSpeed;
-void painter::display (void) {
-     /* Do timer processing */
-     /* maybe glutPostRedisplay(), if necessary */
-    if (!fullSpeed)
-      this->draw ();
-  
-    glutPostRedisplay ();
-  }
-
-painter::painter(world* _simulation, int argc, char** argv) {
+painter::painter(world* _simulation, void (*display) (void), int argc, char** argv) {
 
   this->simulation = _simulation;
-
-
-
 
   // Calculating world scale to map to our windowed perception of the world
   int minWorldX = 0;
@@ -76,7 +63,7 @@ painter::painter(world* _simulation, int argc, char** argv) {
 
   glutCreateWindow ("World View");
   glDisable (GL_DEPTH_TEST);
-  glutDisplayFunc (this->display);
+  glutDisplayFunc (display);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 

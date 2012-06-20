@@ -1,5 +1,3 @@
-#ifdef OPENGL_MODE
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,6 +12,8 @@
 #include "world.h"
 #include "painter.h"
 #include "learner.h"
+
+#ifdef OPENGL_MODE
 
 extern painter* ppainter;
 extern world* simulation;

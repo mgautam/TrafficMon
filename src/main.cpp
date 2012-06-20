@@ -22,11 +22,6 @@
 
 #endif
 
-#ifdef OPENGL_MODE
-   extern painter* ppainter;
-   painter* ppainter;
-#endif
-
 extern world* simulation;
 world *simulation;
 
@@ -51,6 +46,24 @@ int learnTime = 0;
 
 extern int complyTime;
 int complyTime = COMPLY_TIME;
+
+
+#ifdef OPENGL_MODE
+   extern painter* ppainter;
+   painter* ppainter;
+
+
+ void display (void) {
+     /* Do timer processing */
+     /* maybe glutPostRedisplay(), if necessary */
+    if (!fullSpeed)
+      ppainter->draw ();
+  
+    glutPostRedisplay ();
+  }
+
+#endif
+
 
 void *coreEngine (void *ptr) {
 
@@ -114,7 +127,7 @@ int main (int argc, char* argv[])
    int iret = pthread_create ( &engineThread, NULL, coreEngine, NULL);
    cout << "Thread Status:" << iret << endl;
 
-   ppainter = new painter (simulation, argc, argv);
+   ppainter = new painter (simulation, display, argc, argv);
    //ppainter->draw(); // Draw initial state
    ppainter->animate ();
 
