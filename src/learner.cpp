@@ -6,7 +6,7 @@
 #include "assert.h"
 
 
-learner::learner (world* sim) { //, painter* ppainter) {
+learner::learner (world* sim) {
   this->sim = sim;
   this->nodes = sim->intersections;
   this->nodec = sim->intc;

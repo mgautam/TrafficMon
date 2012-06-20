@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS= -I/opt/local/include -I.. -Wall
-LDFLAGS= -lglut -lGL -lGLU
+LDFLAGS= -lglut -lGL -lGLU -lpthread
 
 OUTPUTDIR=../bin
 SOURCES =$(wildcard *.cpp)

@@ -1,3 +1,5 @@
+#ifdef OPENGL_MODE
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,23 +18,22 @@
 extern painter* ppainter;
 extern world* simulation;
 extern learner* traffic_learner;
-bool stopAnime = false;
-int simulation_interval = 256;//msecs
+
+extern bool stopAnime;
+extern int simulation_interval;
+
+extern bool fullSpeed;
+
+extern int curr_mode;
+extern int learnTime;
+extern int complyTime;
+
+
 
 static bool mirror = false;
 
-extern int curr_mode;
-int curr_mode = 3;
-
 char modes[4][20]= {"Naive","Learning","Comply", "Learn&Comply"};
 
-extern bool fullSpeed;
-bool fullSpeed = false;
-
-extern int learnTime;
-int learnTime = 0;
-extern int complyTime;
-int complyTime = COMPLY_TIME;
 
 
 void handleKeyPress  (unsigned char key, int x, int y) {
@@ -201,3 +202,5 @@ void handleResize (int w, int h) {
   glLoadIdentity ();
   gluPerspective (45.0, (double) w / (double) h, 0.0, 0.0);
 }
+
+#endif

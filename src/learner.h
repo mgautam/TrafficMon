@@ -7,7 +7,7 @@
 
 class learner {
  public:
-  learner (world* sim);//, painter* ppainter);
+  learner (world* sim);
 
   // Actuate
   void naiveControl (world* simulation);

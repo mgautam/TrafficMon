@@ -2,19 +2,6 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-//#ifdef OPENGL_MODE
-
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-
-#include "painter.h"
-#include "input_device_handler.h"
-
-//#endif
-
 #include "config.h"
 #include "world.h"
 
@@ -22,33 +9,50 @@
 #include "learner.h"
 
 
+
+#ifdef OPENGL_MODE
+   #ifdef __APPLE__
+    #include <GLUT/glut.h>
+   #else
+#include <GL/glut.h>
+   #endif
+
+   #include "painter.h"
+   #include "input_device_handler.h"
+
+#endif
+
+#ifdef OPENGL_MODE
+   extern painter* ppainter;
+   painter* ppainter;
+#endif
+
 extern world* simulation;
 world *simulation;
-
-extern painter* ppainter;
-painter* ppainter;
 
 extern learner *traffic_learner;
 learner *traffic_learner;
 
 extern int curr_mode;
+int curr_mode = 3;
+
+extern int simulation_interval;
+int simulation_interval = 256;//msecs
+
+extern bool stopAnime;
+bool stopAnime = false;
 
 extern bool fullSpeed;
+bool fullSpeed = false;
 
-
-void display (void) {
-   /* Do timer processing */
-   /* maybe glutPostRedisplay(), if necessary */
-  if (!fullSpeed)
-    ppainter->draw ();
-
-  glutPostRedisplay ();
-}
 
 extern int learnTime;
-extern int complyTime;
+int learnTime = 0;
 
-void *coreEngine (void* ptr) {
+extern int complyTime;
+int complyTime = COMPLY_TIME;
+
+void *coreEngine (void *ptr) {
 
   while (true) {
 
@@ -96,25 +100,27 @@ void *coreEngine (void* ptr) {
     }
   }
 
+  return ptr;
 }
 
 int main (int argc, char* argv[])
 {
   factory::create_world(&simulation);
 
-  traffic_learner = new learner(simulation);//, ppainter);
+  traffic_learner = new learner (simulation);
 
+  #ifdef OPENGL_MODE
+   pthread_t engineThread;
+   int iret = pthread_create ( &engineThread, NULL, coreEngine, NULL);
+   cout << "Thread Status:" << iret << endl;
 
-  pthread_t engineThread;
-  int value = 0;
-  int iret = pthread_create ( &engineThread, NULL, coreEngine, (void*) value);
+   ppainter = new painter (simulation, argc, argv);
+   //ppainter->draw(); // Draw initial state
+   ppainter->animate ();
 
-
-  ppainter = new painter(simulation, display, argc, argv);
-  //ppainter->draw(); // Draw initial state
-
-  ppainter->animate();
-
+  #else
+     coreEngine (NULL);
+  #endif
 
   
   return 0;

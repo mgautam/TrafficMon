@@ -1,3 +1,5 @@
+#ifdef OPENGL_MODE
+
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -9,7 +11,7 @@
 #include "input_device_handler.h"
 #include "painter.h"
 
-static void (*simulate) (void) = NULL;
+//static void (*simulate) (void) = NULL;
 
 static void displayText (float x, float y, char *text) {
 
@@ -26,7 +28,17 @@ static void displayText (float x, float y, char *text) {
 
 }
 
-painter::painter(world* _simulation, void (*display)(void), int argc, char** argv) {
+extern bool fullSpeed;
+void painter::display (void) {
+     /* Do timer processing */
+     /* maybe glutPostRedisplay(), if necessary */
+    if (!fullSpeed)
+      this->draw ();
+  
+    glutPostRedisplay ();
+  }
+
+painter::painter(world* _simulation, int argc, char** argv) {
 
   this->simulation = _simulation;
 
@@ -64,7 +76,7 @@ painter::painter(world* _simulation, void (*display)(void), int argc, char** arg
 
   glutCreateWindow ("World View");
   glDisable (GL_DEPTH_TEST);
-  glutDisplayFunc (display);
+  glutDisplayFunc (this->display);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 
@@ -390,3 +402,5 @@ void painter::drawLights (road* curr_road) {
   }
 
 }
+
+#endif

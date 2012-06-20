@@ -1,6 +1,8 @@
 #ifndef PAINTER_H
 #define PAINTER_H
 
+#ifdef OPENGL_MODE
+
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -20,11 +22,10 @@ class painter {
 public:
   float scale;
 
-  static void (*timerCallback) (int);
-  //  static void (*
+  static void (*display) (void);
 
   painter(world* sim);
-  painter(world* simulation, void (*display) (void),  int argc, char** argv);
+  painter(world* simulation, int argc, char** argv);
 
   void draw ();
   void draw (car* curr_car);
@@ -37,5 +38,7 @@ public:
 
   world* simulation;
 };
+
+#endif
 
 #endif
