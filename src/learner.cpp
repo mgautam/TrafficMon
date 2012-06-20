@@ -42,8 +42,10 @@ void learner::naiveControl (world *sim) {
 
 void learner::learn ()
 {
-  if ( !(sim->timestamp % 1000) )
+  if ( !(sim->timestamp % 100) )
     printf ("time %lld\n",sim->timestamp);
+
+
   if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
     for (int i = 0; i < nodec; i++)
       {

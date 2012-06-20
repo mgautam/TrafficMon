@@ -10,7 +10,6 @@
 #include "painter.h"
 
 static void (*simulate) (void) = NULL;
-void (*painter::timerCallback) (int) = NULL;
 
 static void displayText (float x, float y, char *text) {
 
@@ -27,12 +26,12 @@ static void displayText (float x, float y, char *text) {
 
 }
 
-painter::painter(world* _simulation, void (*display)(void), void (*_timerCallback) (int), int argc, char** argv) {
+painter::painter(world* _simulation, void (*display)(void), int argc, char** argv) {
 
   this->simulation = _simulation;
 
-    simulate = display;
-    this->timerCallback = _timerCallback;
+
+
 
   // Calculating world scale to map to our windowed perception of the world
   int minWorldX = 0;
@@ -65,7 +64,7 @@ painter::painter(world* _simulation, void (*display)(void), void (*_timerCallbac
 
   glutCreateWindow ("World View");
   glDisable (GL_DEPTH_TEST);
-  glutDisplayFunc (simulate);
+  glutDisplayFunc (display);
   glutKeyboardFunc (handleKeyPress);
   glutReshapeFunc (handleResize);
 
@@ -74,7 +73,6 @@ painter::painter(world* _simulation, void (*display)(void), void (*_timerCallbac
   glMatrixMode (GL_PROJECTION);
   glPushMatrix ();
 
-  glutTimerFunc (simulation_interval, timerCallback, 0);
 }
 
 void painter::animate()

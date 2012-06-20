@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 #include <cstring>
+#include <stdlib.h>
 
 #include "config.h"
 #include "world.h"
@@ -129,3 +130,42 @@ void world::updateWorld(void) {
 }
 
 
+void saveWorld (FILE *output) {
+
+  /* f
+
+  for (int i = 0; i < this->intc; i++)
+    draw(simulation->intersections[i]);
+  
+  for (int i = 0; i < simulation->roadc; i++) {
+    draw(simulation->roads[i]);
+    drawLights(simulation->roads[i]);
+
+    for (int j = -2; j < simulation->roads[i]->length; j++)
+      {
+	if (simulation->roads[i]->cars[j])
+	  draw(simulation->roads[i]->cars[j]);
+      }
+  }
+
+  */
+}
+
+void loadWorld (FILE *input) {
+  /*
+  for (int i = 0; i < simulation->intc; i++)
+    draw(simulation->intersections[i]);
+  
+  for (int i = 0; i < simulation->roadc; i++) {
+    draw(simulation->roads[i]);
+    drawLights(simulation->roads[i]);
+
+    for (int j = -2; j < simulation->roads[i]->length; j++)
+      {
+	if (simulation->roads[i]->cars[j])
+	  draw(simulation->roads[i]->cars[j]);
+      }
+  }
+  */
+  
+}

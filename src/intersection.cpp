@@ -4,13 +4,6 @@
 using namespace std;
 #include <cstring>
 
-/*
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-*/
 
 #include "config.h"
 #include "intersection.h"
@@ -83,7 +76,7 @@ void intersection::sense_state ()
   // prev_state = curr_state;
   
   curr_wait = get_wait ();
-  curr_state[0] = pattern_id;
+  curr_state[0] = traffic_pattern_id;
   
   for (int j = 0; j < MAX_DEGREE; j++)
     {
@@ -219,7 +212,7 @@ void intersection::update_q_entry()
 
 void intersection::controlLights (int PatternID) {
 
-  this->pattern_id = PatternID;
+  this->traffic_pattern_id = PatternID;
 
   for (int direction = 0; direction < 4; direction++)
     if (this->in[direction]) {

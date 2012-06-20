@@ -7,14 +7,6 @@
 #include <iostream>
 using namespace std;
 
-/*
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-*/
-
 #include "road.h"
 #include "config.h"
 
@@ -36,9 +28,8 @@ class intersection
 
   void select_learned_action (void);
 //variables
-  int x;
-  int y;
-  
+  int x, y;
+
   int in_count;
   int out_count;
 
@@ -47,7 +38,7 @@ class intersection
   road* in[MAX_DEGREE];
   road* out[MAX_DEGREE];
 
-  int pattern_id;
+  int traffic_pattern_id;
   int* curr_state;
   int* prev_state;
   float reward;

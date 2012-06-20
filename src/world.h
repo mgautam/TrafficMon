@@ -23,6 +23,9 @@ class world
   void spawnCars (int roadIndex = 0, int batchSize = 0);
   //void spawnCars (int roadIndex, int batchSize);
 
+  void saveWorld (FILE *output);
+  void loadWorld (FILE *input);
+
   //variables
   int intc;
   int roadc;
