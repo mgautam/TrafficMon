@@ -35,7 +35,6 @@ static bool mirror = false;
 char modes[4][20]= {"Naive","Learning","Comply", "Learn&Comply"};
 
 
-
 void handleKeyPress  (unsigned char key, int x, int y) {
   switch (key) {
   case 32: // SPACE BAR
