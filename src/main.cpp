@@ -5,7 +5,7 @@
 #include "config.h"
 #include "world.h"
 
-#include "factory.h"
+#include "bigbang.h"
 #include "learner.h"
 
 
@@ -118,7 +118,7 @@ void *coreEngine (void *ptr) {
 
 int main (int argc, char* argv[])
 {
-  factory::create_world(&simulation);
+  bigbang::create_world(&simulation);
 
   traffic_learner = new learner (simulation);
 

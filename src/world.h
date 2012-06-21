@@ -36,6 +36,7 @@ class world
   intersection** intersections;
   road** roads;
 
+  // World has the control for spawning cars
   int *num_spawn;
   long long *next_spawn_time;
 };

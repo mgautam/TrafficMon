@@ -67,6 +67,8 @@ q_table_size:%lld \n",
   
   memset (this->in, 0, MAX_DEGREE*sizeof(road*));
   memset (this->out, 0, MAX_DEGREE*sizeof(road*));//not necessary
+
+  best_action = 1;
 }
 
 void intersection::sense_state ()
@@ -123,7 +125,8 @@ void intersection::select_action()
 }
 
 void intersection::select_learned_action () {
-  int best_action = 1;
+  // If all states are of equal importance (value) then retain the previous best action
+  // int best_action = best_action;//i.e. initialize with previous best action
   for (int action = 0; action < NUM_TRAFFIC_PATTERNS; action++) {
     if ( *get_q_entry (curr_state,best_action) < *get_q_entry (curr_state,action) )
       best_action = action;

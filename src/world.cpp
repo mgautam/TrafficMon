@@ -6,8 +6,6 @@ using namespace std;
 #include "config.h"
 #include "world.h"
 
-//constructor
-//world::world(int intc, intersection** intersections, int roadc, road** roads, int carc, car** cars)
 world::world(int intc, intersection** intersections, int roadc, road** roads)
 {
 

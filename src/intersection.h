@@ -30,19 +30,18 @@ class intersection
 //variables
   int x, y;
 
-  int in_count;
-  int out_count;
-
-  int length; //2 means the intersection is 2 x 2.
-
+  int in_count; // Number of incoming roads
+  int out_count; // Number of outgoing roads
   road* in[MAX_DEGREE];
   road* out[MAX_DEGREE];
 
   int traffic_pattern_id;
   int* curr_state;
   int* prev_state;
+
   float reward;
   int action;
+  int best_action;
 
   int curr_wait;
   int prev_wait;
