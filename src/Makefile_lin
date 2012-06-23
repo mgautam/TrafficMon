@@ -1,5 +1,5 @@
-CC=g++
-CFLAGS= -I/opt/local/include -I.. -Wall
+CC=ccache g++
+CFLAGS= -g -I/opt/local/include -I.. -Wall
 LDFLAGS= -lglut -lGL -lGLU -lpthread
 
 OUTPUTDIR=../bin

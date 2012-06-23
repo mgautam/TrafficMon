@@ -12,6 +12,7 @@
 #include "world.h"
 #include "painter.h"
 #include "learner.h"
+#include "bigbang.h"
 
 #ifdef OPENGL_MODE
 
@@ -184,6 +185,7 @@ void handleKeyPress  (unsigned char key, int x, int y) {
   case 'p':
     traffic_learner->print_to_file ();
     printf (">> Print Learned Table\n");
+    bigbang::destroy_world (simulation);
     break;
   
   case 'f':

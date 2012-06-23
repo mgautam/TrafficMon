@@ -78,8 +78,9 @@ void *coreEngine (void *ptr) {
 	if ( !(simulation->timestamp % PERFORMANCE_CALC_INTERVAL) )
 	  traffic_learner->displayPerformance (PERFORMANCE_CALC_INTERVAL);
       }
-      else if (curr_mode == 1)
+      else if (curr_mode == 1) {
 	traffic_learner->learn (fullSpeed);
+      }
       else if (curr_mode == 2) {
 	traffic_learner->comply ();
 	if ( !(simulation->timestamp % PERFORMANCE_CALC_INTERVAL) )

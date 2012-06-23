@@ -104,14 +104,39 @@ void bigbang::create_world(world** sim)
 }
 
 
-void bigbang::destroy_world (world** sim) {
+void bigbang::destroy_world (world* sim) {
+  int temp_intc = sim->intc;
+  int temp_roadc = sim->roadc;
+
+  sim->intc = 0;
+  sim->roadc = 0;
+
+  for (int i = 0; i < temp_intc; i++) {
+    if (!sim->intersections[i])
+      continue;
+
+      delete sim->intersections[i]->curr_state;
+      delete sim->intersections[i]->prev_state;
+      delete sim->intersections[i]->q_table;
+
+      delete sim->intersections[i];
+      sim->intersections[i] = 0;
+    }
   
+  for (int i = 0; i < temp_roadc; i++) {
+    for (int j = -2; j < sim->roads[i]->length; j++)
+      {
+	if (sim->roads[i]->cars[j])
+	  delete sim->roads[i]->cars[j];
+      }
+    delete sim->roads[i];
+  }
 }
 
-static void save_world (world** sim) {
+static void save_world (world* sim) {
 
 }
 
-static void recreate_world (world** sim) {
+static void recreate_world (world* sim) {
 
 }

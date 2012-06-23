@@ -29,7 +29,7 @@ class world
   //variables
   int intc;
   int roadc;
-  int carc;
+  //  int carc;
 
   long long timestamp;
 

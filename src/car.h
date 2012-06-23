@@ -24,6 +24,10 @@ class car
   int move();
   void sense();
   void make_turn();
+  void escape_city();
+  void enter_road(int new_road, int new_intention);
+
+
 
   //variables
   int turn;
@@ -35,9 +39,6 @@ class car
   COLOR color;
 
   road* curr_road;
-
-  void escape_city();
-  void enter_road(int new_road, int new_intention);
 
   bool moved;
   bool sensed;
