@@ -5,7 +5,7 @@
 
 void bigbang::create_world(world** sim)
 {
-  
+  /*
   intersection** intersections = new intersection*[5];
   intersections[0] =   new intersection (-NUM_SLOTS_IN_ROAD,0); // left
   intersections[1] =   new intersection (0,-NUM_SLOTS_IN_ROAD); // bottom
@@ -36,10 +36,10 @@ void bigbang::create_world(world** sim)
   cars[6] = new car(roads[1], RIGHT, (float)roads[1]->length - 3);
   cars[7] = new car(roads[1], LEFT, (float)roads[1]->length - 5);
   cars[8] = new car(roads[1], LEFT, (float)roads[1]->length - 7);
-
+  */
 
   
-  /*
+  
   int road_count = 2*2*(SQUARE_SIZE+1)*SQUARE_SIZE;
   int intersection_count = (SQUARE_SIZE+2)*(SQUARE_SIZE+2);
   intersection** intersections = new intersection*[intersection_count];
@@ -99,7 +99,7 @@ void bigbang::create_world(world** sim)
   new car(roads[23], RIGHT, (float)roads[23]->length - 3);
   new car(roads[23], AHEAD, (float)roads[23]->length - 5);
   new car(roads[23], AHEAD, (float)roads[23]->length - 7);
-*/
+
   // new car(roads[0], RIGHT, (float)roads[0]->length - 9);
   // new car(roads[1], RIGHT, (float)roads[1]->length - 9);
   // new car(roads[2], RIGHT, (float)roads[2]->length - 9);

@@ -79,9 +79,9 @@ void road::set_cdf_turn_patterns (float *pdf) {
       traffic_pattern_cdf[i] = pdf[i] / Norm;
       if (i != 0) 
 	traffic_pattern_cdf[i] += traffic_pattern_cdf[i-1];
-      printf ("%f\t", traffic_pattern_cdf[i]);
+      //printf ("%f\t", traffic_pattern_cdf[i]);
   }
-  printf ("\n");
+  //printf ("\n");
 
 }
 
@@ -125,10 +125,10 @@ bool road::car_can_move_to(int new_pos)
 
 int road::get_random_turn_from_cdf () {
   float seed = (float)rand ()/(float)RAND_MAX;
-  printf ("%f",seed);
+  //printf ("%f",seed);
   for (int turn = 0; turn < 4; turn++)
     if (seed < traffic_pattern_cdf[turn]) {
-      printf (" => %d\n",turn);
+      //printf (" => %d\n",turn);
       return turn;
     }
 

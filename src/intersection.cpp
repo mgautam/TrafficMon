@@ -25,13 +25,16 @@ intersection::intersection(int x, int y)
   attributes_block_range = new int[num_state_attribute_blocks];
 
   /**** Configure this block to add different features ****/
-  num_state_attribute_blocks = 2;
+  num_state_attribute_blocks = 3;
   
-  attribute_block_length[0] = 1;
+  attribute_block_length[0] = 1; // Traffic light pattern
   attributes_block_range[0] = NUM_TRAFFIC_PATTERNS;
 
-  attribute_block_length[1] = MAX_DEGREE;
+  attribute_block_length[1] = MAX_DEGREE; // distance to Nearest car from Traffic Light
   attributes_block_range[1] = MAX_SLOTS_TO_CHECK;
+
+  attribute_block_length[2] = MAX_DEGREE; // Number of cars on road
+  attributes_block_range[2] = MAX_SLOTS_TO_CHECK;
 
   number_of_actions_per_state = NUM_TRAFFIC_PATTERNS;
   /**** Configure this block to add different features ****/
@@ -46,6 +49,7 @@ intersection::intersection(int x, int y)
   
   
   long long int q_table_size = state_space_size * number_of_actions_per_state;
+  //printf ("%lld\n",q_table_size);
   //  this->q_table = new float [q_table_size];
   q_table = (float *) malloc (q_table_size * sizeof (float));
 
@@ -93,6 +97,14 @@ void intersection::sense_state ()
 	      if (curr_road->cars[k]) {
 		curr_state[1 + j] = k;
 		break;
+	      }
+	    }
+
+	  curr_state[1+MAX_DEGREE+j] = 0;
+	  for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
+	    {
+	      if (curr_road->cars[k]) {
+		curr_state[1+MAX_DEGREE+j]++;
 	      }
 	    }
 	}
@@ -177,20 +189,22 @@ float* intersection::get_q_entry(int* state, int action)
   int currStateIndex = 0;
   int blockIndex = 0;
   int blockMultiplier = state_space_size;
+  int subStateIndex = 0; // Part of State Index within each block
 
   for (int j = 0; j < num_state_attribute_blocks ; j++) {
     // Within each node
     blockMultiplier /= pow (attributes_block_range[j], attribute_block_length[j]);
+    subStateIndex = 0;
 
     for (int k = 0; k < attribute_block_length[j]; k++) {
       // We are evaluating state within attribute block
-      currStateIndex += pow (attributes_block_range[j],attribute_block_length[j]-1-k) * state[blockIndex+k];
+      subStateIndex += pow (attributes_block_range[j],attribute_block_length[j]-1-k) * state[blockIndex+k];
     }
     if (j != num_state_attribute_blocks-1)
-      currStateIndex *= blockMultiplier;
+      currStateIndex += subStateIndex * blockMultiplier;
     blockIndex += attribute_block_length[j];
   }
-  //  printf (" %d ",currStateIndex);
+  //printf (" %d\n",currStateIndex);// * number_of_actions_per_state + action);
   return &(q_table[currStateIndex * number_of_actions_per_state + action]);
 
  }
