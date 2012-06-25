@@ -100,10 +100,10 @@ int car::move()
       next_road->cars[position] = this;
       curr_road = next_road;
 
-      // setting the next turn to be random
-      this->turn = LEFT;//(float)rand ()/(float)RAND_MAX * 3;
+      // Check Road pattern distribution //always left // setting the next turn to be random
+      this->turn = curr_road->get_random_turn_from_cdf ();//LEFT;//(float)rand ()/(float)RAND_MAX * 3;
     }
-  else if (position == -2) //turn != LEFT //turn into right road or move onto road ahead
+  else if (position == -2) //turn != LEFT //turn into right/ahead/uturn
     {
       //printf ("pos-2 \n");
       curr_road->cars[position] = 0;
@@ -120,8 +120,8 @@ int car::move()
       next_road->cars[position] = this;
       curr_road = next_road;
 
-      // setting the next turn to be random
-      this->turn = RIGHT;//(float)rand ()/(float)RAND_MAX * 3;
+      //Check Road pattern distribution //always right // setting the next turn to be random
+      this->turn = curr_road->get_random_turn_from_cdf ();//RIGHT;//(float)rand ()/(float)RAND_MAX * 3;
     }
   else
     {

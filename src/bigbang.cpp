@@ -5,7 +5,7 @@
 
 void bigbang::create_world(world** sim)
 {
-  /*
+  
   intersection** intersections = new intersection*[5];
   intersections[0] =   new intersection (-NUM_SLOTS_IN_ROAD,0); // left
   intersections[1] =   new intersection (0,-NUM_SLOTS_IN_ROAD); // bottom
@@ -25,11 +25,21 @@ void bigbang::create_world(world** sim)
   roads[6] = new road (intersections[3],intersections[2]);
   roads[7] = new road (intersections[4],intersections[2]);
   int road_count = 8;
-  */ 
+     
+  car** cars = new car*[10];
+  cars[0] = new car(roads[0], AHEAD, roads[0]->length - 1); 
+  cars[1] = new car(roads[0], RIGHT, (float)roads[0]->length - 3);
+  cars[2] = new car(roads[0], LEFT, (float)roads[0]->length - 5);
+  cars[3] = new car(roads[0], LEFT, (float)roads[0]->length - 7);
+
+  cars[5] = new car(roads[1], AHEAD, (float)roads[1]->length - 1);
+  cars[6] = new car(roads[1], RIGHT, (float)roads[1]->length - 3);
+  cars[7] = new car(roads[1], LEFT, (float)roads[1]->length - 5);
+  cars[8] = new car(roads[1], LEFT, (float)roads[1]->length - 7);
 
 
   
-  
+  /*
   int road_count = 2*2*(SQUARE_SIZE+1)*SQUARE_SIZE;
   int intersection_count = (SQUARE_SIZE+2)*(SQUARE_SIZE+2);
   intersection** intersections = new intersection*[intersection_count];
@@ -74,27 +84,27 @@ void bigbang::create_world(world** sim)
   cars[2] = new car(roads[0], LEFT, (float)roads[0]->length - 5);
   cars[3] = new car(roads[0], LEFT, (float)roads[0]->length - 7);
 
-  cars[5] = new car(roads[1], AHEAD, (float)roads[0]->length - 1);
-  cars[6] = new car(roads[1], RIGHT, (float)roads[0]->length - 3);
-  cars[7] = new car(roads[1], LEFT, (float)roads[0]->length - 5);
-  cars[8] = new car(roads[1], LEFT, (float)roads[0]->length - 7);
+  cars[5] = new car(roads[1], AHEAD, (float)roads[1]->length - 1);
+  cars[6] = new car(roads[1], RIGHT, (float)roads[1]->length - 3);
+  cars[7] = new car(roads[1], LEFT, (float)roads[1]->length - 5);
+  cars[8] = new car(roads[1], LEFT, (float)roads[1]->length - 7);
  
   
-  new car(roads[20], LEFT, (float)roads[0]->length - 1);
-  new car(roads[20], RIGHT, (float)roads[0]->length - 3);
-  new car(roads[20], AHEAD, (float)roads[0]->length - 5);
-  new car(roads[20], AHEAD, (float)roads[0]->length - 7);
+  new car(roads[20], LEFT, (float)roads[20]->length - 1);
+  new car(roads[20], RIGHT, (float)roads[20]->length - 3);
+  new car(roads[20], AHEAD, (float)roads[20]->length - 5);
+  new car(roads[20], AHEAD, (float)roads[20]->length - 7);
 
-  new car(roads[23], LEFT, (float)roads[0]->length - 1);
-  new car(roads[23], RIGHT, (float)roads[0]->length - 3);
-  new car(roads[23], AHEAD, (float)roads[0]->length - 5);
-  new car(roads[23], AHEAD, (float)roads[0]->length - 7);
-  
-  // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
-  // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
-  // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
-  // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
-  // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
+  new car(roads[23], LEFT, (float)roads[23]->length - 1);
+  new car(roads[23], RIGHT, (float)roads[23]->length - 3);
+  new car(roads[23], AHEAD, (float)roads[23]->length - 5);
+  new car(roads[23], AHEAD, (float)roads[23]->length - 7);
+*/
+  // new car(roads[0], RIGHT, (float)roads[0]->length - 9);
+  // new car(roads[1], RIGHT, (float)roads[1]->length - 9);
+  // new car(roads[2], RIGHT, (float)roads[2]->length - 9);
+  // new car(roads[3], RIGHT, (float)roads[3]->length - 9);
+  // new car(roads[4], RIGHT, (float)roads[4]->length - 9);
 
 
 
