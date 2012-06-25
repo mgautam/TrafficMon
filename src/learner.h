@@ -24,8 +24,9 @@ class learner {
   void print_to_file (void);
 
   //vars
+  // Subset of intersections to learn and comply
   intersection** nodes;
-  int nodec;
+  int *nodec;
 
   world* sim;
   //painter* ppainter;

@@ -23,9 +23,6 @@ class world
   void spawnCars (int roadIndex = 0, int batchSize = 0);
   //void spawnCars (int roadIndex, int batchSize);
 
-  void saveWorld (FILE *output);
-  void loadWorld (FILE *input);
-
   //variables
   int intc;
   int roadc;
@@ -39,6 +36,9 @@ class world
   // World has the control for spawning cars
   int *num_spawn;
   long long *next_spawn_time;
+
+  int* road_intersection_relations[2]; // 0 -> init_table, 1-> final_table
+  void build_road_intersection_relations (void);
 };
 
 #endif

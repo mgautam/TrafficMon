@@ -32,31 +32,6 @@ painter::painter(world* _simulation, void (*display) (void), int argc, char** ar
 
   this->simulation = _simulation;
 
-  // Calculating world scale to map to our windowed perception of the world
-  int minWorldX = 0;
-  int minWorldY = 0;
-  int maxWorldX = 0;
-  int maxWorldY = 0;
-  for (int i = 0; i < _simulation->intc; i++) {
-    if (!_simulation->intersections[i])
-      continue;
-
-    if (maxWorldX < _simulation->intersections[i]->x)
-      maxWorldX = _simulation->intersections[i]->x;
-    if (minWorldX > _simulation->intersections[i]->x)
-      minWorldX = _simulation->intersections[i]->x;
-
-    if (maxWorldY < _simulation->intersections[i]->y)
-      maxWorldY = _simulation->intersections[i]->y;
-    if (minWorldY > _simulation->intersections[i]->y)
-      minWorldY = _simulation->intersections[i]->y;
-  }
-
-  this->scale = (maxWorldX - minWorldX) > (maxWorldY - minWorldY)?
-    1.5/((float)(maxWorldX - minWorldX + MARGIN_PADDING))  :  1.5/((float)(maxWorldY - minWorldY + MARGIN_PADDING));
-  //printf ("minX = %d, minY = %d \t maxX = %d, maxY = %d", minWorldX, minWorldY, maxWorldX, maxWorldY);
-  //Calculating scale ends here
-  
   glutInit (&argc, argv);
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize (WINDOW_WIDTH,WINDOW_HEIGHT);
@@ -80,6 +55,33 @@ void painter::animate()
 }
 
 void painter::draw () {
+  // Calculating world scale to map to our windowed perception of the world
+  int minWorldX = 0;
+  int minWorldY = 0;
+  int maxWorldX = 0;
+  int maxWorldY = 0;
+  for (int i = 0; i < simulation->intc; i++) {
+    if (!simulation->intersections[i])
+      continue;
+
+    if (maxWorldX < simulation->intersections[i]->x)
+      maxWorldX = simulation->intersections[i]->x;
+    if (minWorldX > simulation->intersections[i]->x)
+      minWorldX = simulation->intersections[i]->x;
+
+    if (maxWorldY < simulation->intersections[i]->y)
+      maxWorldY = simulation->intersections[i]->y;
+    if (minWorldY > simulation->intersections[i]->y)
+      minWorldY = simulation->intersections[i]->y;
+  }
+
+  if (maxWorldX != minWorldX && maxWorldY != minWorldY)
+    this->scale = (maxWorldX - minWorldX) > (maxWorldY - minWorldY)?
+    1.5/((float)(maxWorldX - minWorldX + MARGIN_PADDING))  :  1.5/((float)(maxWorldY - minWorldY + MARGIN_PADDING));
+  //printf ("minX = %d, minY = %d \t maxX = %d, maxY = %d", minWorldX, minWorldY, maxWorldX, maxWorldY);
+  //Calculating scale ends here
+  
+
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
  

@@ -22,6 +22,43 @@ world::world(int intc, intersection** intersections, int roadc, road** roads)
   this->num_spawn = new int[roadc];
   this->next_spawn_time = new long long [roadc];
   memset (this->next_spawn_time, 0, roadc);
+
+  road_intersection_relations[0] = new int [roadc];
+  road_intersection_relations[1] = new int [roadc];
+
+  build_road_intersection_relations ();
+    
+}
+
+void world::build_road_intersection_relations (void) {
+  int minX = 100, maxX = 0;
+  for (int i = 0; i < intc; i++) {
+    if (!intersections[i])
+      continue;
+
+    if ( maxX < intersections[i]->x )
+      maxX = intersections[i]->x ;
+
+    if ( minX > intersections[i]->x )
+      minX = intersections[i]->x ;
+  }
+
+  int geometric_intersection_index;
+  for (int r = 0; r < roadc; r++) {
+    for (int i = 0; i < intc; i++) {
+      if (!intersections[i])
+	continue;
+
+      geometric_intersection_index = intersections[i]->y * (maxX - minX) + (intersections[i]->x-minX);
+      if ( geometric_intersection_index ==
+	   roads[r]->init->y  * (maxX - minX) + (roads[r]->init->x-minX) )
+	road_intersection_relations[0][r] = i;
+
+      if ( geometric_intersection_index ==
+	   roads[r]->final->y  * (maxX - minX) + (roads[r]->final->x-minX) )
+	road_intersection_relations[1][r] = i;
+    }
+  }
 }
   
 void world::incr_timestamp()
@@ -84,7 +121,8 @@ void world::spawnCars (int roadIndex, int batchSize) {
 
 void world::updateWorld(void) {
 
-  spawnCars ();
+  if (roadc)// Same as roadc != 0
+    spawnCars ();
 
   for (int i = 0; i < this->roadc; i++) 
     {
@@ -128,42 +166,3 @@ void world::updateWorld(void) {
 }
 
 
-void saveWorld (FILE *output) {
-
-  /* f
-
-  for (int i = 0; i < this->intc; i++)
-    draw(simulation->intersections[i]);
-  
-  for (int i = 0; i < simulation->roadc; i++) {
-    draw(simulation->roads[i]);
-    drawLights(simulation->roads[i]);
-
-    for (int j = -2; j < simulation->roads[i]->length; j++)
-      {
-	if (simulation->roads[i]->cars[j])
-	  draw(simulation->roads[i]->cars[j]);
-      }
-  }
-
-  */
-}
-
-void loadWorld (FILE *input) {
-  /*
-  for (int i = 0; i < simulation->intc; i++)
-    draw(simulation->intersections[i]);
-  
-  for (int i = 0; i < simulation->roadc; i++) {
-    draw(simulation->roads[i]);
-    drawLights(simulation->roads[i]);
-
-    for (int j = -2; j < simulation->roads[i]->length; j++)
-      {
-	if (simulation->roads[i]->cars[j])
-	  draw(simulation->roads[i]->cars[j]);
-      }
-  }
-  */
-  
-}

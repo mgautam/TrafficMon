@@ -9,7 +9,7 @@
 learner::learner (world* sim) {
   this->sim = sim;
   this->nodes = sim->intersections;
-  this->nodec = sim->intc;
+  this->nodec = &sim->intc;
   //this->ppainter = ppainter;
 }
 
@@ -47,7 +47,7 @@ void learner::learn (bool fullSpeed)
 
 
   if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
-    for (int i = 0; i < nodec; i++)
+    for (int i = 0; i < *nodec; i++)
       {
 	if (nodes[i]) {
 	  //printf ("First Sense:\n");
@@ -61,7 +61,7 @@ void learner::learn (bool fullSpeed)
   sim->updateWorld();//cars move here cars = clients
   
   if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
-    for (int i = 0; i < nodec; i++)
+    for (int i = 0; i < *nodec; i++)
       {
 	if (nodes[i]) {
 	  //printf ("Second Sense:\n ");
@@ -87,9 +87,9 @@ void learner::learn (bool fullSpeed)
 }
 
 static int performance = 0;
-int learner::evaluate(void)//intersection** nodes, int nodec)
+int learner::evaluate(void)//intersection** nodes, int *nodec)
 {
-  for (int i = 0; i < nodec; i++)
+  for (int i = 0; i < *nodec; i++)
     if (nodes[i]) {
       for (int r = 0; r <  nodes[i]->in_count; r++){
 	if ( nodes[i]->in[r] )
@@ -110,7 +110,7 @@ void learner::displayPerformance (int timeInterval) {
 
 void learner::comply () {
   if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
-    for (int i = 0; i < nodec; i++) {
+    for (int i = 0; i < *nodec; i++) {
       if (nodes[i]) {
 	nodes[i]->sense_state();
 	nodes[i]->select_learned_action ();
@@ -130,7 +130,7 @@ void learner::print_to_file (void) {
   FILE *output = fopen ("../learned_values.txt","w");
   int *curr_state;
   
-  for (int i = 0; i < nodec; i++) {
+  for (int i = 0; i < *nodec; i++) {
     if (nodes[i]) {
       fprintf (output,"Node: %d\n", i);
       curr_state = new int [nodes[i]->state_vector_size];

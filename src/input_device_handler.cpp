@@ -29,7 +29,10 @@ extern int curr_mode;
 extern int learnTime;
 extern int complyTime;
 
-
+extern bool write_world;
+bool write_world = false;
+extern bool load_world;
+bool load_world = false;
 
 static bool mirror = false;
 
@@ -185,12 +188,21 @@ void handleKeyPress  (unsigned char key, int x, int y) {
   case 'p':
     traffic_learner->print_to_file ();
     printf (">> Print Learned Table\n");
-    bigbang::destroy_world (simulation);
     break;
-  
+
   case 'f':
     fullSpeed = !fullSpeed;
     printf (">> Full Speed %c%cactivated\n", (!fullSpeed)*'d', (!fullSpeed)*'e');
+    break;
+
+  case 'w':
+    write_world = true;
+    printf (">> Write World\n");
+    break;
+
+  case 'e':
+    load_world = true;
+    printf (">> Recreate World \n");
     break;
   }
 }

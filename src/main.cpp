@@ -47,6 +47,8 @@ int learnTime = 0;
 extern int complyTime;
 int complyTime = COMPLY_TIME;
 
+extern bool write_world;
+extern bool load_world;
 
 #ifdef OPENGL_MODE
    extern painter* ppainter;
@@ -68,6 +70,16 @@ int complyTime = COMPLY_TIME;
 void *coreEngine (void *ptr) {
 
   while (true) {
+    if (write_world) {
+      bigbang::save_world (simulation);
+      write_world = false;
+    }
+    else if (load_world) {
+      bigbang::destroy_world (simulation);
+      bigbang::recreate_world (simulation);
+      load_world = false;
+    }
+
 
     if (!fullSpeed)
       usleep (simulation_interval*1000);
@@ -95,8 +107,10 @@ void *coreEngine (void *ptr) {
 	      learnTime--;
 	      //printf ("learnTime:%d\n",learnTime);
 	    }
-	  if (learnTime <= 0 && complyTime <=0)
+	  if (learnTime <= 0 && complyTime <=0) {
 	    complyTime = COMPLY_TIME;
+	    // write_world = true;//bigbang::save_world (simulation);
+	  }
 	  
 	  
 	  if (complyTime > 0)
@@ -106,7 +120,8 @@ void *coreEngine (void *ptr) {
 	      //printf ("complyTime:%d\n",complyTime);
 	    }
 	  if (complyTime <= 0 && learnTime <=0) {
-	    learnTime = LEARN_TIME;      
+	    learnTime = LEARN_TIME;
+	    // load_world = true;   //bigbang::destroy_world (simulation);bigbang::load_world (simulation);
 	    //	    traffic_learner->displayPerformance (COMPLY_TIME);
 	  }     
 	  

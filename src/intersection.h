@@ -36,25 +36,28 @@ class intersection
   road* out[MAX_DEGREE];
 
   int traffic_pattern_id;
-  int* curr_state;
-  int* prev_state;
+
+  int num_state_attribute_blocks;
+  int *attribute_block_length;
+  int *attributes_block_range;
+
+  int state_vector_size;
+  int state_space_size;
+
+  int number_of_actions_per_state;
+
+  int curr_wait;
+  int prev_wait;
 
   float reward;
   int action;
   int best_action;
 
-  int curr_wait;
-  int prev_wait;
 
-
+  int* curr_state;
+  int* prev_state;
   float *q_table;
 
-  int num_state_attribute_blocks;
-  int state_space_size;
-  int *attribute_block_length;
-  int *attributes_block_range;
-  int number_of_actions_per_state;
-  int state_vector_size;
 };
 
 #endif
