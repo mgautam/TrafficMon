@@ -22,15 +22,18 @@ void learner::naiveControl (world *sim) {
   //   if you want to give a 1 time unit window for the car to move
   //      after GREEN light is signalled
   
+  for (int i = 0; i < sim->intc; i++)
+    {
+      if (sim->intersections[i]) {
+	sim->intersections[i]->controlLights (((int)x)%4);//EASTWEST_RIGHT);x++%4
+      }
+    }
+
+
    if (TrafficPhase % MIN_TL_SWITCH_INTERVAL == 0) {
-     for (int i = 0; i < sim->intc; i++)
-       {
-	 if (sim->intersections[i]) {
-	   sim->intersections[i]->controlLights (((int)x)%4);//EASTWEST_RIGHT);x++%4
-	 }
-       }
      x++;
    } 
+
    TrafficPhase++;
    
    sim->updateWorld ();
@@ -46,17 +49,18 @@ void learner::learn (bool fullSpeed)
     printf ("time %lld\n",sim->timestamp);
 
 
-  if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
     for (int i = 0; i < *nodec; i++)
       {
 	if (nodes[i]) {
 	  //printf ("First Sense:\n");
-	  nodes[i]->sense_state();
-	  nodes[i]->select_action();
+	  if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+	    nodes[i]->sense_state();
+	    nodes[i]->select_action();
+	  }
 	  nodes[i]->apply_action();
 	}
       }
-  }
+
 
   sim->updateWorld();//cars move here cars = clients
   
@@ -109,15 +113,17 @@ void learner::displayPerformance (int timeInterval) {
 }
 
 void learner::comply () {
-  if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+
     for (int i = 0; i < *nodec; i++) {
       if (nodes[i]) {
-	nodes[i]->sense_state();
-	nodes[i]->select_learned_action ();
+	if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+	  nodes[i]->sense_state();
+	  nodes[i]->select_learned_action ();
+	}
 	nodes[i]->apply_action ();
-      }
     } 
   }
+
   // printf ("Called!\n");
   sim->updateWorld ();
   sim->incr_timestamp();

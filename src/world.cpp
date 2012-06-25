@@ -158,7 +158,7 @@ void world::updateWorld(void) {
           car* curr_car;
           if ((curr_car = this->roads[i]->cars[j]))
             {
-	      curr_car->moved = false;
+	      curr_car->moved = false; // Why can't we put this inside car.cpp? like for sensed?
 	      //printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
             }
         }

@@ -62,10 +62,12 @@ int car::move()
 	   ((next_road && next_road->cars[next_road->length - 1] == 0) || !next_road) )//enter intersection
     {
       //printf ("position 0 nextroad empty\n");
-      if ((turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||  
-	  (turn == UTURN && curr_road->lights[RIGHT] == GREEN) ||  
-	  (turn == RIGHT && curr_road->lights[RIGHT] == GREEN) ||
-	  (turn == LEFT && curr_road->lights[LEFT] == GREEN))	{
+
+      // Because sensed is set randomly, no more randomness is needed
+      if ((turn == AHEAD && curr_road->lights[LEFT] != RED) ||  
+	  (turn == UTURN && curr_road->lights[RIGHT] != RED) ||  
+	  (turn == RIGHT && curr_road->lights[RIGHT] != RED) ||
+	  (turn == LEFT && curr_road->lights[LEFT] != RED))	{
 	curr_road->cars[position] = 0;
 	curr_road->cars[--position] = this;
 	wait = 0;
@@ -151,6 +153,14 @@ void car::sense()
 	  (turn == UTURN && curr_road->lights[RIGHT] == GREEN) ||  
 	  (turn == RIGHT && curr_road->lights[RIGHT] == GREEN) ||
 	  (turn == LEFT && curr_road->lights[LEFT] == GREEN))	{
+	wait = 0;
+	sensed = true;
+      }
+      else if ( ((turn == AHEAD && curr_road->lights[LEFT] == AMBER) ||  
+		 (turn == UTURN && curr_road->lights[RIGHT] == AMBER) ||  
+		 (turn == RIGHT && curr_road->lights[RIGHT] == AMBER) ||
+		 (turn == LEFT && curr_road->lights[LEFT] == AMBER))
+		&& (rand () > RAND_MAX / 2) ) {
 	wait = 0;
 	sensed = true;
       }

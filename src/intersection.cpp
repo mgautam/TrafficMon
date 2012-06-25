@@ -69,6 +69,7 @@ q_table_size:%lld \n",
   memset (this->out, 0, MAX_DEGREE*sizeof(road*));//not necessary
 
   best_action = 1;
+  traffic_pattern_id = 0;
 }
 
 void intersection::sense_state ()
@@ -136,7 +137,7 @@ void intersection::select_learned_action () {
 
 void intersection::apply_action()
 {
-  controlLights(action);
+  controlLights(this->action);
 }
 
 int intersection::get_wait () {
@@ -215,7 +216,10 @@ void intersection::update_q_entry()
 
 void intersection::controlLights (int PatternID) {
 
-  this->traffic_pattern_id = PatternID;
+  // this->traffic_pattern_id => previous_pattern
+  if (this->traffic_pattern_id !=  PatternID) {
+    this->traffic_pattern_id += 4;
+  }
 
   for (int direction = 0; direction < 4; direction++)
     if (this->in[direction]) {
@@ -223,7 +227,7 @@ void intersection::controlLights (int PatternID) {
       this->in[direction]->lights[RIGHT] = RED;
     }
 
-  switch (PatternID) {
+  switch (traffic_pattern_id) {
   case NORTHSOUTH_AHEADLEFT:
     if (this->in[NORTH]) 
       this->in[NORTH]->lights[LEFT] = GREEN;
@@ -280,7 +284,8 @@ void intersection::controlLights (int PatternID) {
       this->in[WEST]->lights[RIGHT] = AMBER;
     break;
   }
-    
+
+  this->traffic_pattern_id = PatternID;    
 }
 
 

@@ -34,8 +34,6 @@ class car
   int wait;
   int position;
 
-  int displacement_x;
-  int displacement_y;
   COLOR color;
 
   road* curr_road;

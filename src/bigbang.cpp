@@ -5,7 +5,7 @@
 
 void bigbang::create_world(world** sim)
 {
-  
+  /*
   intersection** intersections = new intersection*[5];
   intersections[0] =   new intersection (-NUM_SLOTS_IN_ROAD,0); // left
   intersections[1] =   new intersection (0,-NUM_SLOTS_IN_ROAD); // bottom
@@ -25,10 +25,10 @@ void bigbang::create_world(world** sim)
   roads[6] = new road (intersections[3],intersections[2]);
   roads[7] = new road (intersections[4],intersections[2]);
   int road_count = 8;
-       
+  */ 
 
 
-  /*
+  
   
   int road_count = 2*2*(SQUARE_SIZE+1)*SQUARE_SIZE;
   int intersection_count = (SQUARE_SIZE+2)*(SQUARE_SIZE+2);
@@ -67,7 +67,7 @@ void bigbang::create_world(world** sim)
 	  roads[road_count/4*3 + x*(SQUARE_SIZE+1)+y] = new road(intersections[(y+1)*(SQUARE_SIZE+2)+(x+1)], intersections[y*(SQUARE_SIZE+2) + (x+1)]);
 	}
     }
-  */  
+    
   car** cars = new car*[10];
   cars[0] = new car(roads[0], AHEAD, roads[0]->length - 1); 
   cars[1] = new car(roads[0], RIGHT, (float)roads[0]->length - 3);
@@ -79,7 +79,7 @@ void bigbang::create_world(world** sim)
   cars[7] = new car(roads[1], LEFT, (float)roads[0]->length - 5);
   cars[8] = new car(roads[1], LEFT, (float)roads[0]->length - 7);
  
-  /*
+  
   new car(roads[20], LEFT, (float)roads[0]->length - 1);
   new car(roads[20], RIGHT, (float)roads[0]->length - 3);
   new car(roads[20], AHEAD, (float)roads[0]->length - 5);
@@ -89,16 +89,12 @@ void bigbang::create_world(world** sim)
   new car(roads[23], RIGHT, (float)roads[0]->length - 3);
   new car(roads[23], AHEAD, (float)roads[0]->length - 5);
   new car(roads[23], AHEAD, (float)roads[0]->length - 7);
-  */
+  
   // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
   // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
   // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
   // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
   // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
-
-
-
-
 
 
 
@@ -177,8 +173,8 @@ void bigbang::save_world (world* sim) {
     fwrite (&sim->intersections[i]->x, sizeof (int), 1, output);
     fwrite (&sim->intersections[i]->y, sizeof (int), 1, output);
     
-    fwrite (&sim->intersections[i]->in_count, sizeof (int), 1, output);
-    fwrite (&sim->intersections[i]->out_count, sizeof (int), 1, output);
+    //fwrite (&sim->intersections[i]->in_count, sizeof (int), 1, output);
+    //fwrite (&sim->intersections[i]->out_count, sizeof (int), 1, output);
 
     fwrite (&sim->intersections[i]->traffic_pattern_id, sizeof (int), 1, output);
 
@@ -220,8 +216,6 @@ void bigbang::save_world (world* sim) {
 	fwrite (&sim->roads[i]->cars[j]->turn, sizeof (int), 1, output);
 	fwrite (&sim->roads[i]->cars[j]->wait, sizeof (int), 1, output);
 
-	fwrite (&sim->roads[i]->cars[j]->displacement_x, sizeof (int), 1, output);
-	fwrite (&sim->roads[i]->cars[j]->displacement_y, sizeof (int), 1, output);
 	fwrite (&sim->roads[i]->cars[j]->color.r, sizeof (float), 1, output);
 	fwrite (&sim->roads[i]->cars[j]->color.g, sizeof (float), 1, output);
 	fwrite (&sim->roads[i]->cars[j]->color.b, sizeof (float), 1, output);
@@ -274,8 +268,8 @@ void bigbang::recreate_world (world* sim) {
       
       sim->intersections[i] = new intersection (x,y);
       
-      fread (&sim->intersections[i]->in_count, sizeof (int), 1, input);
-      fread (&sim->intersections[i]->out_count, sizeof (int), 1, input);
+      //fread (&sim->intersections[i]->in_count, sizeof (int), 1, input);
+      //fread (&sim->intersections[i]->out_count, sizeof (int), 1, input);
       
       fread (&sim->intersections[i]->traffic_pattern_id, sizeof (int), 1, input);
       
@@ -298,8 +292,10 @@ void bigbang::recreate_world (world* sim) {
       fread (&sim->intersections[i]->action, sizeof (int), 1, input);
       fread (&sim->intersections[i]->best_action, sizeof (int), 1, input);
       
+      if (sim->intersections[i]->curr_state)  delete sim->intersections[i]->curr_state;
       sim->intersections[i]->curr_state = new int [sim->intersections[i]->state_vector_size];
       fread (sim->intersections[i]->curr_state, sizeof (int), sim->intersections[i]->state_vector_size, input);
+      if (sim->intersections[i]->prev_state)  delete sim->intersections[i]->prev_state;
       sim->intersections[i]->prev_state = new int [sim->intersections[i]->state_vector_size];
       fread (sim->intersections[i]->prev_state, sizeof (int), sim->intersections[i]->state_vector_size, input);
       
@@ -341,8 +337,6 @@ void bigbang::recreate_world (world* sim) {
 
       fread (&sim->roads[i]->cars[position]->wait, sizeof (int), 1, input);
 
-      fread (&sim->roads[i]->cars[position]->displacement_x, sizeof (int), 1, input);
-      fread (&sim->roads[i]->cars[position]->displacement_y, sizeof (int), 1, input);
       fread (&sim->roads[i]->cars[position]->color.r, sizeof (float), 1, input);
       fread (&sim->roads[i]->cars[position]->color.g, sizeof (float), 1, input);
       fread (&sim->roads[i]->cars[position]->color.b, sizeof (float), 1, input);
