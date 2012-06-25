@@ -215,7 +215,8 @@ void bigbang::save_world (world* sim) {
     //fwrite (&sim->roads[i]->length, sizeof (int), 1, output);
     fwrite (sim->roads[i]->lights, sizeof (int), 2, output);
     //fwrite (&sim->roads[i]->compass, sizeof (int), 1, output);
-    
+    fwrite (sim->roads[i]->traffic_pattern_cdf, sizeof (float), 4, output);
+
     int syncInt = -127;
     for (int j = -2; j < sim->roads[i]->length; j++) {
       if (sim->roads[i]->cars[j]) {
@@ -331,6 +332,7 @@ void bigbang::recreate_world (world* sim) {
     //    fscanf (input, "%d", &sim->roads[i]->length);//Could be removed
     fread (sim->roads[i]->lights, sizeof (int), 2, input);
     //    fscanf (input, "%d", &sim->roads[i]->compass);//Could be removed
+    fread  (sim->roads[i]->traffic_pattern_cdf, sizeof (float), 4, input);
 
     sim->roads[i]->cars = new car*[sim->roads[i]->length+2];
     sim->roads[i]->cars = sim->roads[i]->cars + 2;
