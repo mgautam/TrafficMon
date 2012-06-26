@@ -2,7 +2,7 @@
 #define CONFIG_H
 
 // CONTROL
-#define BATCH_SIZE 1
+#define BATCH_SIZE 9
 
 #define MIN_TL_AR_SWITCH_INTERVAL 3 /* minimum is 2, Cars will dissappear if this is below 2 */
 #define MIN_TL_PATTERN_SWITCH_INTERVAL 9 /* minimum is above MIN_TL_AR_SWITCH_INTERVAL, haven't checked yet below it */
@@ -12,7 +12,7 @@
 
 #define NUM_SLOTS_IN_ROAD 10
 #define NUM_TRAFFIC_PATTERNS 4
-#define SQUARE_SIZE 2
+#define SQUARE_SIZE 3
 
 #define MAX_SLOTS_TO_CHECK 3
 #define LEARNING_RATE 0.2
