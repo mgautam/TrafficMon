@@ -5,16 +5,17 @@
 #define BATCH_SIZE 9
 
 #define MIN_TL_AR_SWITCH_INTERVAL 3 /* minimum is 2, Cars will dissappear if this is below 2 */
-#define MIN_TL_PATTERN_SWITCH_INTERVAL 4 /* minimum is above MIN_TL_AR_SWITCH_INTERVAL, haven't checked yet below it */
+#define MIN_TL_PATTERN_SWITCH_INTERVAL 9 /* minimum is above MIN_TL_AR_SWITCH_INTERVAL, haven't checked yet below it */
 
 
 //#define STEP_SIZE 0.1
 
-#define NUM_SLOTS_IN_ROAD 10
+#define NUM_SLOTS_IN_ROAD 20
 #define NUM_TRAFFIC_PATTERNS 4
-#define SQUARE_SIZE 3
+#define SQUARE_SIZE 2
+#define NUM_LANES_PER_ROAD 2
 
-#define MAX_SLOTS_TO_CHECK 6
+#define MAX_SLOTS_TO_CHECK 3
 #define LEARNING_RATE 0.2
 
 #define LEARN_TIME 9900
@@ -31,7 +32,8 @@
 
 
 // Road
-#define ROAD_WIDTH 11
+#define ROAD_WIDTH 20
+#define LANE_WIDTH ROAD_WIDTH/NUM_LANES_PER_ROAD
 //50
 #define HLEN_BW_LANES 0
 // 0.05*ROAD_WIDTH
@@ -46,7 +48,7 @@
 // Car
 // If you change car length it changes road length in visualization
 #define CAR_LENGTH  10
-#define CAR_WIDTH 11
+#define CAR_WIDTH LANE_WIDTH
 //30
 #define HCAR_LENGTH CAR_LENGTH/2
 #define HCAR_WIDTH CAR_WIDTH/2

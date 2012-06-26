@@ -16,11 +16,17 @@ road::road(intersection* init, intersection* final)
   if (this->length < 0) this->length *= -1;
   length = length - 2;
 
-  this->cars = new car*[length + 2];
-  memset(this->cars, 0, (length + 2)*sizeof(car*));
+  numlanes = NUM_LANES_PER_ROAD;
 
-  // For future references to be between -2 and (road length)
-  this->cars = this->cars + 2;
+  this->cars = new car**[numlanes];
+  
+  for (int l = 0; l < numlanes; l++) {
+    this->cars[l] = new car*[length + 2];
+    memset(this->cars[l], 0, (length + 2)*sizeof(car*));
+
+    // For future references to be between -2 and (road length)
+    this->cars[l] = this->cars[l] + 2;
+  }
 
   this->lights[LEFT] = RED;
   this->lights[RIGHT] = RED;
@@ -60,7 +66,7 @@ road::road(intersection* init, intersection* final)
 
   // Uniform Distribution
   float pdf[4] = {0.0};
-  pdf[LEFT] = 1.0;
+  pdf[RIGHT] = 1.0;
   pdf[AHEAD] = 1.0;
   set_cdf_turn_patterns (pdf);
 

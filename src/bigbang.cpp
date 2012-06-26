@@ -80,16 +80,16 @@ void bigbang::create_world(world** sim)
     
   car** cars = new car*[10];
   cars[0] = new car(roads[0], UTURN, roads[0]->length - 1); 
-  cars[1] = new car(roads[0], UTURN, (float)roads[0]->length - 3);
+  cars[1] = new car(roads[0], LEFT, (float)roads[0]->length - 3);
   cars[2] = new car(roads[0], UTURN, (float)roads[0]->length - 5);
   cars[3] = new car(roads[0], UTURN, (float)roads[0]->length - 7);
 
   cars[5] = new car(roads[1], UTURN, (float)roads[1]->length - 1);
-  cars[6] = new car(roads[1], UTURN, (float)roads[1]->length - 3);
+  cars[6] = new car(roads[1], LEFT, (float)roads[1]->length - 3);
   cars[7] = new car(roads[1], UTURN, (float)roads[1]->length - 5);
   cars[8] = new car(roads[1], UTURN, (float)roads[1]->length - 7);
  
-  
+  /*  
   new car(roads[20], UTURN, (float)roads[20]->length - 1);
   new car(roads[20], UTURN, (float)roads[20]->length - 3);
   new car(roads[20], UTURN, (float)roads[20]->length - 5);
@@ -99,7 +99,7 @@ void bigbang::create_world(world** sim)
   new car(roads[23], UTURN, (float)roads[23]->length - 3);
   new car(roads[23], UTURN, (float)roads[23]->length - 5);
   new car(roads[23], UTURN, (float)roads[23]->length - 7);
-
+  */
   // new car(roads[0], RIGHT, (float)roads[0]->length - 9);
   // new car(roads[1], RIGHT, (float)roads[1]->length - 9);
   // new car(roads[2], RIGHT, (float)roads[2]->length - 9);
@@ -216,23 +216,29 @@ void bigbang::save_world (world* sim) {
     fwrite (sim->roads[i]->lights, sizeof (int), 2, output);
     //fwrite (&sim->roads[i]->compass, sizeof (int), 1, output);
     fwrite (sim->roads[i]->traffic_pattern_cdf, sizeof (float), 4, output);
+    fwrite (&sim->roads[i]->numlanes, sizeof (int), 1, output);
 
     int syncInt = -127;
     for (int j = -2; j < sim->roads[i]->length; j++) {
-      if (sim->roads[i]->cars[j]) {
-	//fputc ('t',output); // sync info
-	fwrite (&syncInt, sizeof (int), 1, output);// sync info
-
-	fwrite (&sim->roads[i]->cars[j]->position, sizeof (int), 1, output);
-	fwrite (&sim->roads[i]->cars[j]->turn, sizeof (int), 1, output);
-	fwrite (&sim->roads[i]->cars[j]->wait, sizeof (int), 1, output);
-
-	fwrite (&sim->roads[i]->cars[j]->color.r, sizeof (float), 1, output);
-	fwrite (&sim->roads[i]->cars[j]->color.g, sizeof (float), 1, output);
-	fwrite (&sim->roads[i]->cars[j]->color.b, sizeof (float), 1, output);
-	
-	fwrite (&sim->roads[i]->cars[j]->moved, sizeof (bool), 1, output);
-	fwrite (&sim->roads[i]->cars[j]->sensed, sizeof (bool), 1, output);
+      for (int l = 0; l < sim->roads[i]->numlanes; l++) {
+	if (sim->roads[i]->cars[l][j]) {
+	  //fputc ('t',output); // sync info
+	  fwrite (&syncInt, sizeof (int), 1, output);// sync info
+	  
+	  fwrite (&sim->roads[i]->cars[l][j]->position, sizeof (int), 1, output);
+	  fwrite (&sim->roads[i]->cars[l][j]->turn, sizeof (int), 1, output);
+	  fwrite (&l, sizeof (int), 1, output);
+	  fwrite (&sim->roads[i]->cars[l][j]->currlaneIndex, sizeof (int), 1, output);
+	  fwrite (&sim->roads[i]->cars[l][j]->nextlaneIndex, sizeof (int), 1, output);
+	  fwrite (&sim->roads[i]->cars[l][j]->wait, sizeof (int), 1, output);
+	  
+	  fwrite (&sim->roads[i]->cars[l][j]->color.r, sizeof (float), 1, output);
+	  fwrite (&sim->roads[i]->cars[l][j]->color.g, sizeof (float), 1, output);
+	  fwrite (&sim->roads[i]->cars[l][j]->color.b, sizeof (float), 1, output);
+	  
+	  fwrite (&sim->roads[i]->cars[l][j]->moved, sizeof (bool), 1, output);
+	  fwrite (&sim->roads[i]->cars[l][j]->sensed, sizeof (bool), 1, output);
+	}
       }
     }
     //fputc ('f',output); // sync Info
@@ -332,12 +338,17 @@ void bigbang::recreate_world (world* sim) {
     //    fscanf (input, "%d", &sim->roads[i]->length);//Could be removed
     fread (sim->roads[i]->lights, sizeof (int), 2, input);
     //    fscanf (input, "%d", &sim->roads[i]->compass);//Could be removed
-    fread  (sim->roads[i]->traffic_pattern_cdf, sizeof (float), 4, input);
+    fread (sim->roads[i]->traffic_pattern_cdf, sizeof (float), 4, input);
+    fread (&sim->roads[i]->numlanes, sizeof (int), 1, input);
 
-    sim->roads[i]->cars = new car*[sim->roads[i]->length+2];
-    sim->roads[i]->cars = sim->roads[i]->cars + 2;
+    sim->roads[i]->cars = new car**[sim->roads[i]->numlanes];
+    for (int l = 0; l < sim->roads[i]->numlanes; l++) {
+      sim->roads[i]->cars[l] = new car*[sim->roads[i]->length+2];
+      sim->roads[i]->cars[l] = sim->roads[i]->cars[l] + 2;
+    }
 
     int position,tempTurn;
+    int l;
     int syncInt;
     fread (&syncInt, sizeof (int), 1, input);
     while (//fgetc (input) == 't'
@@ -345,16 +356,22 @@ void bigbang::recreate_world (world* sim) {
 	   ) {
       fread (&position, sizeof (int), 1, input); // position
       fread (&tempTurn, sizeof (int), 1, input);
-      sim->roads[i]->cars[position] = new car (sim->roads[i], tempTurn, position);
+      fread (&l, sizeof (int), 1, input);
 
-      fread (&sim->roads[i]->cars[position]->wait, sizeof (int), 1, input);
+      fread (&sim->roads[i]->cars[l][position]->currlaneIndex, sizeof (int), 1, input);
+      fread (&sim->roads[i]->cars[l][position]->nextlaneIndex, sizeof (int), 1, input);
 
-      fread (&sim->roads[i]->cars[position]->color.r, sizeof (float), 1, input);
-      fread (&sim->roads[i]->cars[position]->color.g, sizeof (float), 1, input);
-      fread (&sim->roads[i]->cars[position]->color.b, sizeof (float), 1, input);
+
+      sim->roads[i]->cars[l][position] = new car (sim->roads[i], tempTurn, position);
+
+      fread (&sim->roads[i]->cars[l][position]->wait, sizeof (int), 1, input);
+
+      fread (&sim->roads[i]->cars[l][position]->color.r, sizeof (float), 1, input);
+      fread (&sim->roads[i]->cars[l][position]->color.g, sizeof (float), 1, input);
+      fread (&sim->roads[i]->cars[l][position]->color.b, sizeof (float), 1, input);
       
-      fread (&sim->roads[i]->cars[position]->moved, sizeof (bool), 1, input );
-      fread (&sim->roads[i]->cars[position]->sensed, sizeof (bool), 1, input);
+      fread (&sim->roads[i]->cars[l][position]->moved, sizeof (bool), 1, input );
+      fread (&sim->roads[i]->cars[l][position]->sensed, sizeof (bool), 1, input);
 
       fread (&syncInt, sizeof (int) , 1, input);
     }

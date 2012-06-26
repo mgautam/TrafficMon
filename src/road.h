@@ -20,7 +20,8 @@ class road
   
   //variables
   int length;
-  car** cars;
+  int numlanes;
+  car*** cars;
 
   intersection* init;
   intersection* final;

@@ -25,16 +25,17 @@ intersection::intersection(int x, int y)
   attributes_block_range = new int[num_state_attribute_blocks];
 
   /**** Configure this block to add different features ****/
-  num_state_attribute_blocks = 3;
+  num_state_attribute_blocks = 2;
+  //num_state_attribute_blocks = 3;
   
   attribute_block_length[0] = 1; // Traffic light pattern
   attributes_block_range[0] = NUM_TRAFFIC_PATTERNS;
 
-  attribute_block_length[1] = MAX_DEGREE; // distance to Nearest car from Traffic Light
+  attribute_block_length[1] = NUM_LANES_PER_ROAD*MAX_DEGREE; // distance to Nearest car from Traffic Light
   attributes_block_range[1] = MAX_SLOTS_TO_CHECK;
 
-  attribute_block_length[2] = MAX_DEGREE; // Number of cars on road
-  attributes_block_range[2] = MAX_SLOTS_TO_CHECK;
+  //  attribute_block_length[2] = NUM_LANES_PER_ROAD*MAX_DEGREE; // Number of cars on road
+  //attributes_block_range[2] = MAX_SLOTS_TO_CHECK;
 
   number_of_actions_per_state = NUM_TRAFFIC_PATTERNS;
   /**** Configure this block to add different features ****/
@@ -49,15 +50,6 @@ intersection::intersection(int x, int y)
   
   
   long long int q_table_size = state_space_size * number_of_actions_per_state;
-  //printf ("%lld\n",q_table_size);
-  //  this->q_table = new float [q_table_size];
-  q_table = (float *) malloc (q_table_size * sizeof (float));
-
-  for (long long i = 0; i < q_table_size; i++)
-    {
-      q_table[i] = (float)rand()/(float)RAND_MAX; //Random Initialization of Q_table
-    }
-  // memset (q_table, 0, q_table_size * sizeof (float));//Zero Initialization of Q_table
   
   printf ("state_vector_size: %d       \
 state_space_size: %d		       \
@@ -65,6 +57,17 @@ q_table_size:%lld \n",
           state_vector_size,
           state_space_size,
           q_table_size);
+
+  //printf ("%lld\n",q_table_size);
+  //  this->q_table = new float [q_table_size];
+  q_table = (float *) malloc (q_table_size * sizeof (float));
+
+  /*  for (long long i = 0; i < q_table_size; i++)
+    {
+      q_table[i] = (float)rand()/(float)RAND_MAX; //Random Initialization of Q_table
+      }*/
+   memset (q_table, 0, q_table_size * sizeof (float));//Zero Initialization of Q_table
+
   
   this->curr_state = new int[state_vector_size]; //curr_state
   this->prev_state = new int[state_vector_size]; //prev_state
@@ -85,28 +88,31 @@ void intersection::sense_state ()
   curr_wait = get_wait ();
   curr_state[0] = traffic_pattern_id;
   
-  for (int j = 0; j < MAX_DEGREE; j++)
+  for (int r = 0; r < MAX_DEGREE; r++)
     {
-      road* curr_road = in[j];
-      
-      if (curr_road)
-	{
-	  curr_state[1 + j] = MAX_SLOTS_TO_CHECK-1;
-	  for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
-	    {
+      for (int l = 0; l < NUM_LANES_PER_ROAD; l++) {
+	road* curr_road = in[r];
+	
+	if (curr_road)
+	  {
+	    curr_state[1 + r] = MAX_SLOTS_TO_CHECK-1;
+	    for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
+	      {
+		if (curr_road->cars[k]) {
+		  curr_state[1 + r*NUM_LANES_PER_ROAD+l] = k;
+		  break;
+		}
+	      }
+	    
+	    /*
+	    curr_state[1+MAX_DEGREE+r] = 0;
+	    for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++) {
 	      if (curr_road->cars[k]) {
-		curr_state[1 + j] = k;
-		break;
+		curr_state[1+MAX_DEGREE*NUM_LANES_PER_ROAD+r*NUM_LANES_PER_ROAD+l]++;
 	      }
 	    }
-
-	  curr_state[1+MAX_DEGREE+j] = 0;
-	  for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
-	    {
-	      if (curr_road->cars[k]) {
-		curr_state[1+MAX_DEGREE+j]++;
-	      }
-	    }
+	    */
+	  }
 	}
     }
 }
@@ -157,13 +163,15 @@ int intersection::get_wait () {
   for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
     road *curr_road = in[roadIndex];
     if (curr_road) {
-      // We check whole road not just MAX_SLOTS_TO_CHECK
-      for (int position = 0; position < curr_road->length; position++) {
-	if (curr_road->cars[position]) {
-	  //printf ("Car %p: Position:%d Wait%d\n",curr_road->cars[position],position, curr_road->cars[position]->wait);
-	  if (curr_road->cars[position]->wait > 0) {
-	    total++;
-	    //printf ("%d\n",total);
+      for (int laneIndex = 0; laneIndex < curr_road->numlanes; laneIndex++) {
+	// We check whole road not just MAX_SLOTS_TO_CHECK
+	for (int position = 0; position < curr_road->length; position++) {
+	  if (curr_road->cars[laneIndex][position]) {
+	    //printf ("Car %p: Position:%d Wait%d\n",curr_road->cars[position],position, curr_road->cars[position]->wait);
+	    if (curr_road->cars[laneIndex][position]->wait > 0) {
+	      total++;
+	      //printf ("%d\n",total);
+	    }
 	  }
 	}
       }

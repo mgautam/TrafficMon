@@ -98,11 +98,13 @@ void painter::draw () {
     draw(simulation->roads[i]);
     drawLights(simulation->roads[i]);
 
-    for (int j = -2; j < simulation->roads[i]->length; j++)
-      {
-	if (simulation->roads[i]->cars[j])
-	  draw(simulation->roads[i]->cars[j]);
-      }
+    for (int l = 0; l < simulation->roads[i]->numlanes; l++) {
+      for (int j = -2; j < simulation->roads[i]->length; j++)
+	{
+	  if (simulation->roads[i]->cars[l][j])
+	    draw(simulation->roads[i]->cars[l][j]);
+	}
+    }
   }
 
   glutSwapBuffers ();
@@ -141,7 +143,7 @@ void painter::draw (car* curr_car) {
   //  float carOffset_len =  (INTERSECTION_SIZE/2 + 7.5*(float)curr_car->position/(float)(CAR_LENGTH+MIN_INTER_CAR_SPACE) + HCAR_LENGTH);//*(CAR_LENGTH+MIN_INTER_CAR_SPACE)
   float carOffset_len =  (INTERSECTION_SIZE/2 +  ROAD_SCALE*curr_car->position + HCAR_LENGTH);//*(CAR_LENGTH+MIN_INTER_CAR_SPACE)
   // offset of car along the length of the road from final intersection
-  float carOffset_wid = ROAD_WIDTH/2 + HLEN_BW_LANES;
+  float carOffset_wid = LANE_WIDTH/2 + LANE_WIDTH * curr_car->currlaneIndex + HLEN_BW_LANES;
 
   glColor3f (curr_car->color.r,curr_car->color.g,curr_car->color.b);
   glBegin (GL_QUADS);
@@ -149,10 +151,14 @@ void painter::draw (car* curr_car) {
   switch (curr_car->curr_road->compass) {
       
   case NORTH:
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale);
+    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, 
+		((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale);
+    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, 
+		((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale);
+    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale, 
+		((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale);
+    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale, 
+		((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale);
     //displayText (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - carOffset_len)*scale, "Car");
     break;
     

@@ -94,10 +94,12 @@ int learner::evaluate(void)//intersection** nodes, int *nodec)
     if (nodes[i]) {
       for (int r = 0; r <  nodes[i]->in_count; r++){
 	if ( nodes[i]->in[r] )
-	  for (int s = 0; s < nodes[i]->in[r]->length;s++) // We check whole road not just MAX_SLOTS_TO_CHECK
-	    if (nodes[i]->in[r]->cars[s] && nodes[i]->in[r]->cars[s]->wait > 0) {
-	      performance--;
+	  for (int l = 0; l < nodes[i]->in[r]->numlanes; l++) {
+	    for (int s = 0; s < nodes[i]->in[r]->length;s++) // We check whole road not just MAX_SLOTS_TO_CHECK
+	      if (nodes[i]->in[r]->cars[l][s] && nodes[i]->in[r]->cars[l][s]->wait > 0) {
+		performance--;
 	    }
+	  }
       }
     }
   return performance;

@@ -14,6 +14,8 @@ typedef struct {
   float r,g,b;
 } COLOR;
 
+int get_lane_index (int turn);
+
 class car
 {
  public:
@@ -40,7 +42,9 @@ class car
 
   bool moved;
   bool sensed;
-  
+
+  int nextlaneIndex;
+  int currlaneIndex;
 };
 
 
