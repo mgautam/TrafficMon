@@ -29,7 +29,7 @@ void learner::naiveControl (world *sim) {
     }
 
 
-   if (sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+   if (sim->timestamp % MIN_TL_PATTERN_SWITCH_INTERVAL == 0) {
      TrafficPhase++;
    }
    
@@ -50,7 +50,7 @@ void learner::learn (bool fullSpeed)
       {
 	if (nodes[i]) {
 	  //printf ("First Sense:\n");
-	  if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+	  if ( sim->timestamp % MIN_TL_PATTERN_SWITCH_INTERVAL == 0) {
 	    nodes[i]->sense_state();
 	    nodes[i]->select_action();
 	  }
@@ -61,7 +61,7 @@ void learner::learn (bool fullSpeed)
 
   sim->updateWorld();//cars move here cars = clients
   
-  if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+  if ( sim->timestamp % MIN_TL_PATTERN_SWITCH_INTERVAL == 0) {
     for (int i = 0; i < *nodec; i++)
       {
 	if (nodes[i]) {
@@ -113,7 +113,7 @@ void learner::comply () {
 
     for (int i = 0; i < *nodec; i++) {
       if (nodes[i]) {
-	if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+	if ( sim->timestamp % MIN_TL_PATTERN_SWITCH_INTERVAL == 0) {
 	  nodes[i]->sense_state();
 	  nodes[i]->select_learned_action ();
 	}

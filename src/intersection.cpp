@@ -236,19 +236,19 @@ void intersection::controlLights (int PatternID) {
       this->in[direction]->lights[RIGHT] = RED;
     }
 
-  if ( isAMBER ) // AMBER_STATES
+  if ( isAMBER < MIN_TL_AR_SWITCH_INTERVAL ) // AMBER_STATES
   {
     this->traffic_pattern_id = -1; // ALL_RED STATE
-    isAMBER = false;
+    isAMBER++;
   }
 
   // this->traffic_pattern_id => previous_pattern
   else if (
       this->traffic_pattern_id !=  PatternID // GREEN to RED Switch
-      && this->traffic_pattern_id != -1
+      //&& this->traffic_pattern_id != -1
       ) {
     this->traffic_pattern_id += 4; // AMBER_STATES
-    isAMBER = true;
+    isAMBER = 0;
   }
   
 
