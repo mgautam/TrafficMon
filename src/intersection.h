@@ -56,6 +56,7 @@ class intersection
   int action;
   int best_action;
 
+  bool isAMBER;
 
   int* curr_state;
   int* prev_state;

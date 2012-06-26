@@ -15,7 +15,6 @@ learner::learner (world* sim) {
 
 
 
-float x = 0;
 static int TrafficPhase = 0;
 void learner::naiveControl (world *sim) {
   //Put traffic light changing code at the end of the routine 
@@ -25,16 +24,14 @@ void learner::naiveControl (world *sim) {
   for (int i = 0; i < sim->intc; i++)
     {
       if (sim->intersections[i]) {
-	sim->intersections[i]->controlLights (((int)x)%4);//EASTWEST_RIGHT);x++%4
+	sim->intersections[i]->controlLights (((int)TrafficPhase)%4);//EASTWEST_RIGHT);x++%4
       }
     }
 
 
-   if (TrafficPhase % MIN_TL_SWITCH_INTERVAL == 0) {
-     x++;
-   } 
-
-   TrafficPhase++;
+   if (sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+     TrafficPhase++;
+   }
    
    sim->updateWorld ();
    sim->incr_timestamp();

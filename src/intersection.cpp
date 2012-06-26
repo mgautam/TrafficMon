@@ -230,16 +230,27 @@ void intersection::update_q_entry()
 
 void intersection::controlLights (int PatternID) {
 
-  // this->traffic_pattern_id => previous_pattern
-  if (this->traffic_pattern_id !=  PatternID) {
-    this->traffic_pattern_id += 4;
-  }
-
   for (int direction = 0; direction < 4; direction++)
     if (this->in[direction]) {
       this->in[direction]->lights[LEFT] = RED;
       this->in[direction]->lights[RIGHT] = RED;
     }
+
+  if ( isAMBER ) // AMBER_STATES
+  {
+    this->traffic_pattern_id = -1; // ALL_RED STATE
+    isAMBER = false;
+  }
+
+  // this->traffic_pattern_id => previous_pattern
+  else if (
+      this->traffic_pattern_id !=  PatternID // GREEN to RED Switch
+      && this->traffic_pattern_id != -1
+      ) {
+    this->traffic_pattern_id += 4; // AMBER_STATES
+    isAMBER = true;
+  }
+  
 
   switch (traffic_pattern_id) {
   case NORTHSOUTH_AHEADLEFT:
@@ -297,9 +308,12 @@ void intersection::controlLights (int PatternID) {
     if (this->in[WEST]) 
       this->in[WEST]->lights[RIGHT] = AMBER;
     break;
+
+  default:break; // Do Nothing
   }
 
   this->traffic_pattern_id = PatternID;    
+
 }
 
 

@@ -160,7 +160,8 @@ void car::sense()
 		 (turn == UTURN && curr_road->lights[RIGHT] == AMBER) ||  
 		 (turn == RIGHT && curr_road->lights[RIGHT] == AMBER) ||
 		 (turn == LEFT && curr_road->lights[LEFT] == AMBER))
-		&& (rand () > RAND_MAX / 2) ) {
+		//		&& (rand () > RAND_MAX / 2) 
+) {
 	wait = 0;
 	sensed = true;
       }

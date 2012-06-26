@@ -4,7 +4,8 @@
 // CONTROL
 #define BATCH_SIZE 1
 
-#define MIN_TL_SWITCH_INTERVAL 3
+#define MIN_TL_SWITCH_INTERVAL 9
+// minimum is 3, check what happens if it goes below 3
 
 //#define STEP_SIZE 0.1
 
