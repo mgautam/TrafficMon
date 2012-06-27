@@ -1,0 +1,6 @@
+Add some randomness in comply mode. May be a perpetual learning algorithm with changing parameter in intersection.cpp:select_action ()
+function to delete cars
+function to user control of cars
+save & restore world still not fixed
+fix the road length & intersection placement
+minimum traffic light interval

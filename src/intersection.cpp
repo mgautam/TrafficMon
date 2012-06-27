@@ -146,6 +146,7 @@ void intersection::select_action()
 void intersection::select_learned_action () {
   // If all states are of equal importance (value) then retain the previous best action
   // int best_action = best_action;//i.e. initialize with previous best action
+  // best_action = ((float)rand()/(float)RAND_MAX)*NUM_TRAFFIC_PATTERNS;
   for (int action = 0; action < NUM_TRAFFIC_PATTERNS; action++) {
     if ( *get_q_entry (curr_state,best_action) < *get_q_entry (curr_state,action) )
       best_action = action;
