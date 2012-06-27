@@ -5,7 +5,7 @@
 #define BATCH_SIZE 9
 
 #define MIN_TL_AR_SWITCH_INTERVAL 3 /* minimum is 2, Cars will dissappear if this is below 2 */
-#define MIN_TL_PATTERN_SWITCH_INTERVAL 9 /* minimum is above MIN_TL_AR_SWITCH_INTERVAL, haven't checked yet below it */
+#define MIN_TL_PATTERN_SWITCH_INTERVAL 5 /* minimum is above MIN_TL_AR_SWITCH_INTERVAL, haven't checked yet below it */
 
 
 //#define STEP_SIZE 0.1
@@ -15,7 +15,7 @@
 #define SQUARE_SIZE 2
 #define NUM_LANES_PER_ROAD 2
 
-#define MAX_SLOTS_TO_CHECK 3
+#define MAX_SLOTS_TO_CHECK 6
 #define LEARNING_RATE 0.2
 
 #define LEARN_TIME 9900
@@ -58,7 +58,7 @@
 
 #define ROAD_SCALE (CAR_LENGTH+MIN_INTER_CAR_SPACE)
 
-
+#define MAX_WAIT_AT_SIGNAL 18
 
 // MODEL Parameters
 #define RIGHT 0

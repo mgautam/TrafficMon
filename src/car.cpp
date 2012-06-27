@@ -88,11 +88,11 @@ int car::move()
       curr_road->cars[nextlaneIndex][--position] = this;
       currlaneIndex = nextlaneIndex;
       
-      //nextlaneIndex = ++nextlaneIndex % 2;// Just of checking
+      //nextlaneIndex = ++nextlaneIndex % 2;// Just of debugging
       wait = 0;
     }
   else if (position > 1 
-	   && curr_road->cars[currlaneIndex][position-1] == 0)//move same lane
+	   && curr_road->cars[currlaneIndex][position-1] == 0)//move forward in the same lane
     {
       //printf ("Move Forward\n");
       curr_road->cars[currlaneIndex][position] = 0;
@@ -194,8 +194,9 @@ void car::sense()
     {
       sensed = true;
     }
-  else if (position == 0 && 
-	   ((next_road && next_road->cars[currlaneIndex][next_road->length - 1] == 0) || !next_road) )//enter intersection
+  else if (position == 0 
+	   && ((next_road && next_road->cars[currlaneIndex][next_road->length - 1] == 0)
+	       || !next_road) )//enter intersection
     {
       if ((turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||  
 	  (turn == UTURN && curr_road->lights[RIGHT] == GREEN) ||  
@@ -208,8 +209,8 @@ void car::sense()
 		 (turn == UTURN && curr_road->lights[RIGHT] == AMBER) ||  
 		 (turn == RIGHT && curr_road->lights[RIGHT] == AMBER) ||
 		 (turn == LEFT && curr_road->lights[LEFT] == AMBER))
-		//		&& (rand () > RAND_MAX / 2) 
-) {
+		&& (rand () > RAND_MAX / 2) 
+		) {
 	wait = 0;
 	sensed = true;
       }
@@ -226,6 +227,14 @@ void car::sense()
       	sensed = true;
       */
 
+    }
+  else if (position == 0 
+	   && (next_road && next_road->cars[currlaneIndex][next_road->length - 1] != 0)
+	   && wait > MAX_WAIT_AT_SIGNAL  )//traffic jam so change turn
+    {
+      turn = (++turn)%4;
+      wait++;
+      sensed = false;
     }
   else if (position == -1 && turn != LEFT)//move forward in the intersection
     {
