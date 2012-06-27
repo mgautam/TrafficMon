@@ -81,6 +81,7 @@ int car::move()
     nextlaneIndex = get_lane_index (UTURN);
   }
 
+  // place this first so that priority is given to switching to next lane
   if (position >= 1 
       && curr_road->cars[nextlaneIndex][position-1] == 0)//switch to next lane
     {
@@ -187,12 +188,12 @@ void car::sense()
   }
 
 
-
-  if (position >= 1 && curr_road->cars[nextlaneIndex][position-1] == 0)//move forward on the road
+  // place this first so that priority is given to switching to next lane
+  if (position >= 1 && curr_road->cars[nextlaneIndex][position-1] == 0)//switch to next lane
     {
       sensed = true;
     }
-  else if (position > 1 && curr_road->cars[currlaneIndex][position-1] == 0)//move forward on the road
+  else if (position > 1 && curr_road->cars[currlaneIndex][position-1] == 0)//move forward in the same lane
     {
       sensed = true;
     }
@@ -234,6 +235,7 @@ void car::sense()
 	   && (next_road && next_road->cars[currlaneIndex][next_road->length - 1] != 0)
 	   && wait > MAX_WAIT_AT_SIGNAL  )//traffic jam so change turn
     {
+      // This in not required in move
       turn = (++turn)%4;
       wait++;
       sensed = false;
