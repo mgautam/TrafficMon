@@ -29,7 +29,7 @@ extern learner *traffic_learner;
 learner *traffic_learner;
 
 extern int curr_mode;
-int curr_mode = 3;
+int curr_mode = 1;
 
 extern int simulation_interval;
 int simulation_interval = 256;//msecs

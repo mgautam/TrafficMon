@@ -108,10 +108,11 @@ void world::spawnCars (int roadIndex, int batchSize) {
   }
 
   for (int i=0; i < roadc; i++) {
-    int turn = RIGHT;//(float)rand ()/(float) RAND_MAX * 3
+    int turn = AHEAD;//(float)rand ()/(float) RAND_MAX * 3
     if (num_spawn[i] > 0 && timestamp >= next_spawn_time[i]
-	&& (roads[i]->cars[get_lane_index (turn)][roads[i]->length-1] == 0)) {
-      new car (roads[i], turn);
+	&& (roads[i]->cars[get_lane_index (turn)][roads[i]->length-2] == 0)) {
+      // roads[i]->length-2 because roads[i]->length-1 is checked by car in next signal, and further checks are not performed while entering road
+      new car (roads[i], turn, roads[i]->length-2);
       num_spawn[i]--;
       next_spawn_time[i] = this->timestamp + (float)rand ()/(float)RAND_MAX * 10 + 5;
     }

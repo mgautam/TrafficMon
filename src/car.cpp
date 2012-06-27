@@ -75,7 +75,7 @@ int car::move()
   road* next_road = curr_road->get_next(turn);
   //printf ("Car: %p :",this);
 
-  if ( position == curr_road->length-1 && !next_road) {
+  if (!next_road) {
     turn = UTURN;
     next_road = curr_road->get_next(UTURN);
     nextlaneIndex = get_lane_index (UTURN);
@@ -102,7 +102,7 @@ int car::move()
       wait = 0;
     }  
   else if (position == 0 &&
-	   ((next_road && next_road->cars[currlaneIndex][next_road->length - 1] == 0) || !next_road) )//enter intersection
+	   (!next_road || (next_road && next_road->cars[currlaneIndex][next_road->length - 1] == 0)) )//enter intersection
     {
       //printf ("position 0 nextroad empty\n");
 
@@ -181,7 +181,7 @@ int car::move()
 void car::sense()
 {
   road* next_road = curr_road->get_next(turn);
-  if ( position == curr_road->length-1 && !next_road) {
+  if (!next_road) {
     turn = UTURN;
     next_road = curr_road->get_next(UTURN);
     nextlaneIndex = get_lane_index (UTURN);
@@ -198,8 +198,7 @@ void car::sense()
       sensed = true;
     }
   else if (position == 0 
-	   && ((next_road && next_road->cars[currlaneIndex][next_road->length - 1] == 0)
-	       || !next_road) )//enter intersection
+	   && (!next_road || (next_road && next_road->cars[currlaneIndex][next_road->length - 1] == 0)) )//enter intersection
     {
       if ((turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||  
 	  (turn == UTURN && curr_road->lights[RIGHT] == GREEN) ||  
@@ -235,8 +234,13 @@ void car::sense()
 	   && (next_road && next_road->cars[currlaneIndex][next_road->length - 1] != 0)
 	   && wait > MAX_WAIT_AT_SIGNAL  )//traffic jam so change turn
     {
-      // This in not required in move
+      // This in not required in move ()
       turn = (++turn)%4;
+      // for debuggin only
+      //color.r = 0;
+      //color.g = 0;
+      //color.b = 0;
+      // for deguggin only
       wait++;
       sensed = false;
     }

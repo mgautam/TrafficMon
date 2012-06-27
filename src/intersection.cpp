@@ -95,6 +95,7 @@ void intersection::sense_state ()
 	
 	if (curr_road)
 	  {
+	    /*
 	    curr_state[1 + r] = MAX_SLOTS_TO_CHECK-1;
 	    for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
 	      {
@@ -103,7 +104,15 @@ void intersection::sense_state ()
 		  break;
 		}
 	      }
-	    
+	    */
+
+	    curr_state[1 + r] = 0;
+	    for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++) {
+	      if (curr_road->cars[k]) {
+		curr_state[1 + r*NUM_LANES_PER_ROAD+l]++;
+	      }
+	    }
+
 	    /*
 	    curr_state[1+MAX_DEGREE+r] = 0;
 	    for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++) {
