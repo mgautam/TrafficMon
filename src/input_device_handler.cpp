@@ -24,6 +24,7 @@ extern bool stopAnime;
 extern int simulation_interval;
 
 extern bool fullSpeed;
+extern bool displayMode;
 
 extern int curr_mode;
 extern int learnTime;
@@ -193,6 +194,11 @@ void handleKeyPress  (unsigned char key, int x, int y) {
   case 'f':
     fullSpeed = !fullSpeed;
     printf (">> Full Speed %c%cactivated\n", (!fullSpeed)*'d', (!fullSpeed)*'e');
+    break;
+
+  case 'd':
+    displayMode = !displayMode;
+    printf (">> Display %c%cactivated\n", (!displayMode)*'d', (!displayMode)*'e');
     break;
 
   case 'w':

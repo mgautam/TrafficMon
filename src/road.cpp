@@ -14,7 +14,7 @@ road::road(intersection* init, intersection* final)
   this->final = final;
   this->length = (final->x - init->x) + (final->y - init->y); //manhattan 
   if (this->length < 0) this->length *= -1;
-  length = length - 2;
+  // length = length - 2;
 
   numlanes = NUM_LANES_PER_ROAD;
 
@@ -66,7 +66,7 @@ road::road(intersection* init, intersection* final)
 
   // Uniform Distribution
   float pdf[4] = {0.0};
-  pdf[RIGHT] = 1.0;
+  // pdf[RIGHT] = 1.0;
   pdf[AHEAD] = 1.0;
   set_cdf_turn_patterns (pdf);
 

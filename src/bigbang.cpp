@@ -56,7 +56,7 @@ void bigbang::create_world(world** sim)
 
 	  // Add 2 unit to the length of road in order to include size of intersection
 	  // intersections[y*SQUARE_SIZE+x] = new intersection((2*x - (SQUARE_SIZE-1))*(NUM_SLOTS_IN_ROAD+1), (2*y - (SQUARE_SIZE-1))*(NUM_SLOTS_IN_ROAD+1));
-	  intersections[y*(SQUARE_SIZE+2)+x] = new intersection((NUM_SLOTS_IN_ROAD+2)*x, (NUM_SLOTS_IN_ROAD+2)*y);
+	  intersections[y*(SQUARE_SIZE+2)+x] = new intersection((NUM_SLOTS_IN_ROAD)*x, (NUM_SLOTS_IN_ROAD)*y);
 	}
     }
 

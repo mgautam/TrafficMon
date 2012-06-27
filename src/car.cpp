@@ -78,6 +78,7 @@ int car::move()
   if ( position == curr_road->length-1 && !next_road) {
     turn = UTURN;
     next_road = curr_road->get_next(UTURN);
+    nextlaneIndex = get_lane_index (UTURN);
   }
 
   if (position >= 1 
@@ -182,6 +183,7 @@ void car::sense()
   if ( position == curr_road->length-1 && !next_road) {
     turn = UTURN;
     next_road = curr_road->get_next(UTURN);
+    nextlaneIndex = get_lane_index (UTURN);
   }
 
 
