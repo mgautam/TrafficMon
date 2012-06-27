@@ -77,7 +77,7 @@ void bigbang::create_world(world** sim)
 	  roads[road_count/4*3 + x*(SQUARE_SIZE+1)+y] = new road(intersections[(y+1)*(SQUARE_SIZE+2)+(x+1)], intersections[y*(SQUARE_SIZE+2) + (x+1)]);
 	}
     }
-    
+  /*
   car** cars = new car*[10];
   cars[0] = new car(roads[0], UTURN, roads[0]->length - 1); 
   cars[1] = new car(roads[0], UTURN, (float)roads[0]->length - 3);
@@ -88,7 +88,7 @@ void bigbang::create_world(world** sim)
   cars[6] = new car(roads[1], UTURN, (float)roads[1]->length - 3);
   cars[7] = new car(roads[1], UTURN, (float)roads[1]->length - 5);
   cars[8] = new car(roads[1], UTURN, (float)roads[1]->length - 7);
- 
+  */
   /*  
   new car(roads[20], UTURN, (float)roads[20]->length - 1);
   new car(roads[20], UTURN, (float)roads[20]->length - 3);

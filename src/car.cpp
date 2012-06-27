@@ -4,6 +4,9 @@
 #include "intersection.h"
 #include "car.h"
 
+extern bool reset_waits;
+bool reset_waits = false;
+
 
 int get_lane_index (int turn) {
   int laneIndex;
@@ -71,6 +74,7 @@ void car::write_state(FILE* output)
 
 int car::move()
 {
+  bool internal_wait_reset = false;
   //printf ("pOSITION: %d\n",position);
   road* next_road = curr_road->get_next(turn);
   //printf ("Car: %p :",this);
@@ -83,6 +87,7 @@ int car::move()
 
   // place this first so that priority is given to switching to next lane
   if (position >= 1 
+      && nextlaneIndex != currlaneIndex
       && curr_road->cars[nextlaneIndex][position-1] == 0)//switch to next lane
     {
       //printf ("Switch Lane\n");
@@ -91,15 +96,17 @@ int car::move()
       currlaneIndex = nextlaneIndex;
       
       //nextlaneIndex = ++nextlaneIndex % 2;// Just of debugging
-      wait = 0;
+      //wait = 0;
+      internal_wait_reset = true;
     }
-  else if (position > 1 
+  else if (position >= 1 
 	   && curr_road->cars[currlaneIndex][position-1] == 0)//move forward in the same lane
     {
       //printf ("Move Forward\n");
       curr_road->cars[currlaneIndex][position] = 0;
       curr_road->cars[currlaneIndex][--position] = this;
-      wait = 0;
+      //wait = 0;
+      internal_wait_reset = true;
     }  
   else if (position == 0 &&
 	   (!next_road || (next_road && next_road->cars[currlaneIndex][next_road->length - 1] == 0)) )//enter intersection
@@ -113,7 +120,8 @@ int car::move()
 	  (turn == LEFT && curr_road->lights[LEFT] != RED))	{
 	curr_road->cars[currlaneIndex][position] = 0;
 	curr_road->cars[currlaneIndex][--position] = this;
-	wait = 0;
+	//wait = 0;
+	internal_wait_reset = true;
 	//printf ("TURN:%d next_road:%p\n",turn,next_road);
       }
     }
@@ -122,23 +130,17 @@ int car::move()
       //printf ("pos-1 turn!=LEFT\n");
       curr_road->cars[currlaneIndex][position] = 0;
       curr_road->cars[currlaneIndex][--position] = this;
-      wait = 0;
+      //wait = 0;
+      internal_wait_reset = true;
     }
   else if (position == -1 && turn == LEFT)//turn into left road
     {
       //printf ("pos-1 LEFT\n");
       curr_road->cars[currlaneIndex][position] = 0;
 
-      wait = 0;
+      //wait = 0;
+      internal_wait_reset = true;
 
-
-      if (!next_road)
-	{
-	  //escape the city
-	  escape_city();
-	  return wait;
-	}
-     
       position = next_road->length - 1;
       next_road->cars[currlaneIndex][position] = this;
       curr_road = next_road;
@@ -152,21 +154,18 @@ int car::move()
       //printf ("pos-2 \n");
       curr_road->cars[currlaneIndex][position] = 0;
 
-      wait = 0;
-      if (!next_road)
-	{
-	  //escape the city
-	  escape_city();
-	  return wait;
-	}
+      //wait = 0;
+      internal_wait_reset = true;
+
 
       position = next_road->length - 1;
       next_road->cars[currlaneIndex][position] = this;
       curr_road = next_road;
-
+      
       //Check Road pattern distribution //always right // setting the next turn to be random
       this->turn = curr_road->get_random_turn_from_cdf ();//RIGHT;//(float)rand ()/(float)RAND_MAX * 3;
       nextlaneIndex = get_lane_index (this->turn);
+
     }
   else
     {
@@ -174,6 +173,13 @@ int car::move()
     }
 
   moved = true;
+
+  if (reset_waits) {
+    if (internal_wait_reset) {
+      wait = 0;
+    }
+    reset_waits = false;
+  }
 
   return wait;
 }
@@ -189,11 +195,15 @@ void car::sense()
 
 
   // place this first so that priority is given to switching to next lane
-  if (position >= 1 && curr_road->cars[nextlaneIndex][position-1] == 0)//switch to next lane
+  if (position >= 1 && nextlaneIndex != currlaneIndex && curr_road->cars[nextlaneIndex][position-1] == 0)//switch to next lane
     {
       sensed = true;
     }
-  else if (position > 1 && curr_road->cars[currlaneIndex][position-1] == 0)//move forward in the same lane
+  else if (position >= 1 && nextlaneIndex != currlaneIndex && curr_road->cars[nextlaneIndex][position] == 0)//wait to switch to next lane
+    {
+      sensed = false;
+    }
+  else if (position >= 1 && curr_road->cars[currlaneIndex][position-1] == 0)//move forward in the same lane
     {
       sensed = true;
     }
@@ -204,7 +214,6 @@ void car::sense()
 	  (turn == UTURN && curr_road->lights[RIGHT] == GREEN) ||  
 	  (turn == RIGHT && curr_road->lights[RIGHT] == GREEN) ||
 	  (turn == LEFT && curr_road->lights[LEFT] == GREEN))	{
-	wait = 0;
 	sensed = true;
       }
       else if ( ((turn == AHEAD && curr_road->lights[LEFT] == AMBER) ||  
@@ -213,11 +222,10 @@ void car::sense()
 		 (turn == LEFT && curr_road->lights[LEFT] == AMBER))
 		&& (rand () > RAND_MAX / 2) 
 		) {
-	wait = 0;
 	sensed = true;
       }
       else {
-	wait++;
+	//wait++;
 	sensed = false;
       }
       //printf ("Worst Place: %d %p\n",turn,next_road);
@@ -231,17 +239,17 @@ void car::sense()
 
     }
   else if (position == 0 
-	   && (next_road && next_road->cars[currlaneIndex][next_road->length - 1] != 0)
+	   && (next_road && next_road->cars[currlaneIndex][next_road->length - 1])
 	   && wait > MAX_WAIT_AT_SIGNAL  )//traffic jam so change turn
     {
       // This in not required in move ()
-      turn = (++turn)%4;
+      //turn = (++turn)%4;
       // for debuggin only
       //color.r = 0;
       //color.g = 0;
       //color.b = 0;
       // for deguggin only
-      wait++;
+      //wait++;
       sensed = false;
     }
   else if (position == -1 && turn != LEFT)//move forward in the intersection
@@ -258,9 +266,10 @@ void car::sense()
     }
   else
     {
-      wait++;
+      //wait++;
       sensed = false;
     }
+  wait++;
 }
 
 

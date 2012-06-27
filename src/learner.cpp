@@ -5,6 +5,8 @@
 #include "math.h"
 #include "assert.h"
 
+extern bool reset_waits;
+
 
 learner::learner (world* sim) {
   this->sim = sim;
@@ -49,8 +51,13 @@ void learner::learn (bool fullSpeed)
     for (int i = 0; i < *nodec; i++)
       {
 	if (nodes[i]) {
-	  //printf ("First Sense:\n");
 	  if ( sim->timestamp % MIN_TL_PATTERN_SWITCH_INTERVAL == 0) {
+	    //printf ("Second Sense:\n ");
+	    nodes[i]->sense_state();
+	    nodes[i]->get_reward();//for previous action
+	    nodes[i]->update_q_entry();//for previous action
+	    reset_waits = true;
+	    //printf ("First Sense:\n");
 	    nodes[i]->sense_state();
 	    nodes[i]->select_action();
 	  }
@@ -60,7 +67,7 @@ void learner::learn (bool fullSpeed)
 
 
   sim->updateWorld();//cars move here cars = clients
-  
+  /*
   if ( sim->timestamp % MIN_TL_PATTERN_SWITCH_INTERVAL == 0) {
     for (int i = 0; i < *nodec; i++)
       {
@@ -84,6 +91,7 @@ void learner::learn (bool fullSpeed)
 	}
       }
   }
+  */
   sim->incr_timestamp();
 }
 
