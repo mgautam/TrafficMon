@@ -70,14 +70,14 @@ void bigbang::create_world(world** sim)
   */  
   car** cars = new car*[10];
   cars[0] = new car(roads[0], AHEAD, roads[0]->length - 1); 
-  cars[1] = new car(roads[0], RIGHT, (float)roads[0]->length - 3);
-  cars[2] = new car(roads[0], LEFT, (float)roads[0]->length - 5);
-  cars[3] = new car(roads[0], LEFT, (float)roads[0]->length - 7);
+  // cars[1] = new car(roads[0], RIGHT, (float)roads[0]->length - 3);
+  // cars[2] = new car(roads[0], LEFT, (float)roads[0]->length - 5);
+  // cars[3] = new car(roads[0], LEFT, (float)roads[0]->length - 7);
 
-  cars[5] = new car(roads[1], AHEAD, (float)roads[0]->length - 1);
-  cars[6] = new car(roads[1], RIGHT, (float)roads[0]->length - 3);
-  cars[7] = new car(roads[1], LEFT, (float)roads[0]->length - 5);
-  cars[8] = new car(roads[1], LEFT, (float)roads[0]->length - 7);
+  // cars[5] = new car(roads[1], AHEAD, (float)roads[0]->length - 1);
+  // cars[6] = new car(roads[1], RIGHT, (float)roads[0]->length - 3);
+  // cars[7] = new car(roads[1], LEFT, (float)roads[0]->length - 5);
+  // cars[8] = new car(roads[1], LEFT, (float)roads[0]->length - 7);
  
   /*
   new car(roads[20], LEFT, (float)roads[0]->length - 1);
