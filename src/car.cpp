@@ -177,7 +177,7 @@ int car::move()
 
 void car::sense()
 {
-  printf ("pOSITION: %d wait: %d\n",position,wait);
+  //printf ("pOSITION: %d wait: %d\n",position,wait);
   road* next_road = curr_road->get_next(turn);
   if (!next_road) {
     turn = UTURN;

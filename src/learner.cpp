@@ -54,8 +54,8 @@ void learner::learn (bool fullSpeed)
 	  nodes[i]->get_reward();//for previous action
 	  nodes[i]->update_q_entry();//for previous action
 
-	  if (nodes[i]->total_waiting_cars != 0)
-	    printf ("%d,%d wait: %d\n", nodes[i]->x, nodes[i]->y, nodes[i]->total_waiting_cars);
+	  //if (nodes[i]->total_waiting_cars != 0)
+	  //printf ("%d,%d wait: %d\n", nodes[i]->x, nodes[i]->y, nodes[i]->total_waiting_cars);
 
 	  nodes[i]->total_waiting_cars = 0;
 	  nodes[i]->select_action();
@@ -116,7 +116,7 @@ int learner::evaluate(void)//intersection** nodes, int *nodec)
 {
   for (int i = 0; i < *nodec; i++)
     if (nodes[i]) {
-      for (int r = 0; r <  nodes[i]->in_count; r++){
+      for (int r = 0; r < MAX_DEGREE; r++){ //nodes[i]->in_count
 	if ( nodes[i]->in[r] )
 	  for (int l = 0; l < nodes[i]->in[r]->numlanes; l++) {
 	    for (int s = 0; s < nodes[i]->in[r]->length;s++) // We check whole road not just MAX_SLOTS_TO_CHECK
