@@ -27,8 +27,6 @@ int get_lane_index (int turn) {
   return laneIndex;
 }
 
-
-
 //constructor
 car::car (road* init_road, int next_turn) {
   this->setCar (init_road, next_turn, init_road->length - 1);
@@ -109,20 +107,42 @@ int car::move()
       curr_road->cars[currlaneIndex][--position] = this;
       wait = 0;
      }  
-  else if (position == 0 &&
-	   (!next_road || (next_road && next_road->cars[currlaneIndex][next_road->length - 1] == 0)) )//enter intersection
+  else if (position == 0)//enter intersection
     {
       //printf ("position 0 nextroad empty\n");
-
+      if ( !next_road ) {
       // Because sensed is set randomly, no more randomness is needed
-      if ((turn == AHEAD && curr_road->lights[LEFT] != RED) ||  
-	  (turn == UTURN && curr_road->lights[RIGHT] != RED) ||  
-	  (turn == RIGHT && curr_road->lights[RIGHT] != RED) ||
-	  (turn == LEFT && curr_road->lights[LEFT] != RED))	{
+
 	curr_road->cars[currlaneIndex][position] = 0;
 	curr_road->cars[currlaneIndex][--position] = this;
 	wait = 0;
 	//printf ("TURN:%d next_road:%p\n",turn,next_road);
+      } 
+      else if (next_road 
+	    && (next_road->cars[currlaneIndex][next_road->length - 2] == 0 || next_road->cars[currlaneIndex][next_road->length - 1] == 0)  
+	    && curr_road->lights[curr_road->final->get_light_index (turn)] == GREEN
+	       ) {
+      // Because sensed is set randomly, no more randomness is needed
+
+	curr_road->cars[currlaneIndex][position] = 0;
+	curr_road->cars[currlaneIndex][--position] = this;
+	wait = 0;
+	//printf ("TURN:%d next_road:%p\n",turn,next_road);
+      }
+      else if (next_road && turn != LEFT
+	       && next_road->cars[currlaneIndex][next_road->length - 3] == 0
+	       && curr_road->lights[curr_road->final->get_light_index (turn)] == GREEN
+	       ) {
+      // Because sensed is set randomly, no more randomness is needed
+
+	curr_road->cars[currlaneIndex][position] = 0;
+	curr_road->cars[currlaneIndex][--position] = this;
+	wait = 0;
+	//printf ("TURN:%d next_road:%p\n",turn,next_road);
+      }
+      else {
+	wait++;
+	//printf ("Wait");
       }
     }
   else if (position == -1 && turn != LEFT)//move forward in the intersection
@@ -215,7 +235,7 @@ void car::sense()
       sensed = true;
 
       // Priority is given to laneswitchers
-      /*
+      
       for (int l = 0; l < curr_road->numlanes; l++) {
 	if (l == currlaneIndex)
 	  continue;
@@ -224,16 +244,24 @@ void car::sense()
 	   && curr_road->cars[l][position]->nextlaneIndex == currlaneIndex) 
 	  sensed = false;
       }
-      */
+      
 	
     }
-  else if (position == 0 
-	   && (!next_road || (next_road && next_road->cars[currlaneIndex][next_road->length - 1] == 0)) )//enter intersection
+  else if (position == 0)//enter intersection
     {
-      if ((turn == AHEAD && curr_road->lights[LEFT] == GREEN) ||  
-	  (turn == UTURN && curr_road->lights[RIGHT] == GREEN) ||  
-	  (turn == RIGHT && curr_road->lights[RIGHT] == GREEN) ||
-	  (turn == LEFT && curr_road->lights[LEFT] == GREEN))	{
+      if ( !next_road ) {
+	sensed = true;
+      } 
+      else if (next_road 
+	    && (next_road->cars[currlaneIndex][next_road->length - 2] == 0 || next_road->cars[currlaneIndex][next_road->length - 1] == 0)  
+	    && curr_road->lights[curr_road->final->get_light_index (turn)] == GREEN
+	       ) {
+	sensed = true;
+      }
+      else if (next_road && turn != LEFT
+	       && next_road->cars[currlaneIndex][next_road->length - 3] == 0
+	       && curr_road->lights[curr_road->final->get_light_index (turn)] == GREEN
+	       ) {
 	sensed = true;
       }
       else {

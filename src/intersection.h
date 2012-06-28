@@ -18,6 +18,7 @@ class intersection
   void sense_state();// and the actual feature in sense_state ()
 
   void write_state(FILE* output);
+  int get_light_index (int turn);
   void controlLights (int PatternID);
 
 
@@ -30,6 +31,8 @@ class intersection
   void update_q_entry();
 
   void select_learned_action (void);
+
+
 //variables
   int x, y;
 

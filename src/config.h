@@ -10,7 +10,7 @@
 
 #define NUM_SLOTS_IN_ROAD 20
 #define NUM_TRAFFIC_PATTERNS 4
-#define SQUARE_SIZE 1
+#define SQUARE_SIZE 2
 #define NUM_LANES_PER_ROAD 2
 
 #define MAX_SLOTS_TO_CHECK 6

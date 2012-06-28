@@ -312,3 +312,28 @@ void intersection::write_state(FILE* output)
   fprintf(output, "Coordinates:%2d %2d\n", x, y);
 }
 
+
+int intersection::get_light_index (int turn) {
+  int lightIndex;
+  switch (turn) {
+  case UTURN: lightIndex = 0;
+    break;
+
+  case RIGHT: lightIndex = 0;
+    break;
+
+  case AHEAD: lightIndex = 1;
+    break;
+
+  case LEFT:  lightIndex = 1;
+    break;
+
+  default: printf ("Invalid Turn in get_light_index\n");
+    exit (-1);
+    break;
+  }
+
+  return lightIndex;
+}
+
+
