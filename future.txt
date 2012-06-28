@@ -5,3 +5,6 @@ save & restore world still not fixed
 fix the road length & intersection placement
 minimum traffic light interval
 Client Server Graphics Architecture
+Cars are waiting at position=0 for cars in the last position which are about to move in the next road, this should be avoided
+get_lights_index
+Average wait per car rather than total wait, should be used as reward

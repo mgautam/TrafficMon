@@ -236,14 +236,14 @@ void car::sense()
 	  (turn == LEFT && curr_road->lights[LEFT] == GREEN))	{
 	sensed = true;
       }
-      /*      else if ( ((turn == AHEAD && curr_road->lights[LEFT] == AMBER) ||  
+      else if ( ((turn == AHEAD && curr_road->lights[LEFT] == AMBER) ||  
 		 (turn == UTURN && curr_road->lights[RIGHT] == AMBER) ||  
 		 (turn == RIGHT && curr_road->lights[RIGHT] == AMBER) ||
 		 (turn == LEFT && curr_road->lights[LEFT] == AMBER))
 		&& (rand () > RAND_MAX / 2) 
 		) {
 	sensed = true;
-	}*/
+	}
       else {
 	wait++;
 	sensed = false;

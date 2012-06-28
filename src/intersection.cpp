@@ -272,7 +272,8 @@ void intersection::controlLights (int PatternID) {
     this->traffic_pattern_id += 4; // AMBER_STATES
     isAMBER = 0;
   }
-  
+ 
+  // traffic_pattern_id = EASTWEST_AL_AMBER;//Just for debugging
 
   switch (traffic_pattern_id) {
   case NORTHSOUTH_AHEADLEFT:
