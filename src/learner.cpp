@@ -5,8 +5,6 @@
 #include "math.h"
 #include "assert.h"
 
-extern bool reset_waits;
-
 
 learner::learner (world* sim) {
   this->sim = sim;
@@ -41,32 +39,50 @@ void learner::naiveControl (world *sim) {
 }
 
 
-
+//static long long int actionTime;
 void learner::learn (bool fullSpeed)
 {
   if ( !( sim->timestamp % (fullSpeed?10000:100) ) )
     printf ("time %lld\n",sim->timestamp);
 
+  for (int i = 0; i < *nodec; i++)
+    {
+      if (nodes[i]) {
+	if ( sim->timestamp % MIN_TL_PATTERN_SWITCH_INTERVAL == 0) {
+	  //printf ("First Sense:\n");
+	  nodes[i]->sense_state();
+	  nodes[i]->get_reward();//for previous action
+	  nodes[i]->update_q_entry();//for previous action
 
-    for (int i = 0; i < *nodec; i++)
-      {
-	if (nodes[i]) {
-	  if ( sim->timestamp % MIN_TL_PATTERN_SWITCH_INTERVAL == 0) {
-	    //printf ("Second Sense:\n ");
-	    nodes[i]->sense_state();
-	    nodes[i]->get_reward();//for previous action
-	    nodes[i]->update_q_entry();//for previous action
-	    reset_waits = true;
-	    //printf ("First Sense:\n");
-	    nodes[i]->sense_state();
-	    nodes[i]->select_action();
-	  }
-	  nodes[i]->apply_action();
+	  if (nodes[i]->total_waiting_cars != 0)
+	    printf ("%d,%d wait: %d\n", nodes[i]->x, nodes[i]->y, nodes[i]->total_waiting_cars);
+
+	  nodes[i]->total_waiting_cars = 0;
+	  nodes[i]->select_action();
 	}
+	nodes[i]->apply_action();
       }
+    }
 
 
   sim->updateWorld();//cars move here cars = clients
+  /*
+  if ( actionTime == sim->timestamp) {
+    for (int i = 0; i < *nodec; i++)
+      {
+	if (nodes[i]) {  
+	    //if (nodes[i]->total_waiting_cars != 0)
+	    //printf ("%p wait: %d\n", nodes[i], nodes[i]->total_waiting_cars);
+
+	    //printf ("Second Sense:\n ");
+	    nodes[i]->sense_state();	    
+	    nodes[i]->get_reward();//for previous action
+	    nodes[i]->update_q_entry();//for previous action
+	}
+      }
+      actionTime = sim->timestamp + MIN_TL_PATTERN_SWITCH_INTERVAL;
+  }
+  */
   /*
   if ( sim->timestamp % MIN_TL_PATTERN_SWITCH_INTERVAL == 0) {
     for (int i = 0; i < *nodec; i++)
@@ -136,7 +152,6 @@ void learner::comply () {
   sim->incr_timestamp();
 
   this->evaluate ();
-
 }
 
 void learner::print_to_file (void) {

@@ -21,6 +21,8 @@ intersection::intersection(int x, int y)
   this->in_count = 0;
   this->out_count = 0;
 
+  this->total_waiting_cars = 0;
+
   attribute_block_length = new int[num_state_attribute_blocks];
   attributes_block_range = new int[num_state_attribute_blocks];
 
@@ -85,7 +87,7 @@ void intersection::sense_state ()
   memcpy(prev_state, curr_state, sizeof(int)*state_vector_size);
   // prev_state = curr_state;
   
-  curr_wait = get_wait ();
+  curr_wait = total_waiting_cars;
   curr_state[0] = traffic_pattern_id;
   
   for (int r = 0; r < MAX_DEGREE; r++)
@@ -166,6 +168,7 @@ void intersection::select_learned_action () {
 void intersection::apply_action()
 {
   controlLights(this->action);
+  this->get_wait ();
 }
 
 int intersection::get_wait () {
@@ -190,6 +193,7 @@ int intersection::get_wait () {
 
   //reward = -(float) total; // because they are all costs & not rewards
   //printf ("%f\n",reward);
+  total_waiting_cars += total;
   return total;
 }
 

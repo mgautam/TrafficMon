@@ -52,6 +52,7 @@ class intersection
   int curr_wait;
   int prev_wait;
 
+  int total_waiting_cars;
   float reward;
   int action;
   int best_action;

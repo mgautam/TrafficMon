@@ -167,6 +167,8 @@ void world::updateWorld(void) {
 	      {
 		curr_car->moved = false; // Why can't we put this inside car.cpp? like for sensed?
 		//printf ("Road:%d Car:%d NextTurn:%d\n",i,j,curr_car->turn);
+		//if (curr_car->wait !=0)
+		//printf ("Car %p wait: %d\n",curr_car,curr_car->wait);
 	      }
 	  }
     }
