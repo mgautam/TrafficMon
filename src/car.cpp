@@ -215,6 +215,7 @@ void car::sense()
       sensed = true;
 
       // Priority is given to laneswitchers
+      /*
       for (int l = 0; l < curr_road->numlanes; l++) {
 	if (l == currlaneIndex)
 	  continue;
@@ -223,7 +224,7 @@ void car::sense()
 	   && curr_road->cars[l][position]->nextlaneIndex == currlaneIndex) 
 	  sensed = false;
       }
-
+      */
 	
     }
   else if (position == 0 

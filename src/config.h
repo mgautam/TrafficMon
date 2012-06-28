@@ -2,9 +2,9 @@
 #define CONFIG_H
 
 // CONTROL
-#define BATCH_SIZE 1
+#define BATCH_SIZE 9
 
-#define MIN_TL_SWITCH_INTERVAL 3
+#define MIN_TL_SWITCH_INTERVAL 1
 
 //#define STEP_SIZE 0.1
 

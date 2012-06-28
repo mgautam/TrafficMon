@@ -53,6 +53,7 @@ void learner::learn (bool fullSpeed)
 	  //printf ("First Sense:\n");
 	  nodes[i]->sense_state();
 	  nodes[i]->select_action();
+	  nodes[i]->total_waiting_cars = 0;
 	  nodes[i]->apply_action();
 	}
       }

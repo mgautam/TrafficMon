@@ -27,6 +27,7 @@ extern bool fullSpeed;
 extern bool displayMode;
 
 extern int curr_mode;
+static int prev_mode = 0;
 extern int learnTime;
 extern int complyTime;
 
@@ -205,9 +206,13 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     break;
   }
 
+  int temp_mode;
   switch (key) {
   case 't':
-    curr_mode = ((++curr_mode) % 4);
+    temp_mode = curr_mode;
+    curr_mode = prev_mode;
+    prev_mode = temp_mode;
+    //curr_mode = ((++curr_mode) % 4);
     if (curr_mode == 3) { //Learn&Comply MODE
       learnTime = 0;// This is the setting to intially know the performance
       complyTime = COMPLY_TIME; // and to compare with later performance
@@ -220,23 +225,29 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     break;
 
   case '0':
+    prev_mode = curr_mode;
     curr_mode = 0;
-    printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
+    printf (">> Switch to %d:%s mode\n",curr_mode, modes[curr_mode]);
     break;
 
   case '1':
+    prev_mode = curr_mode;
     curr_mode = 1;
-    printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
+    printf (">> Switch to %d:%s mode\n",curr_mode, modes[curr_mode]);
     break;
 
   case '2':
+    prev_mode = curr_mode;
     curr_mode = 2;
-    printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
+    printf (">> Switch to %d:%s mode\n",curr_mode, modes[curr_mode]);
     break;
 
   case '3':
+    prev_mode = curr_mode;
     curr_mode = 3;
-    printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
+    learnTime = 0;// This is the setting to intially know the performance
+    complyTime = COMPLY_TIME; // and to compare with later performance
+    printf (">> Switch to %d:%s mode\n",curr_mode, modes[curr_mode]);
     break;
   }
 }

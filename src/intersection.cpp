@@ -107,14 +107,14 @@ void intersection::sense_state ()
 		}
 	      }
 	    */
-
+	    
 	    curr_state[1 + r] = 0;
 	    for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++) {
 	      if (curr_road->cars[k]) {
 		curr_state[1 + r*NUM_LANES_PER_ROAD+l]++;
 	      }
 	    }
-
+	    
 	    /*
 	    curr_state[1+MAX_DEGREE+r] = 0;
 	    for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++) {
@@ -193,16 +193,17 @@ int intersection::get_wait () {
   //reward = -(float) total; // because they are all costs & not rewards
   //printf ("%f\n",reward);
   total_waiting_cars += total;
+  //printf ("total_waiting_cars: %d\n",total_waiting_cars);
   return total;
 }
 
 void intersection::get_reward (void) {
 
-    // reward = (float) 1.0/( 1.0 + exp(- (prev_wait - curr_wait) ));//logistic function
+  reward = (float) 1.0/( 1.0 + exp(- (prev_wait - curr_wait) ));//logistic function
 
-  reward = (float) ( prev_wait - curr_wait);//  + 0.5* (prev_state[0] == curr_state[0]);
+  //reward = (float) ( prev_wait - curr_wait);//  + 0.5* (prev_state[0] == curr_state[0]);
 
-  //  printf ("%d -> %f\n",action,reward);
+  //printf ("%d -> %f\n",action,reward);
 }
 
 float* intersection::get_q_entry(int* state, int action)
