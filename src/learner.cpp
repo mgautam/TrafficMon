@@ -46,21 +46,26 @@ void learner::learn (bool fullSpeed)
     printf ("time %lld\n",sim->timestamp);
 
 
-  if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+
     for (int i = 0; i < *nodec; i++)
       {
 	if (nodes[i]) {
-	  //printf ("First Sense:\n");
-	  nodes[i]->sense_state();
-	  nodes[i]->select_action();
-	  nodes[i]->total_waiting_cars = 0;
-	  nodes[i]->apply_action();
+	  if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+	    //printf ("Second Sense:\n ");
+	    nodes[i]->sense_state();
+	    nodes[i]->get_reward();
+	    nodes[i]->update_q_entry();
+	    //printf ("First Sense:\n");
+	    //nodes[i]->sense_state();
+	    nodes[i]->select_action();
+	    nodes[i]->total_waiting_cars = 0;
+	  }
+	    nodes[i]->apply_action();
 	}
       }
-  }
 
   sim->updateWorld();//cars move here cars = clients
-  
+  /*
   if ( sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
     for (int i = 0; i < *nodec; i++)
       {
@@ -84,6 +89,7 @@ void learner::learn (bool fullSpeed)
 	}
       }
   }
+  */
   sim->incr_timestamp();
 }
 
