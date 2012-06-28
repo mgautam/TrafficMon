@@ -137,6 +137,7 @@ void handleKeyPress  (unsigned char key, int x, int y) {
       traffic_learner->learn (fullSpeed);
        else if (curr_mode == 2) {
       traffic_learner->comply ();
+      traffic_learner->evaluate ();
       if ( !(simulation->timestamp % PERFORMANCE_CALC_INTERVAL) )
 	traffic_learner->displayPerformance (PERFORMANCE_CALC_INTERVAL);
     }
@@ -156,6 +157,7 @@ void handleKeyPress  (unsigned char key, int x, int y) {
 	if (complyTime > 0)
 	  {
 	    traffic_learner->comply ();
+	    traffic_learner->evaluate ();
 	    complyTime--;
 	    //printf ("complyTime:%d\n",complyTime);
 	  }

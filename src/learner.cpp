@@ -91,7 +91,7 @@ int learner::evaluate(void)//intersection** nodes, int *nodec)
 {
   for (int i = 0; i < *nodec; i++)
     if (nodes[i]) {
-      for (int r = 0; r <  nodes[i]->in_count; r++){
+      for (int r = 0; r < MAX_DEGREE; r++){ // not in_count
 	if ( nodes[i]->in[r] )
 	  for (int s = 0; s < nodes[i]->in[r]->length;s++) // We check whole road not just MAX_SLOTS_TO_CHECK
 	    if (nodes[i]->in[r]->cars[s] && nodes[i]->in[r]->cars[s]->wait > 0) {
@@ -121,9 +121,6 @@ void learner::comply () {
   // printf ("Called!\n");
   sim->updateWorld ();
   sim->incr_timestamp();
-
-  this->evaluate ();
-
 }
 
 void learner::print_to_file (void) {

@@ -95,6 +95,7 @@ void *coreEngine (void *ptr) {
       }
       else if (curr_mode == 2) {
 	traffic_learner->comply ();
+	traffic_learner->evaluate ();
 	if ( !(simulation->timestamp % PERFORMANCE_CALC_INTERVAL) )
 	  traffic_learner->displayPerformance (PERFORMANCE_CALC_INTERVAL);
       }
@@ -116,6 +117,8 @@ void *coreEngine (void *ptr) {
 	  if (complyTime > 0)
 	    {
 	      traffic_learner->comply ();
+	      traffic_learner->evaluate ();
+
 	      complyTime--;
 	      //printf ("complyTime:%d\n",complyTime);
 	    }
