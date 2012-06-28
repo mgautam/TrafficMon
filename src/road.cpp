@@ -14,13 +14,19 @@ road::road(intersection* init, intersection* final)
   this->final = final;
   this->length = (final->x - init->x) + (final->y - init->y); //manhattan 
   if (this->length < 0) this->length *= -1;
-  length = length - 2;
+  // length = length - 2;
 
-  this->cars = new car*[length + 2];
-  memset(this->cars, 0, (length + 2)*sizeof(car*));
+  numlanes = NUM_LANES_PER_ROAD;
 
-  // For future references to be between -2 and (road length)
-  this->cars = this->cars + 2;
+  this->cars = new car**[numlanes];
+  
+  for (int l = 0; l < numlanes; l++) {
+    this->cars[l] = new car*[length + 2];
+    memset(this->cars[l], 0, (length + 2)*sizeof(car*));
+
+    // For future references to be between -2 and (road length)
+    this->cars[l] = this->cars[l] + 2;
+  }
 
   this->lights[LEFT] = RED;
   this->lights[RIGHT] = RED;
@@ -57,6 +63,32 @@ road::road(intersection* init, intersection* final)
 
   init->in_count++;
   final->out_count++;
+
+  // Uniform Distribution
+  float pdf[4] = {0.0};
+  // pdf[RIGHT] = 1.0;
+  pdf[AHEAD] = 1.0;
+  set_cdf_turn_patterns (pdf);
+
+}
+
+void road::set_cdf_turn_patterns (float *pdf) {
+  float Norm = 0;
+  for (int i = 0; i < 4; i++) {
+    Norm += pdf[i];
+  }
+  if (Norm == 0)
+    Norm = 1.0;
+
+  // Normalization & Cumulation
+  for (int i = 0; i < 4; i++) {
+      traffic_pattern_cdf[i] = pdf[i] / Norm;
+      if (i != 0) 
+	traffic_pattern_cdf[i] += traffic_pattern_cdf[i-1];
+      //printf ("%f\t", traffic_pattern_cdf[i]);
+  }
+  //printf ("\n");
+
 }
 
 road* road::get_next(int turn)
@@ -97,3 +129,14 @@ bool road::car_can_move_to(int new_pos)
   return true;
 }
 
+int road::get_random_turn_from_cdf () {
+  float seed = (float)rand ()/(float)RAND_MAX;
+  //printf ("%f",seed);
+  for (int turn = 0; turn < 4; turn++)
+    if (seed < traffic_pattern_cdf[turn]) {
+      //printf (" => %d\n",turn);
+      return turn;
+    }
+
+  return 0;
+}

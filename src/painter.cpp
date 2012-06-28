@@ -98,11 +98,13 @@ void painter::draw () {
     draw(simulation->roads[i]);
     drawLights(simulation->roads[i]);
 
-    for (int j = -2; j < simulation->roads[i]->length; j++)
-      {
-	if (simulation->roads[i]->cars[j])
-	  draw(simulation->roads[i]->cars[j]);
-      }
+    for (int l = 0; l < simulation->roads[i]->numlanes; l++) {
+      for (int j = -2; j < simulation->roads[i]->length; j++)
+	{
+	  if (simulation->roads[i]->cars[l][j])
+	    draw(simulation->roads[i]->cars[l][j]);
+	}
+    }
   }
 
   glutSwapBuffers ();
@@ -135,13 +137,19 @@ void painter::draw (car* curr_car) {
   if (!curr_car)
     return;
 
+  //  int init_x = curr_car->curr_road->init->x + curr_car->curr_road->init->x / NUM_SLOTS_IN_ROAD * 4;
+  //int init_y = curr_car->curr_road->init->y + curr_car->curr_road->init->y / NUM_SLOTS_IN_ROAD * 4;
+  int final_x = curr_car->curr_road->final->x + curr_car->curr_road->final->x / NUM_SLOTS_IN_ROAD * 4;
+  int final_y = curr_car->curr_road->final->y + curr_car->curr_road->final->y / NUM_SLOTS_IN_ROAD * 4;
+
+
   // The first 0.5 is to include the offset of intersection to road
   // -1 coz position starts from 1 not 0. 
   // The last 0.5 as offset for between car padding
   //  float carOffset_len =  (INTERSECTION_SIZE/2 + 7.5*(float)curr_car->position/(float)(CAR_LENGTH+MIN_INTER_CAR_SPACE) + HCAR_LENGTH);//*(CAR_LENGTH+MIN_INTER_CAR_SPACE)
   float carOffset_len =  (INTERSECTION_SIZE/2 +  ROAD_SCALE*curr_car->position + HCAR_LENGTH);//*(CAR_LENGTH+MIN_INTER_CAR_SPACE)
   // offset of car along the length of the road from final intersection
-  float carOffset_wid = ROAD_WIDTH/2 + HLEN_BW_LANES;
+  float carOffset_wid = LANE_WIDTH/2 + LANE_WIDTH * curr_car->currlaneIndex + HLEN_BW_LANES;
 
   glColor3f (curr_car->color.r,curr_car->color.g,curr_car->color.b);
   glBegin (GL_QUADS);
@@ -149,32 +157,36 @@ void painter::draw (car* curr_car) {
   switch (curr_car->curr_road->compass) {
       
   case NORTH:
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale);
-    //displayText (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE - carOffset_len)*scale, "Car");
+    glVertex2f (((float)final_x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, 
+		((float)final_y*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, 
+		((float)final_y*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale, 
+		((float)final_y*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale, 
+		((float)final_y*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale);
+    //displayText (((float)final_x*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale, ((float)final_y*ROAD_SCALE - carOffset_len)*scale, "Car");
     break;
     
   case EAST:
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale ,((float)curr_car->curr_road->final->y*ROAD_SCALE + (carOffset_wid-HCAR_WIDTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale ,((float)curr_car->curr_road->final->y*ROAD_SCALE + (carOffset_wid-HCAR_WIDTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale ,((float)curr_car->curr_road->final->y*ROAD_SCALE + (carOffset_wid+HCAR_WIDTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale ,((float)curr_car->curr_road->final->y*ROAD_SCALE + (carOffset_wid+HCAR_WIDTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale ,((float)final_y*ROAD_SCALE + (carOffset_wid-HCAR_WIDTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale ,((float)final_y*ROAD_SCALE + (carOffset_wid-HCAR_WIDTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE - (carOffset_len - HCAR_LENGTH))*scale ,((float)final_y*ROAD_SCALE + (carOffset_wid+HCAR_WIDTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE - (carOffset_len + HCAR_LENGTH))*scale ,((float)final_y*ROAD_SCALE + (carOffset_wid+HCAR_WIDTH))*scale);
     break;
 
   case SOUTH:
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE + (carOffset_wid-HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE + (carOffset_len + HCAR_LENGTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE + (carOffset_wid-HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE + (carOffset_len - HCAR_LENGTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE + (carOffset_wid+HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE + (carOffset_len - HCAR_LENGTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE + (carOffset_wid+HCAR_WIDTH))*scale, ((float)curr_car->curr_road->final->y*ROAD_SCALE + (carOffset_len + HCAR_LENGTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE + (carOffset_wid-HCAR_WIDTH))*scale, ((float)final_y*ROAD_SCALE + (carOffset_len + HCAR_LENGTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE + (carOffset_wid-HCAR_WIDTH))*scale, ((float)final_y*ROAD_SCALE + (carOffset_len - HCAR_LENGTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE + (carOffset_wid+HCAR_WIDTH))*scale, ((float)final_y*ROAD_SCALE + (carOffset_len - HCAR_LENGTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE + (carOffset_wid+HCAR_WIDTH))*scale, ((float)final_y*ROAD_SCALE + (carOffset_len + HCAR_LENGTH))*scale);
     break;
 
   case WEST:
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE + (carOffset_len + HCAR_LENGTH))*scale ,((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE + (carOffset_len - HCAR_LENGTH))*scale ,((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE + (carOffset_len - HCAR_LENGTH))*scale ,((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale);
-    glVertex2f (((float)curr_car->curr_road->final->x*ROAD_SCALE + (carOffset_len + HCAR_LENGTH))*scale ,((float)curr_car->curr_road->final->y*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE + (carOffset_len + HCAR_LENGTH))*scale ,((float)final_y*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE + (carOffset_len - HCAR_LENGTH))*scale ,((float)final_y*ROAD_SCALE - (carOffset_wid-HCAR_WIDTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE + (carOffset_len - HCAR_LENGTH))*scale ,((float)final_y*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE + (carOffset_len + HCAR_LENGTH))*scale ,((float)final_y*ROAD_SCALE - (carOffset_wid+HCAR_WIDTH))*scale);
     break;
     
   default:
@@ -193,12 +205,15 @@ void painter::draw (intersection* curr_intersection) {
    if (!curr_intersection)
       return;
 
+  int x = curr_intersection->x / NUM_SLOTS_IN_ROAD * 4 + curr_intersection->x ; 
+  int y = curr_intersection->y / NUM_SLOTS_IN_ROAD * 4 + curr_intersection->y ; 
+
    glColor3f (0.5f, 0.5f, 0.5f);
    glBegin (GL_QUADS);
-   glVertex2f (((float) curr_intersection->x*ROAD_SCALE - INTERSECTION_SIZE/2.0) * scale, ((float)curr_intersection->y*ROAD_SCALE + INTERSECTION_SIZE/2.0)* scale);
-   glVertex2f (((float) curr_intersection->x*ROAD_SCALE + INTERSECTION_SIZE/2.0) * scale, ((float)curr_intersection->y*ROAD_SCALE + INTERSECTION_SIZE/2.0)* scale);
-   glVertex2f (((float) curr_intersection->x*ROAD_SCALE + INTERSECTION_SIZE/2.0) * scale, ((float)curr_intersection->y*ROAD_SCALE - INTERSECTION_SIZE/2.0)* scale);
-   glVertex2f (((float) curr_intersection->x*ROAD_SCALE - INTERSECTION_SIZE/2.0) * scale, ((float)curr_intersection->y*ROAD_SCALE - INTERSECTION_SIZE/2.0)* scale);
+   glVertex2f (((float) x*ROAD_SCALE - INTERSECTION_SIZE/2.0) * scale, ((float)y*ROAD_SCALE + INTERSECTION_SIZE/2.0)* scale);
+   glVertex2f (((float) x*ROAD_SCALE + INTERSECTION_SIZE/2.0) * scale, ((float)y*ROAD_SCALE + INTERSECTION_SIZE/2.0)* scale);
+   glVertex2f (((float) x*ROAD_SCALE + INTERSECTION_SIZE/2.0) * scale, ((float)y*ROAD_SCALE - INTERSECTION_SIZE/2.0)* scale);
+   glVertex2f (((float) x*ROAD_SCALE - INTERSECTION_SIZE/2.0) * scale, ((float)y*ROAD_SCALE - INTERSECTION_SIZE/2.0)* scale);
    glEnd ();
 
 }
@@ -208,37 +223,42 @@ void painter::draw (road* curr_road) {
   if (!curr_road)
     return;
 
+  int init_x = curr_road->init->x + curr_road->init->x / NUM_SLOTS_IN_ROAD * 4;
+  int init_y = curr_road->init->y + curr_road->init->y / NUM_SLOTS_IN_ROAD * 4;
+  int final_x = curr_road->final->x + curr_road->final->x / NUM_SLOTS_IN_ROAD * 4;
+  int final_y = curr_road->final->y + curr_road->final->y / NUM_SLOTS_IN_ROAD * 4;
+
   glColor3f (0.5f, 0.5f, 0.5f);
   glBegin (GL_QUADS);
 
   switch (curr_road->compass) {
 
   case NORTH:
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE - HLEN_BW_LANES)*scale, ((float)curr_road->init->y*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale);
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE - HLEN_BW_LANES)*scale, ((float)curr_road->final->y*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale);
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE - (ROAD_WIDTH+HLEN_BW_LANES))*scale, ((float)curr_road->final->y*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale);
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE - (ROAD_WIDTH+HLEN_BW_LANES))*scale, ((float)curr_road->init->y*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE - HLEN_BW_LANES)*scale, ((float)init_y*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE - HLEN_BW_LANES)*scale, ((float)final_y*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE - (ROAD_WIDTH+HLEN_BW_LANES))*scale, ((float)final_y*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE - (ROAD_WIDTH+HLEN_BW_LANES))*scale, ((float)init_y*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale);
     break;
 
   case EAST:
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale,((float)curr_road->init->y*ROAD_SCALE + (ROAD_WIDTH+HLEN_BW_LANES))*scale);
-    glVertex2f (((float)curr_road->final->x*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale,((float)curr_road->init->y*ROAD_SCALE + (ROAD_WIDTH+HLEN_BW_LANES))*scale);
-    glVertex2f (((float)curr_road->final->x*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale,((float)curr_road->init->y*ROAD_SCALE + HLEN_BW_LANES)*scale);
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale,((float)curr_road->init->y*ROAD_SCALE + HLEN_BW_LANES)*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale,((float)init_y*ROAD_SCALE + (ROAD_WIDTH+HLEN_BW_LANES))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale,((float)init_y*ROAD_SCALE + (ROAD_WIDTH+HLEN_BW_LANES))*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale,((float)init_y*ROAD_SCALE + HLEN_BW_LANES)*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale,((float)init_y*ROAD_SCALE + HLEN_BW_LANES)*scale);
     break;
 
   case SOUTH:
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE + (ROAD_WIDTH+HLEN_BW_LANES))*scale, ((float)curr_road->init->y*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale);
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE + (ROAD_WIDTH+HLEN_BW_LANES))*scale, ((float)curr_road->final->y*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale);
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE + HLEN_BW_LANES)*scale, ((float)curr_road->final->y*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale);
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE + HLEN_BW_LANES)*scale, ((float)curr_road->init->y*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE + (ROAD_WIDTH+HLEN_BW_LANES))*scale, ((float)init_y*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE + (ROAD_WIDTH+HLEN_BW_LANES))*scale, ((float)final_y*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE + HLEN_BW_LANES)*scale, ((float)final_y*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE + HLEN_BW_LANES)*scale, ((float)init_y*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale);
     break;
 
   case WEST:
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale,((float)curr_road->init->y*ROAD_SCALE - HLEN_BW_LANES)*scale);
-    glVertex2f (((float)curr_road->final->x*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale,((float)curr_road->init->y*ROAD_SCALE - HLEN_BW_LANES)*scale);
-    glVertex2f (((float)curr_road->final->x*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale,((float)curr_road->init->y*ROAD_SCALE - (ROAD_WIDTH+HLEN_BW_LANES))*scale);
-    glVertex2f (((float)curr_road->init->x*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale,((float)curr_road->init->y*ROAD_SCALE - (ROAD_WIDTH+HLEN_BW_LANES))*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale,((float)init_y*ROAD_SCALE - HLEN_BW_LANES)*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale,((float)init_y*ROAD_SCALE - HLEN_BW_LANES)*scale);
+    glVertex2f (((float)final_x*ROAD_SCALE + INTERSECTION_SIZE/2.0)*scale,((float)init_y*ROAD_SCALE - (ROAD_WIDTH+HLEN_BW_LANES))*scale);
+    glVertex2f (((float)init_x*ROAD_SCALE - INTERSECTION_SIZE/2.0)*scale,((float)init_y*ROAD_SCALE - (ROAD_WIDTH+HLEN_BW_LANES))*scale);
     break;
 
   default:
@@ -250,6 +270,14 @@ void painter::draw (road* curr_road) {
 }
 
 void painter::drawLights (road* curr_road) {
+
+  if (!curr_road)
+    return;
+
+  int init_x = curr_road->init->x + curr_road->init->x / NUM_SLOTS_IN_ROAD * 4;
+  int init_y = curr_road->init->y + curr_road->init->y / NUM_SLOTS_IN_ROAD * 4;
+  int final_x = curr_road->final->x + curr_road->final->x / NUM_SLOTS_IN_ROAD * 4;
+  int final_y = curr_road->final->y + curr_road->final->y / NUM_SLOTS_IN_ROAD * 4;
 
   //curr_road->lights[LEFT] = GREEN; // Debugging purpose only
   //curr_road->lights[RIGHT] = GREEN; // Debugging purpose only
@@ -279,47 +307,47 @@ void painter::drawLights (road* curr_road) {
      switch (curr_road->compass) {
 
       case NORTH:
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
+		    ((float)final_y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
+		    ((float)final_y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
+		    ((float)final_y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
+		    ((float)final_y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
 	break;
 
       case EAST:
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1) * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1) * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
 	break;
 
       case SOUTH:
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
+		    ((float)final_y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
+		    ((float)final_y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
+		    ((float)final_y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
+		    ((float)final_y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
 	break;
 
       case WEST:
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1) * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1) * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
 	break;
 
       default:
@@ -339,47 +367,47 @@ void painter::drawLights (road* curr_road) {
      switch (curr_road->compass) {
 
       case NORTH:
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
+		    ((float)final_y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
+		    ((float)final_y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
+		    ((float)final_y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
+		    ((float)final_y*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
 	break;
 
       case EAST:
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1) * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE - (INTERSECTION_SIZE/2.0 + (j+1) * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
 	break;
 
       case SOUTH:
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
-	glVertex2f (((float)curr_road->init->x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
-		    ((float)curr_road->final->y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
+		    ((float)final_y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale, 
+		    ((float)final_y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
+		    ((float)final_y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale);
+	glVertex2f (((float)init_x*ROAD_SCALE + ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale, 
+		    ((float)final_y*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale);
 	break;
 
       case WEST:
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
-	glVertex2f (((float)curr_road->final->x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1) * TL_LIGHT_SIZE))*scale,
-		    ((float)curr_road->init->y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1)*TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_right_offset))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + j * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
+	glVertex2f (((float)final_x*ROAD_SCALE + (INTERSECTION_SIZE/2.0 + (j+1) * TL_LIGHT_SIZE))*scale,
+		    ((float)init_y*ROAD_SCALE - ((ROAD_WIDTH+HLEN_BW_LANES) + light_left_offset - HLEN_BW_LIGHTS))*scale);
 	break;
 
       default:

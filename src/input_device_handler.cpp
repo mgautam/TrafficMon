@@ -24,6 +24,7 @@ extern bool stopAnime;
 extern int simulation_interval;
 
 extern bool fullSpeed;
+extern bool displayMode;
 
 extern int curr_mode;
 extern int learnTime;
@@ -178,15 +179,6 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     printf (">> KeyPressed: %d more cars spawned\n", BATCH_SIZE);
     break;
 
-  case 't':
-    curr_mode = ((++curr_mode) % 4);
-    if (curr_mode == 3) { //Learn&Comply MODE
-      learnTime = 0;// This is the setting to intially know the performance
-      complyTime = COMPLY_TIME; // and to compare with later performance
-    }
-    printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
-    break;
-
   case 'p':
     traffic_learner->print_to_file ();
     printf (">> Print Learned Table\n");
@@ -197,6 +189,11 @@ void handleKeyPress  (unsigned char key, int x, int y) {
     printf (">> Full Speed %c%cactivated\n", (!fullSpeed)*'d', (!fullSpeed)*'e');
     break;
 
+  case 'd':
+    displayMode = !displayMode;
+    printf (">> Display %c%cactivated\n", (!displayMode)*'d', (!displayMode)*'e');
+    break;
+
   case 'w':
     write_world = true;
     printf (">> Write World\n");
@@ -205,6 +202,41 @@ void handleKeyPress  (unsigned char key, int x, int y) {
   case 'e':
     load_world = true;
     printf (">> Recreate World \n");
+    break;
+  }
+
+  switch (key) {
+  case 't':
+    curr_mode = ((++curr_mode) % 4);
+    if (curr_mode == 3) { //Learn&Comply MODE
+      learnTime = 0;// This is the setting to intially know the performance
+      complyTime = COMPLY_TIME; // and to compare with later performance
+    }
+    printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
+    break;
+
+  case 'v':
+    printf (">> Current Mode is %d:%s mode\n",curr_mode, modes[curr_mode]);
+    break;
+
+  case '0':
+    curr_mode = 0;
+    printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
+    break;
+
+  case '1':
+    curr_mode = 1;
+    printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
+    break;
+
+  case '2':
+    curr_mode = 2;
+    printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
+    break;
+
+  case '3':
+    curr_mode = 3;
+    printf (">> Toggle to %d:%s mode\n",curr_mode, modes[curr_mode]);
     break;
   }
 }

@@ -13,11 +13,14 @@ using namespace std;
 class intersection
 {
  public:
-  intersection(int x, int y);
+  // If you need more features in each state,   
+  intersection(int x, int y);//you only have to add metadata in this constructor 
+  void sense_state();// and the actual feature in sense_state ()
+
   void write_state(FILE* output);
   void controlLights (int PatternID);
 
-  void sense_state();
+
   void select_action();
   float* get_q_entry(int* state, int action);
   float* get_max_q_entry (int *state);
@@ -49,6 +52,7 @@ class intersection
   int curr_wait;
   int prev_wait;
 
+  int total_waiting_cars;
   float reward;
   int action;
   int best_action;

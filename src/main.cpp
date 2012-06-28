@@ -40,6 +40,8 @@ bool stopAnime = false;
 extern bool fullSpeed;
 bool fullSpeed = false;
 
+extern bool displayMode;
+bool displayMode = false;
 
 extern int learnTime;
 int learnTime = 0;
@@ -60,7 +62,12 @@ extern bool load_world;
      /* maybe glutPostRedisplay(), if necessary */
     if (!fullSpeed)
       ppainter->draw ();
-  
+    else if (fullSpeed && displayMode)
+      {
+	usleep (simulation_interval*1000);
+	ppainter->draw ();
+      }
+
     glutPostRedisplay ();
   }
 

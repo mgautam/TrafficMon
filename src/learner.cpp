@@ -15,23 +15,23 @@ learner::learner (world* sim) {
 
 
 
-float x = 0;
 static int TrafficPhase = 0;
 void learner::naiveControl (world *sim) {
   //Put traffic light changing code at the end of the routine 
   //   if you want to give a 1 time unit window for the car to move
   //      after GREEN light is signalled
   
-   if (TrafficPhase % MIN_TL_SWITCH_INTERVAL == 0) {
-     for (int i = 0; i < sim->intc; i++)
-       {
-	 if (sim->intersections[i]) {
-	   sim->intersections[i]->controlLights (((int)x)%4);//EASTWEST_RIGHT);x++%4
-	 }
-       }
-     x++;
-   } 
-   TrafficPhase++;
+  for (int i = 0; i < sim->intc; i++)
+    {
+      if (sim->intersections[i]) {
+	sim->intersections[i]->controlLights (((int)TrafficPhase)%4);//EASTWEST_RIGHT);x++%4
+      }
+    }
+
+
+   if (sim->timestamp % MIN_TL_SWITCH_INTERVAL == 0) {
+     TrafficPhase++;
+   }
    
    sim->updateWorld ();
    sim->incr_timestamp();
@@ -93,10 +93,12 @@ int learner::evaluate(void)//intersection** nodes, int *nodec)
     if (nodes[i]) {
       for (int r = 0; r < MAX_DEGREE; r++){ // not in_count
 	if ( nodes[i]->in[r] )
-	  for (int s = 0; s < nodes[i]->in[r]->length;s++) // We check whole road not just MAX_SLOTS_TO_CHECK
-	    if (nodes[i]->in[r]->cars[s] && nodes[i]->in[r]->cars[s]->wait > 0) {
-	      performance--;
+	  for (int l = 0; l < nodes[i]->in[r]->numlanes; l++) {
+	    for (int s = 0; s < nodes[i]->in[r]->length;s++) // We check whole road not just MAX_SLOTS_TO_CHECK
+	      if (nodes[i]->in[r]->cars[l][s] && nodes[i]->in[r]->cars[l][s]->wait > 0) {
+		performance--;
 	    }
+	  }
       }
     }
   return performance;
