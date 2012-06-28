@@ -1,0 +1,5 @@
+state_vector_size: 5       state_space_size: 40000		       q_table_size:160000 
+state_vector_size: 5       state_space_size: 40000		       q_table_size:160000 
+state_vector_size: 5       state_space_size: 40000		       q_table_size:160000 
+state_vector_size: 5       state_space_size: 40000		       q_table_size:160000 
+state_vector_size: 5       state_space_size: 40000		       q_table_size:160000 

@@ -1,0 +1,465 @@
+>> Performance in last interval of 100 time units is -970 << 
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> NITROX 1 powered by SEGA
+>> Display Mode Toggled: NoT Showing
+time 1000
+time 2000
+time 3000
+time 4000
+time 5000
+time 6000
+time 7000
+time 8000
+time 9000
+>> Performance in last interval of 100 time units is -161 << 
+time 11000
+time 12000
+time 13000
+time 14000
+time 15000
+time 16000
+time 17000
+time 18000
+time 19000
+>> Performance in last interval of 100 time units is -108 << 
+time 21000
+time 22000
+time 23000
+time 24000
+time 25000
+time 26000
+time 27000
+time 28000
+time 29000
+>> Performance in last interval of 100 time units is -88 << 
+time 31000
+time 32000
+time 33000
+time 34000
+time 35000
+time 36000
+time 37000
+time 38000
+time 39000
+>> Performance in last interval of 100 time units is -185 << 
+time 41000
+time 42000
+time 43000
+time 44000
+time 45000
+time 46000
+time 47000
+time 48000
+time 49000
+>> Performance in last interval of 100 time units is -13 << 
+time 51000
+time 52000
+time 53000
+time 54000
+time 55000
+time 56000
+time 57000
+time 58000
+time 59000
+>> Performance in last interval of 100 time units is -330 << 
+time 61000
+time 62000
+time 63000
+time 64000
+time 65000
+time 66000
+time 67000
+time 68000
+time 69000
+>> Performance in last interval of 100 time units is -141 << 
+time 71000
+time 72000
+time 73000
+time 74000
+time 75000
+time 76000
+time 77000
+time 78000
+time 79000
+>> Performance in last interval of 100 time units is -94 << 
+time 81000
+time 82000
+time 83000
+time 84000
+time 85000
+time 86000
+time 87000
+time 88000
+time 89000
+>> Performance in last interval of 100 time units is -44 << 
+time 91000
+time 92000
+time 93000
+time 94000
+time 95000
+time 96000
+time 97000
+time 98000
+time 99000
+>> Performance in last interval of 100 time units is -100 << 
+time 101000
+time 102000
+time 103000
+time 104000
+time 105000
+time 106000
+time 107000
+time 108000
+time 109000
+>> Performance in last interval of 100 time units is -409 << 
+time 111000
+time 112000
+time 113000
+time 114000
+time 115000
+time 116000
+time 117000
+time 118000
+time 119000
+>> Performance in last interval of 100 time units is -90 << 
+time 121000
+time 122000
+time 123000
+time 124000
+time 125000
+time 126000
+time 127000
+time 128000
+time 129000
+>> Performance in last interval of 100 time units is -35 << 
+time 131000
+time 132000
+time 133000
+time 134000
+time 135000
+time 136000
+time 137000
+time 138000
+time 139000
+>> Performance in last interval of 100 time units is -311 << 
+time 141000
+time 142000
+time 143000
+time 144000
+time 145000
+time 146000
+time 147000
+time 148000
+time 149000
+>> Performance in last interval of 100 time units is -19 << 
+time 151000
+time 152000
+time 153000
+time 154000
+time 155000
+time 156000
+time 157000
+time 158000
+time 159000
+>> Performance in last interval of 100 time units is -841 << 
+time 161000
+time 162000
+time 163000
+time 164000
+time 165000
+time 166000
+time 167000
+time 168000
+time 169000
+>> Performance in last interval of 100 time units is -52 << 
+time 171000
+time 172000
+time 173000
+time 174000
+time 175000
+time 176000
+time 177000
+time 178000
+time 179000
+>> Performance in last interval of 100 time units is -33 << 
+time 181000
+time 182000
+time 183000
+time 184000
+time 185000
+time 186000
+time 187000
+time 188000
+time 189000
+>> Performance in last interval of 100 time units is -36 << 
+time 191000
+time 192000
+time 193000
+time 194000
+time 195000
+time 196000
+time 197000
+time 198000
+time 199000
+>> Performance in last interval of 100 time units is -80 << 
+time 201000
+time 202000
+time 203000
+time 204000
+time 205000
+time 206000
+time 207000
+time 208000
+time 209000
+>> Performance in last interval of 100 time units is -82 << 
+time 211000
+time 212000
+time 213000
+time 214000
+time 215000
+time 216000
+time 217000
+time 218000
+time 219000
+>> Performance in last interval of 100 time units is -72 << 
+time 221000
+time 222000
+time 223000
+time 224000
+time 225000
+time 226000
+time 227000
+time 228000
+time 229000
+>> Performance in last interval of 100 time units is -35 << 
+time 231000
+time 232000
+time 233000
+time 234000
+time 235000
+time 236000
+time 237000
+time 238000
+time 239000
+>> Performance in last interval of 100 time units is -39 << 
+time 241000
+time 242000
+time 243000
+time 244000
+time 245000
+time 246000
+time 247000
+time 248000
+time 249000
+>> Performance in last interval of 100 time units is -58 << 
+time 251000
+time 252000
+time 253000
+time 254000
+time 255000
+time 256000
+time 257000
+time 258000
+time 259000
+>> Performance in last interval of 100 time units is -53 << 
+time 261000
+time 262000
+time 263000
+time 264000
+time 265000
+time 266000
+time 267000
+time 268000
+time 269000
+>> Performance in last interval of 100 time units is -433 << 
+time 271000
+time 272000
+time 273000
+time 274000
+time 275000
+time 276000
+time 277000
+time 278000
+time 279000
+>> Performance in last interval of 100 time units is -307 << 
+time 281000
+time 282000
+time 283000
+time 284000
+time 285000
+time 286000
+time 287000
+time 288000
+time 289000
+>> Performance in last interval of 100 time units is -41 << 
+time 291000
+time 292000
+time 293000
+time 294000
+time 295000
+time 296000
+time 297000
+time 298000
+time 299000
+>> Performance in last interval of 100 time units is -93 << 
+time 301000
+time 302000
+time 303000
+time 304000
+time 305000
+time 306000
+time 307000
+time 308000
+time 309000
+>> Performance in last interval of 100 time units is -85 << 
+time 311000
+time 312000
+time 313000
+time 314000
+time 315000
+time 316000
+time 317000
+time 318000
+time 319000
+>> Performance in last interval of 100 time units is -73 << 
+time 321000
+time 322000
+time 323000
+time 324000
+time 325000
+time 326000
+time 327000
+time 328000
+time 329000
+>> Performance in last interval of 100 time units is -327 << 
+time 331000
+time 332000
+time 333000
+time 334000
+time 335000
+time 336000
+time 337000
+time 338000
+time 339000
+>> Performance in last interval of 100 time units is -53 << 
+time 341000
+time 342000
+time 343000
+time 344000
+time 345000
+time 346000
+time 347000
+time 348000
+time 349000
+>> Performance in last interval of 100 time units is -851 << 
+time 351000
+time 352000
+time 353000
+time 354000
+time 355000
+time 356000
+time 357000
+time 358000
+time 359000
+>> Performance in last interval of 100 time units is -78 << 
+time 361000
+time 362000
+time 363000
+time 364000
+time 365000
+time 366000
+time 367000
+time 368000
+time 369000
+>> Performance in last interval of 100 time units is -673 << 
+time 371000
+time 372000
+time 373000
+time 374000
+time 375000
+time 376000
+time 377000
+time 378000
+time 379000
+>> Performance in last interval of 100 time units is -31 << 
+time 381000
+time 382000
+time 383000
+time 384000
+time 385000
+time 386000
+time 387000
+time 388000
+time 389000
+>> Performance in last interval of 100 time units is -23 << 
+time 391000
+time 392000
+time 393000
+time 394000
+time 395000
+time 396000
+time 397000
+time 398000
+time 399000
+>> Performance in last interval of 100 time units is -46 << 
+time 401000
+time 402000
+time 403000
+time 404000
+time 405000
+time 406000
+time 407000
+time 408000
+time 409000
+>> Performance in last interval of 100 time units is -418 << 
+time 411000
+time 412000
+time 413000
+time 414000
+time 415000
+time 416000
+time 417000
+time 418000
+time 419000
+>> Performance in last interval of 100 time units is -219 << 
+time 421000
+time 422000
+time 423000
+time 424000
+time 425000
+time 426000
+time 427000
+time 428000
+time 429000
+>> Performance in last interval of 100 time units is -25 << 
+time 431000
+time 432000
+time 433000
+time 434000
+time 435000
+time 436000
+time 437000
+time 438000
+time 439000
+>> Performance in last interval of 100 time units is -55 << 
+time 441000
+time 442000
+time 443000
+time 444000
+time 445000
+time 446000
+time 447000
+time 448000
+time 449000
+>> Performance in last interval of 100 time units is -146 << 
