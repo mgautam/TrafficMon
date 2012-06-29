@@ -8,3 +8,12 @@ Client Server Graphics Architecture
 Cars are waiting at position=0 for cars in the last position which are about to move in the next road, this should be avoided
 get_lights_index
 Average wait per car rather than total wait, should be used as reward
+
+Values Learned:
+Before adding new features, test those features on their branches and add when they are bug free
+
+Good Window Layouts
+texteditor - Fullscreen
+versionctrl - Fullscreen
+debugger - widescreen/small window
+

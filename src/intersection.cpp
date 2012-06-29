@@ -97,7 +97,7 @@ void intersection::sense_state ()
 	
 	if (curr_road)
 	  {
-	    /*
+
 	    curr_state[1 + r] = MAX_SLOTS_TO_CHECK-1;
 	    for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++)
 	      {
@@ -106,15 +106,15 @@ void intersection::sense_state ()
 		  break;
 		}
 	      }
-	    */
 
+	    /*
 	    curr_state[1 + r] = 0;
 	    for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++) {
 	      if (curr_road->cars[k]) {
 		curr_state[1 + r*NUM_LANES_PER_ROAD+l]++;
 	      }
 	    }
-
+	    */
 	    /*
 	    curr_state[1+MAX_DEGREE+r] = 0;
 	    for (int k = 0; k < MAX_SLOTS_TO_CHECK; k++) {
@@ -158,6 +158,7 @@ void intersection::select_learned_action () {
   // If all states are of equal importance (value) then retain the previous best action
   // int best_action = best_action;//i.e. initialize with previous best action
   // best_action = ((float)rand()/(float)RAND_MAX)*NUM_TRAFFIC_PATTERNS;
+  //best_action = 1;
   for (int action = 0; action < NUM_TRAFFIC_PATTERNS; action++) {
     if ( *get_q_entry (curr_state,best_action) < *get_q_entry (curr_state,action) )
       best_action = action;
@@ -172,31 +173,43 @@ void intersection::apply_action()
 }
 
 int intersection::get_wait () {
-  int total = 0;
+  float num_cars_in_road[MAX_DEGREE] = {0.0};
+  float total_wait_in_road[MAX_DEGREE] = {0.0};
+  
   for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++) {
     road *curr_road = in[roadIndex];
     if (curr_road) {
       for (int laneIndex = 0; laneIndex < curr_road->numlanes; laneIndex++) {
-	// We check whole road not just MAX_SLOTS_TO_CHECK
 	for (int position = 0; position < curr_road->length; position++) {
-	  if (curr_road->cars[laneIndex][position]) {
-	    //printf ("Car %p: Position:%d Wait%d\n",curr_road->cars[position],position, curr_road->cars[position]->wait);
-	    if (curr_road->cars[laneIndex][position]->wait > 0) {
-	      total++;
-	      //printf ("%d\n",total);
+	    if (curr_road->cars[laneIndex][position]) {
+	      num_cars_in_road [roadIndex] ++;
 	    }
 	  }
+	       }
+
+	for (int laneIndex = 0; laneIndex < curr_road->numlanes; laneIndex++) {
+	  // We check whole road not just MAX_SLOTS_TO_CHECK
+	  for (int position = 0; position < MAX_SLOTS_TO_CHECK; position++) { //curr_road->length
+	      if (curr_road->cars[laneIndex][position]) {
+		//printf ("Car %p: Position:%d Wait%d\n",curr_road->cars[position],position, curr_road->cars[position]->wait);
+		if (curr_road->cars[laneIndex][position]->wait > 0) {
+		  total_wait_in_road[roadIndex] += ((float)curr_road->cars[laneIndex][position]->wait)/num_cars_in_road[roadIndex];//1.0//++
+		  //printf ("%d\n",total);
+		}
+	      }
+	    }
+		 }
 	}
       }
+      
+      //reward = -(float) total; // because they are all costs & not rewards
+      //printf ("%f\n",reward);
+      for (int roadIndex = 0; roadIndex < MAX_DEGREE; roadIndex++)
+	total_waiting_cars += total_wait_in_road[roadIndex];
+
+      return total_waiting_cars;
     }
-  }
-
-  //reward = -(float) total; // because they are all costs & not rewards
-  //printf ("%f\n",reward);
-  total_waiting_cars += total;
-  return total;
-}
-
+    
 void intersection::get_reward (void) {
 
   reward = (float) 1.0/( 1.0 + exp(- (prev_wait - curr_wait) ));//logistic function

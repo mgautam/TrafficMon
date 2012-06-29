@@ -49,10 +49,10 @@ class intersection
 
   int number_of_actions_per_state;
 
-  int curr_wait;
-  int prev_wait;
+  float curr_wait;
+  float prev_wait;
 
-  int total_waiting_cars;
+  float total_waiting_cars;
   float reward;
   int action;
   int best_action;

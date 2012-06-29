@@ -128,7 +128,7 @@ void *coreEngine (void *ptr) {
 	  if (complyTime <= 0 && learnTime <=0) {
 	    learnTime = LEARN_TIME;
 	    // load_world = true;   //bigbang::destroy_world (simulation);bigbang::load_world (simulation);
-	    // traffic_learner->displayPerformance (COMPLY_TIME);
+	    traffic_learner->displayPerformance (COMPLY_TIME);
 	  }     
 	  
 	}
