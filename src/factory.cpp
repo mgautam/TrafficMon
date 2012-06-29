@@ -70,22 +70,22 @@ void factory::create_world(world** sim)
   cars[0] = new car(roads[0], AHEAD, roads[0]->length - 1); 
   cars[1] = new car(roads[0], RIGHT, (float)roads[0]->length - 3);
   cars[2] = new car(roads[0], LEFT, (float)roads[0]->length - 5);
-  cars[3] = new car(roads[0], LEFT, (float)roads[0]->length - 7);
+  //cars[3] = new car(roads[0], LEFT, (float)roads[0]->length - 7);
 
   cars[5] = new car(roads[3], AHEAD, (float)roads[0]->length - 1);
-  cars[6] = new car(roads[3], RIGHT, (float)roads[0]->length - 3);
-  cars[7] = new car(roads[3], LEFT, (float)roads[0]->length - 5);
-  cars[8] = new car(roads[3], LEFT, (float)roads[0]->length - 7);
+  //cars[6] = new car(roads[3], RIGHT, (float)roads[0]->length - 3);
+  //cars[7] = new car(roads[3], LEFT, (float)roads[0]->length - 5);
+  //cars[8] = new car(roads[3], LEFT, (float)roads[0]->length - 7);
  
-  new car(roads[20], LEFT, (float)roads[0]->length - 1);
-  new car(roads[20], RIGHT, (float)roads[0]->length - 3);
-  new car(roads[20], AHEAD, (float)roads[0]->length - 5);
-  new car(roads[20], AHEAD, (float)roads[0]->length - 7);
+//   new car(roads[20], LEFT, (float)roads[0]->length - 1);
+//   new car(roads[20], RIGHT, (float)roads[0]->length - 3);
+//   new car(roads[20], AHEAD, (float)roads[0]->length - 5);
+//   new car(roads[20], AHEAD, (float)roads[0]->length - 7);
 
-  new car(roads[23], LEFT, (float)roads[0]->length - 1);
-  new car(roads[23], RIGHT, (float)roads[0]->length - 3);
-  new car(roads[23], AHEAD, (float)roads[0]->length - 5);
-  new car(roads[23], AHEAD, (float)roads[0]->length - 7);
+//   new car(roads[23], LEFT, (float)roads[0]->length - 1);
+//   new car(roads[23], RIGHT, (float)roads[0]->length - 3);
+//   new car(roads[23], AHEAD, (float)roads[0]->length - 5);
+//   new car(roads[23], AHEAD, (float)roads[0]->length - 7);
 
   // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
   // new car(roads[3], RIGHT, (float)roads[0]->length - 9);
