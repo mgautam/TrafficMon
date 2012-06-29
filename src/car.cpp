@@ -99,7 +99,7 @@ int car::move()
       curr_road = next_road;
 
       // setting the next turn to be random
-      this->turn = LEFT;//(float)rand ()/(float)RAND_MAX * 3;
+      this->turn = AHEAD;//(float)rand ()/(float)RAND_MAX * 3;
     }
   else if (position == -2) //turn != LEFT //turn into right road or move onto road ahead
     {
@@ -119,7 +119,7 @@ int car::move()
       curr_road = next_road;
 
       // setting the next turn to be random
-      this->turn = RIGHT;//(float)rand ()/(float)RAND_MAX * 3;
+      this->turn = AHEAD;//(float)rand ()/(float)RAND_MAX * 3;
     }
   else
     {

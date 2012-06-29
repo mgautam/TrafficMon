@@ -106,7 +106,7 @@ void *coreEngine (void *ptr) {
 	    }
 	  if (complyTime <= 0 && learnTime <=0) {
 	    learnTime = LEARN_TIME;      
-	    //	    traffic_learner->displayPerformance (COMPLY_TIME);
+	    traffic_learner->displayPerformance (COMPLY_TIME);
 	  }     
 	  
 	}
